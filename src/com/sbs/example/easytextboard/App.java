@@ -13,7 +13,7 @@ public class App {
 		return articleArray[id - 1];
 	}
 
-	// getIndex 메소드
+	// getIndex 메소드 : 제목으로 인덱스 찾기
 	public int getIndex(String str) {
 		for (int i = 0; i < articlesCount; i++) {
 			if (articleArray[i].title.equals(str)) {
@@ -24,7 +24,7 @@ public class App {
 		return -1;
 	}
 
-	// removeByTitle 메소드
+	// removeByTitle 메소드 : 제목으로 인덱스 찾아서 remove메소드 실행
 	public void removeByTitle(String str) {
 		int index = getIndex(str);
 		if (index != -1) {
@@ -34,15 +34,18 @@ public class App {
 
 	// remove 메소드
 	public void remove(int num) {
-		for (int i = num; i < articlesCount; i++) {
+		for (int i = num; i <= articlesCount; i++) {
 			articleArray[i - 1] = articleArray[i];
-			articleArray[i - 1].id -= 1;
+
 		}
 		articlesCount--;
 	}
 
 	// run 메소드
 	public void run() {
+		for (int i = 0; i < articleArray.length; i++) {
+			articleArray[i] = new Article();
+		}
 		int id = 0;
 		int lastArticleId = 0;
 		Scanner scanner = new Scanner(System.in);
@@ -67,15 +70,14 @@ public class App {
 				System.out.printf("내용 : ");
 				String body = scanner.nextLine();
 
-				articleArray[articlesCount] = new Article();
+				System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
 
-				System.out.printf("%d번 게시물이 등록되었습니다.\n", articlesCount + 1);
-
-				articleArray[articlesCount].id = articlesCount + 1;
-				articleArray[articlesCount].title = title;
-				articleArray[articlesCount].body = body;
+				articleArray[lastArticleId].id = id;
+				articleArray[lastArticleId].title = title;
+				articleArray[lastArticleId].body = body;
 
 				articlesCount++;
+				lastArticleId = id;
 
 				// 게시물 리스트
 			} else if (command.equals("article list")) {
@@ -99,15 +101,15 @@ public class App {
 				System.out.println("==게시물 상세==");
 
 				String[] number = command.split(" ");
-				if (Integer.parseInt(number[2]) > articlesCount || command.equals("article detail 0")
-						|| Integer.parseInt(number[2]) < 0) {
+
+				if (Integer.parseInt(number[2]) > articlesCount || Integer.parseInt(number[2]) <= 0) {
 					System.out.println("게시물이 존재하지 않습니다");
 					continue;
 				}
 
 				Article detailArticle = getArticle(Integer.parseInt(number[2]));
 
-				if (detailArticle.title == null) {
+				if (detailArticle == null) {
 					System.out.println("게시물이 존재하지 않습니다.");
 					continue;
 				}
@@ -127,7 +129,7 @@ public class App {
 				}
 				System.out.println("==게시물 삭제==");
 				String[] str = command.split(" ");
-				if (Integer.parseInt(str[2]) > articlesCount) {
+				if (Integer.parseInt(str[2]) > articlesCount || Integer.parseInt(str[2]) <= 0) {
 					System.out.println("존재하지 않는 게시물은 삭제할 수 없습니다.");
 					continue;
 				}
