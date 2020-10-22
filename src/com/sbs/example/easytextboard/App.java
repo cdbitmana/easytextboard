@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class App {
 
 	// 객체 배열 생성
-	Article[] articles = new Article[1];
+	Article[] articles = new Article[100];
 
 	int articlesCount = 0;
 
@@ -87,6 +87,17 @@ public class App {
 
 	// run 메소드
 	public void run() {
+		for (int i = 1; i <= 32; i++) {
+			Article article = new Article();
+			article.id = lastArticleId + 1;
+			article.title = String.valueOf(lastArticleId + 1);
+			article.body = String.valueOf(lastArticleId + 1);
+
+			articles[articleSize()] = article;
+			articlesCount++;
+			lastArticleId = article.id;
+
+		}
 
 		Scanner scanner = new Scanner(System.in);
 
@@ -110,16 +121,25 @@ public class App {
 				System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
 
 				// 게시물 리스트
-			} else if (command.equals("article list")) {
+			} else if (command.startsWith("article list ")) {
+				String[] str = command.split(" ");
+				int listNum = Integer.parseInt(str[2]);
+
 				System.out.println("== 게시물 리스트 ==");
 				if (articleSize() == 0) {
 					System.out.println("게시물이 존재하지 않습니다.");
 					continue;
 				}
 				System.out.println("번호 / 제목");
-				for (int i = articleSize() - 1; i >= 0; i--) {
+				for (int i = articleSize() - 10 * (listNum - 1); i > (articleSize() - 10 * (listNum - 1)) - 10; i--) {
+					if (i == 0) {
+						break;
+					}
+					if (articleSize() < 10 * (listNum - 1)) {
+						break;
+					}
 
-					System.out.printf("%d / %s\n", articles[i].id, articles[i].title);
+					System.out.printf("%d / %s\n", articles[i - 1].id, articles[i - 1].title);
 
 				}
 				// 게시물 상세
