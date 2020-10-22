@@ -7,11 +7,9 @@ import java.util.Scanner;
 public class App {
 
 	// 객체 배열 생성
-	Article[] articles = new Article[100];
-
-	int articlesCount = 0;
-
-	int lastArticleId = 0;
+	Article[] articles;
+	int articlesCount;
+	int lastArticleId;
 
 	Calendar time = Calendar.getInstance();
 	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -85,19 +83,20 @@ public class App {
 		return article.id;
 	}
 
-	// run 메소드
-	public void run() {
+	// init 메소드
+	private void init() {
+		articles = new Article[100];
+		articlesCount = 0;
+		lastArticleId = 0;
 		for (int i = 1; i <= 32; i++) {
-			Article article = new Article();
-			article.id = lastArticleId + 1;
-			article.title = String.valueOf(lastArticleId + 1);
-			article.body = String.valueOf(lastArticleId + 1);
-
-			articles[articleSize()] = article;
-			articlesCount++;
-			lastArticleId = article.id;
+			add("title" + (lastArticleId + 1), "body" + (lastArticleId + 1));
 
 		}
+	}
+
+	// run 메소드
+	public void run() {
+		init();
 
 		Scanner scanner = new Scanner(System.in);
 
