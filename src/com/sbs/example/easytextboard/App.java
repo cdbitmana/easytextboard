@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.Scanner;
 
 public class App {
+	public App() {
+		init();
+	}
 
 	// 객체 배열 생성
 	Article[] articles;
@@ -85,7 +88,7 @@ public class App {
 
 	// init 메소드
 	private void init() {
-		articles = new Article[100];
+		articles = new Article[32];
 		articlesCount = 0;
 		lastArticleId = 0;
 		for (int i = 1; i <= 32; i++) {
@@ -96,7 +99,6 @@ public class App {
 
 	// run 메소드
 	public void run() {
-		init();
 
 		Scanner scanner = new Scanner(System.in);
 
