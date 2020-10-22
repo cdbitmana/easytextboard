@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class App {
 
 	// 객체 배열 생성
-	Article[] articleArray = new Article[1];
+	Article[] articles = new Article[1];
 
 	int articlesCount = 0;
 
@@ -23,13 +23,13 @@ public class App {
 		if (index == -1) {
 			return null;
 		}
-		return articleArray[index];
+		return articles[index];
 	}
 
 	// getIndex 메소드 : 번호로 인덱스 찾기
 	private int getIndex(int id) {
 		for (int i = 0; i < articlesCount; i++) {
-			if (articleArray[i].id == id) {
+			if (articles[i].id == id) {
 
 				return i;
 			}
@@ -51,15 +51,27 @@ public class App {
 		}
 		for (int i = index + 1; i < articleSize(); i++) {
 
-			articleArray[i - 1] = articleArray[i];
+			articles[i - 1] = articles[i];
 
 		}
 		articlesCount--;
 
 	}
 
+	// isArticlesFull 메소드
+	private boolean isArticlesFull() {
+		return articleSize() >= articles.length;
+	}
+
 	// add 메소드
 	private int add(String title, String body) {
+		if (isArticlesFull()) {
+			Article[] newArticles = new Article[articles.length * 2];
+			for (int i = 0; i < articles.length; i++) {
+				newArticles[i] = articles[i];
+			}
+			articles = newArticles;
+		}
 
 		Article article = new Article();
 		article.id = lastArticleId + 1;
@@ -67,7 +79,7 @@ public class App {
 		article.body = body;
 		article.regDate = format;
 
-		articleArray[articleSize()] = article;
+		articles[articleSize()] = article;
 		articlesCount++;
 		lastArticleId = article.id;
 		return article.id;
@@ -86,14 +98,6 @@ public class App {
 
 			// 게시물 등록
 			if (command.equals("article add")) {
-
-				if (articleSize() >= articleArray.length) {
-					Article[] newArticles = new Article[articleArray.length * 2];
-					for (int i = 0; i < articleArray.length; i++) {
-						newArticles[i] = articleArray[i];
-					}
-					articleArray = newArticles;
-				}
 
 				System.out.println("== 게시물 등록 ==");
 				System.out.printf("제목 : ");
@@ -115,7 +119,7 @@ public class App {
 				System.out.println("번호 / 제목");
 				for (int i = articleSize() - 1; i >= 0; i--) {
 
-					System.out.printf("%d / %s\n", articleArray[i].id, articleArray[i].title);
+					System.out.printf("%d / %s\n", articles[i].id, articles[i].title);
 
 				}
 				// 게시물 상세
@@ -194,8 +198,8 @@ public class App {
 				System.out.printf("새 내용 : ");
 				body = scanner.nextLine();
 
-				articleArray[getIndex(num)].title = title;
-				articleArray[getIndex(num)].body = body;
+				articles[getIndex(num)].title = title;
+				articles[getIndex(num)].body = body;
 				System.out.printf("%d번 게시물이 수정되었습니다.\n", num);
 
 			} // 게시물 검색
@@ -203,13 +207,9 @@ public class App {
 				String[] keyWord = command.split(" ");
 
 				for (int i = 0; i < articleSize(); i++) {
-					if (articleArray[i].title.contains(keyWord[2]) && i == articleArray.length - 1) {
-						System.out.printf("%d / %s\n", articleArray[i].id, articleArray[i].title);
-						break;
 
-					}
-					if (articleArray[i].title.contains(keyWord[2]) && articleArray[i] != articleArray[i + 1]) {
-						System.out.printf("%d / %s\n", articleArray[i].id, articleArray[i].title);
+					if (articles[i].title.contains(keyWord[2])) {
+						System.out.printf("%d / %s\n", articles[i].id, articles[i].title);
 					}
 				}
 
