@@ -7,12 +7,18 @@ import java.util.Scanner;
 public class App {
 
 	// 객체 배열 생성
-	Article[] articleArray = new Article[3];
+	Article[] articleArray = new Article[1];
 
 	int articlesCount = 0;
 
-	// getArticle 메소드
-	public Article getArticle(int id) {
+	int lastArticleId = 0;
+
+	Calendar time = Calendar.getInstance();
+	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	String format = format1.format(time.getTime());
+
+	// getArticle 메소드 : 번호로 게시물 찾기
+	private Article getArticle(int id) {
 		int index = getIndex(id);
 		if (index == -1) {
 			return null;
@@ -21,7 +27,7 @@ public class App {
 	}
 
 	// getIndex 메소드 : 번호로 인덱스 찾기
-	public int getIndex(int id) {
+	private int getIndex(int id) {
 		for (int i = 0; i < articlesCount; i++) {
 			if (articleArray[i].id == id) {
 
@@ -38,7 +44,7 @@ public class App {
 	}
 
 	// remove 메소드
-	public void remove(int id) {
+	private void remove(int id) {
 		int index = getIndex(id);
 		if (index == -1) {
 			return;
@@ -52,14 +58,24 @@ public class App {
 
 	}
 
-	Calendar time = Calendar.getInstance();
-	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	// add 메소드
+	private int add(String title, String body) {
+
+		Article article = new Article();
+		article.id = lastArticleId + 1;
+		article.title = title;
+		article.body = body;
+		article.regDate = format;
+
+		articleArray[articleSize()] = article;
+		articlesCount++;
+		lastArticleId = article.id;
+		return article.id;
+	}
 
 	// run 메소드
 	public void run() {
 
-		int id = 0;
-		int lastArticleId = 0;
 		Scanner scanner = new Scanner(System.in);
 
 		// 명령어 받아내는 반복문 시작
@@ -71,13 +87,12 @@ public class App {
 			// 게시물 등록
 			if (command.equals("article add")) {
 
-				id = lastArticleId + 1;
-
-				String format = format1.format(time.getTime());
-
 				if (articleSize() >= articleArray.length) {
-					System.out.println("더 이상 게시물을 생성할 수 없습니다.");
-					continue;
+					Article[] newArticles = new Article[articleArray.length * 2];
+					for (int i = 0; i < articleArray.length; i++) {
+						newArticles[i] = articleArray[i];
+					}
+					articleArray = newArticles;
 				}
 
 				System.out.println("== 게시물 등록 ==");
@@ -86,18 +101,9 @@ public class App {
 				System.out.printf("내용 : ");
 				String body = scanner.nextLine();
 
-				Article article = new Article();
+				int id = add(title, body);
 
 				System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
-
-				article.id = id;
-				article.title = title;
-				article.body = body;
-				article.regDate = format;
-
-				articleArray[articleSize()] = article;
-				articlesCount++;
-				lastArticleId = id;
 
 				// 게시물 리스트
 			} else if (command.equals("article list")) {
