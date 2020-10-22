@@ -122,6 +122,10 @@ public class App {
 
 				// 게시물 리스트
 			} else if (command.startsWith("article list ")) {
+				if (command.equals("article list")) {
+					System.out.println("존재하지 않는 명령어");
+					continue;
+				}
 				String[] str = command.split(" ");
 				int listNum = Integer.parseInt(str[2]);
 
@@ -130,12 +134,14 @@ public class App {
 					System.out.println("게시물이 존재하지 않습니다.");
 					continue;
 				}
+				if (articleSize() < 10 * (listNum - 1) || listNum <= 0) {
+					System.out.println("존재하지 않는 페이지입니다.");
+					continue;
+				}
+
 				System.out.println("번호 / 제목");
 				for (int i = articleSize() - 10 * (listNum - 1); i > (articleSize() - 10 * (listNum - 1)) - 10; i--) {
 					if (i == 0) {
-						break;
-					}
-					if (articleSize() < 10 * (listNum - 1)) {
 						break;
 					}
 
