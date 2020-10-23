@@ -236,34 +236,45 @@ public class App {
 				}
 
 				String[] keyWord = command.split(" ");
-				int searchNum = Integer.parseInt(keyWord[2]);
-				int count = 0;
-				for (int i = 0; i < articleSize(); i++) {
 
-					if (articles[i].title.contains(keyWord[3])) {
+				int searchNum = Integer.parseInt(keyWord[3]);
+
+				int count = 0;
+
+				for (int i = 0; i < articleSize(); i++) { // 키워드로 검색된 게시물 갯수 세기
+
+					if (articles[i].title.contains(keyWord[2])) {
 						count++;
 
 					}
 				}
 
-				Article[] search = new Article[count];
+				Article[] search = new Article[count]; // 검색된 게시물만 담을 새 배열 생성
+
 				int k = 0;
+
 				if (search.length == 0) {
 					System.out.println("검색 결과가 없습니다.");
+					continue;
 				}
-				for (int i = 0; i < search.length; i++) {
+
+				for (int i = 0; i < search.length; i++) { // 키워드로 검색된 게시물만 search 배열에 대입
 					for (int j = k; j < articleSize(); j++) {
-						if (articles[j].title.contains(keyWord[3])) {
+						if (articles[j].title.contains(keyWord[2])) {
 							search[i] = articles[j];
 							k = j + 1;
 							break;
 						}
 					}
 				}
+
 				if (search.length < 10 * (searchNum - 1) || searchNum <= 0) {
 					System.out.println("존재하지 않는 페이지입니다.");
 					continue;
 				}
+
+				System.out.println("==검색 결과 리스트==");
+				System.out.println("번호 / 제목");
 
 				for (int i = search.length - 10 * (searchNum - 1); i > (search.length - 10 * (searchNum - 1))
 						- 10; i--) {
