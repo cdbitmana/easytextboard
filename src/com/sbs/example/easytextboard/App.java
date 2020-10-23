@@ -135,18 +135,23 @@ public class App {
 					System.out.println("게시물이 존재하지 않습니다.");
 					continue;
 				}
+
+				int itemsInAPage = 10;
+				int start = articleSize() - 1;
+				start -= (listNum - 1) * itemsInAPage;
+				int end = start - (itemsInAPage - 1);
+				if (end < 0) {
+					end = 0;
+				}
 				if (articleSize() < 10 * (listNum - 1) || listNum <= 0) {
 					System.out.println("존재하지 않는 페이지입니다.");
 					continue;
 				}
 
 				System.out.println("번호 / 제목");
-				for (int i = articleSize() - 10 * (listNum - 1); i > (articleSize() - 10 * (listNum - 1)) - 10; i--) {
-					if (i == 0) {
-						break;
-					}
+				for (int i = start; i >= end; i--) {
 
-					System.out.printf("%d / %s\n", articles[i - 1].id, articles[i - 1].title);
+					System.out.printf("%d / %s\n", articles[i].id, articles[i].title);
 
 				}
 				// 게시물 상세
@@ -272,17 +277,19 @@ public class App {
 					System.out.println("존재하지 않는 페이지입니다.");
 					continue;
 				}
-
+				int itemsInAPage = 10;
+				int start = search.length - 1;
+				start -= (searchNum - 1) * itemsInAPage;
+				int end = start - (itemsInAPage - 1);
+				if (end < 0) {
+					end = 0;
+				}
 				System.out.println("==검색 결과 리스트==");
 				System.out.println("번호 / 제목");
 
-				for (int i = search.length - 10 * (searchNum - 1); i > (search.length - 10 * (searchNum - 1))
-						- 10; i--) {
-					if (i == 0) {
-						break;
-					}
+				for (int i = start; i >= end; i--) {
 
-					System.out.printf("%d / %s\n", search[i - 1].id, search[i - 1].title);
+					System.out.printf("%d / %s\n", search[i].id, search[i].title);
 
 				}
 
