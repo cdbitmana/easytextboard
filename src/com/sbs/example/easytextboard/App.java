@@ -231,13 +231,48 @@ public class App {
 
 			} // 게시물 검색
 			else if (command.startsWith("article search ")) {
-				String[] keyWord = command.split(" ");
+				if (command.equals("article search")) {
+					System.out.println("존재하지 않는 명령어");
+				}
 
+				String[] keyWord = command.split(" ");
+				int searchNum = Integer.parseInt(keyWord[2]);
+				int count = 0;
 				for (int i = 0; i < articleSize(); i++) {
 
-					if (articles[i].title.contains(keyWord[2])) {
-						System.out.printf("%d / %s\n", articles[i].id, articles[i].title);
+					if (articles[i].title.contains(keyWord[3])) {
+						count++;
+
 					}
+				}
+
+				Article[] search = new Article[count];
+				int k = 0;
+				if (search.length == 0) {
+					System.out.println("검색 결과가 없습니다.");
+				}
+				for (int i = 0; i < search.length; i++) {
+					for (int j = k; j < articleSize(); j++) {
+						if (articles[j].title.contains(keyWord[3])) {
+							search[i] = articles[j];
+							k = j + 1;
+							break;
+						}
+					}
+				}
+				if (search.length < 10 * (searchNum - 1) || searchNum <= 0) {
+					System.out.println("존재하지 않는 페이지입니다.");
+					continue;
+				}
+
+				for (int i = search.length - 10 * (searchNum - 1); i > (search.length - 10 * (searchNum - 1))
+						- 10; i--) {
+					if (i == 0) {
+						break;
+					}
+
+					System.out.printf("%d / %s\n", search[i - 1].id, search[i - 1].title);
+
 				}
 
 			}
