@@ -14,10 +14,9 @@ public class App {
 	}
 
 	// 회원 객체 배열 생성
-	Member[] members;
-	int membersCount;
+	ArrayList<Member> memberList = new ArrayList<Member>();
 	boolean loginstatus = false;
-	int id;
+
 	// 게시물 객체 배열 생성
 	ArrayList<Article> list = new ArrayList<Article>();
 	int lastArticleId = 0;
@@ -28,37 +27,23 @@ public class App {
 
 	// add 메소드
 	private void add(String title, String body) {
-		id += 1;
-		list.add(new Article(id, title, body, format));
+		lastArticleId += 1;
+		list.add(new Article(lastArticleId, title, body, format));
 
 	}
 
 	// memberAdd 메소드
 	private void memberAdd(String id, String password, String name) {
 
-		if (membersCount >= members.length) {
-			Member[] newMembers = new Member[members.length * 2];
-			for (int i = 0; i < members.length; i++) {
-				newMembers[i] = members[i];
-			}
-			members = newMembers;
-		}
-
-		Member member = new Member();
-		member.id = id;
-		member.password = password;
-		member.name = name;
-
-		members[membersCount] = member;
-		membersCount++;
+		memberList.add(new Member(id, password, name));
 
 	}
 
 	// init 메소드
 	private void init() {
-
-		members = new Member[1];
-		membersCount = 0;
+		for (int i = 0; i < 32; i++) {
+			add("title" + (i + 1), "body" + (i + 1));
+		}
 	}
 
 	// run 메소드
@@ -83,21 +68,35 @@ public class App {
 
 				add(title, body);
 
-				System.out.printf("%d번 게시물이 등록되었습니다.\n", list.get(lastArticleId).id);
-				lastArticleId += 1;
+				System.out.printf("%d번 게시물이 등록되었습니다.\n", lastArticleId);
 
 				// 게시물 리스트
-			} else if (command.startsWith("article list ")) {
-				if (command.equals("article list")) {
-					System.out.println("존재하지 않는 명령어");
-					continue;
-				}
-				String[] str = command.split(" ");
-				int listNum = Integer.parseInt(str[2]);
+			} else if (command.startsWith("article list")) {
+
+				String[] page = command.split(" ");
 
 				System.out.println("== 게시물 리스트 ==");
 				if (list.size() == 0) {
 					System.out.println("게시물이 존재하지 않습니다.");
+					continue;
+				}
+
+				if (page.length < 3) { // 페이지 없이 검색할 때
+
+					for (int i = list.size() - 1; i >= list.size() - 10; i--) {
+						if (i < 0) {
+							break;
+						}
+						System.out.printf("%d / %s\n", list.get(i).id, list.get(i).title);
+
+					}
+					continue;
+				}
+				int listNum = 0;
+				try {
+					listNum = Integer.parseInt(page[2]);
+				} catch (NumberFormatException e) {
+					System.out.println("페이지는 숫자로 입력해야 합니다.");
 					continue;
 				}
 
@@ -126,21 +125,20 @@ public class App {
 					continue;
 				}
 				System.out.println("== 게시물 상세 ==");
+				int detailNum = 0;
 
-				String[] number = command.split(" ");
-				int detailNum = Integer.parseInt(number[2]);
-
-				if (detailNum <= 0) {
+				try {
+					detailNum = Integer.parseInt(command.split(" ")[2]);
+				} catch (NumberFormatException e) {
+					System.out.println("게시물 번호는 숫자로 입력해야 합니다.");
+					continue;
+				}
+				if (detailNum <= 0 || detailNum > list.size()) {
 					System.out.println("게시물이 존재하지 않습니다");
 					continue;
 				}
 
-				if (detailNum > list.size()) {
-					System.out.println("게시물이 존재하지 않습니다.");
-					continue;
-				}
-
-				Article detailArticle = list.get(Integer.parseInt(number[2]) - 1);
+				Article detailArticle = list.get((detailNum) - 1);
 
 				System.out.printf("번호 : %d\n", detailArticle.id);
 				System.out.printf("제목 : %s\n", detailArticle.title);
@@ -177,10 +175,13 @@ public class App {
 					System.out.println("존재하지 않는 명령어");
 					continue;
 				}
-
-				String[] str = command.split(" ");
-
-				int modifyNum = Integer.parseInt(str[2]);
+				int modifyNum = 0;
+				try {
+					modifyNum = Integer.parseInt(command.split(" ")[2]);
+				} catch (NumberFormatException e) {
+					System.out.println("게시물 번호는 숫자로 입력해야 합니다.");
+					continue;
+				}
 
 				if (modifyNum <= 0 || modifyNum > list.size()) {
 					System.out.println("존재하지 않는 게시물입니다.");
@@ -211,37 +212,44 @@ public class App {
 
 				ArrayList<Article> searchList = new ArrayList<Article>(); // 검색된 게시물만 담을 새 리스트 생성
 
+				int searchListIndex = 0;
+				for (Article article : list) { // 키워드로 검색된 게시물만 searchList 배열에 대입
+					if (article.title.contains(keyWord[2])) {
+						searchList.add(searchListIndex, article);
+						searchListIndex++;
+					}
+				}
+
 				if (searchList.size() == 0) {
 					System.out.println("검색 결과가 없습니다.");
 					continue;
 				}
 
-				int searchListIndex = 0;
-				for (Article article : list) { // 키워드로 검색된 게시물만 searchList 배열에 대입
-					if (article.title.contains(keyWord[2])) {
-						searchList.add(new Article());
-						searchListIndex++;
-					}
-				}
+				if (keyWord.length < 4) { // 페이지 없이 키워드로만 검색할 때
 
-				if (keyWord.length < 4) { // 페이지 없이 키워드로만 검색
-
-					for (int i = articleSize() - 1; i >= articleSize() - 10; i--) {
-						if (articles[i].title.contains(keyWord[2])) {
-							System.out.printf("%d / %s\n", articles[i].id, articles[i].title);
+					for (int i = searchList.size() - 1; i >= searchList.size() - 10; i--) {
+						if (i < 0) {
+							break;
 						}
+						System.out.printf("%d / %s\n", searchList.get(i).id, searchList.get(i).title);
+
 					}
 					continue;
 				}
+				int searchNum = 0;
+				try {
+					searchNum = Integer.parseInt(keyWord[3]);
+				} catch (NumberFormatException e) {
+					System.out.println("페이지는 숫자로 입력해야 합니다.");
+					continue;
+				}
 
-				int searchNum = Integer.parseInt(keyWord[3]);
-
-				if (searchList.length < 10 * (searchNum - 1) || searchNum <= 0) {
+				if (searchList.size() < 10 * (searchNum - 1) || searchNum <= 0) {
 					System.out.println("존재하지 않는 페이지입니다.");
 					continue;
 				}
 				int itemsInAPage = 10;
-				int start = searchList.length - 1;
+				int start = searchList.size() - 1;
 				start -= (searchNum - 1) * itemsInAPage;
 				int end = start - (itemsInAPage - 1);
 				if (end < 0) {
@@ -252,7 +260,7 @@ public class App {
 
 				for (int i = start; i >= end; i--) {
 
-					System.out.printf("%d / %s\n", searchList[i].id, searchList[i].title);
+					System.out.printf("%d / %s\n", searchList.get(i).id, searchList.get(i).title);
 
 				}
 
@@ -287,14 +295,11 @@ public class App {
 				memberId = scanner.nextLine();
 				System.out.printf("로그인 비밀번호 : ");
 				password = scanner.nextLine();
-				if (membersCount == 0) {
-					continue;
-				}
 
 				int count = 0;
-				for (int i = 0; i < members.length; i++) {
-					if (members[i].id.equals(memberId) && members[i].password.equals(password)) {
-						System.out.printf("%s님 환영합니다.\n", members[i].name);
+				for (int i = 0; i < memberList.size(); i++) {
+					if (memberList.get(i).id.equals(memberId) && memberList.get(i).password.equals(password)) {
+						System.out.printf("%s님 환영합니다.\n", memberList.get(i).name);
 						loginstatus = true;
 						count++;
 						continue;
