@@ -3,98 +3,62 @@ package com.sbs.example.easytextboard;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
 
 public class App {
+
+	// App 클래스의 기본 생성자
 	public App() {
 		init();
 	}
 
-	// 객체 배열 생성
-	Article[] articles;
-	int articlesCount;
-	int lastArticleId;
+	// 회원 객체 배열 생성
+	Member[] members;
+	int membersCount;
+	boolean loginstatus = false;
+	int id;
+	// 게시물 객체 배열 생성
+	ArrayList<Article> list = new ArrayList<Article>();
+	int lastArticleId = 0;
 
 	Calendar time = Calendar.getInstance();
 	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	String format = format1.format(time.getTime());
 
-	// getArticle 메소드 : 번호로 게시물 찾기
-	private Article getArticle(int id) {
-		int index = getIndex(id);
-		if (index == -1) {
-			return null;
-		}
-		return articles[index];
-	}
-
-	// getIndex 메소드 : 번호로 인덱스 찾기
-	private int getIndex(int id) {
-		for (int i = 0; i < articlesCount; i++) {
-			if (articles[i].id == id) {
-
-				return i;
-			}
-
-		}
-		return -1;
-	}
-
-	// articleSize 메소드
-	int articleSize() {
-		return articlesCount;
-	}
-
-	// remove 메소드
-	private void remove(int id) {
-		int index = getIndex(id);
-		if (index == -1) {
-			return;
-		}
-		for (int i = index + 1; i < articleSize(); i++) {
-
-			articles[i - 1] = articles[i];
-
-		}
-		articlesCount--;
-
-	}
-
-	// isArticlesFull 메소드
-	private boolean isArticlesFull() {
-		return articleSize() >= articles.length;
-	}
-
 	// add 메소드
-	private int add(String title, String body) {
-		if (isArticlesFull()) {
-			Article[] newArticles = new Article[articles.length * 2];
-			for (int i = 0; i < articles.length; i++) {
-				newArticles[i] = articles[i];
+	private void add(String title, String body) {
+		id += 1;
+		list.add(new Article(id, title, body, format));
+
+	}
+
+	// memberAdd 메소드
+	private void memberAdd(String id, String password, String name) {
+
+		if (membersCount >= members.length) {
+			Member[] newMembers = new Member[members.length * 2];
+			for (int i = 0; i < members.length; i++) {
+				newMembers[i] = members[i];
 			}
-			articles = newArticles;
+			members = newMembers;
 		}
 
-		Article article = new Article();
-		article.id = lastArticleId + 1;
-		article.title = title;
-		article.body = body;
-		article.regDate = format;
+		Member member = new Member();
+		member.id = id;
+		member.password = password;
+		member.name = name;
 
-		articles[articleSize()] = article;
-		articlesCount++;
-		lastArticleId = article.id;
-		return article.id;
+		members[membersCount] = member;
+		membersCount++;
+
 	}
 
 	// init 메소드
 	private void init() {
-		articles = new Article[32];
-		articlesCount = 0;
-		lastArticleId = 0;
-		for (int i = 1; i <= 32; i++) {
-			add("title" + (lastArticleId + 1), "body" + (lastArticleId + 1));
 
-		}
+		members = new Member[1];
+		membersCount = 0;
 	}
 
 	// run 메소드
@@ -117,9 +81,10 @@ public class App {
 				System.out.printf("내용 : ");
 				String body = scanner.nextLine();
 
-				int id = add(title, body);
+				add(title, body);
 
-				System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
+				System.out.printf("%d번 게시물이 등록되었습니다.\n", list.get(lastArticleId).id);
+				lastArticleId += 1;
 
 				// 게시물 리스트
 			} else if (command.startsWith("article list ")) {
@@ -131,19 +96,19 @@ public class App {
 				int listNum = Integer.parseInt(str[2]);
 
 				System.out.println("== 게시물 리스트 ==");
-				if (articleSize() == 0) {
+				if (list.size() == 0) {
 					System.out.println("게시물이 존재하지 않습니다.");
 					continue;
 				}
 
 				int itemsInAPage = 10;
-				int start = articleSize() - 1;
+				int start = list.size() - 1;
 				start -= (listNum - 1) * itemsInAPage;
 				int end = start - (itemsInAPage - 1);
 				if (end < 0) {
 					end = 0;
 				}
-				if (articleSize() < 10 * (listNum - 1) || listNum <= 0) {
+				if (list.size() < 10 * (listNum - 1) || listNum <= 0) {
 					System.out.println("존재하지 않는 페이지입니다.");
 					continue;
 				}
@@ -151,7 +116,7 @@ public class App {
 				System.out.println("번호 / 제목");
 				for (int i = start; i >= end; i--) {
 
-					System.out.printf("%d / %s\n", articles[i].id, articles[i].title);
+					System.out.printf("%d / %s\n", list.get(i).id, list.get(i).title);
 
 				}
 				// 게시물 상세
@@ -163,23 +128,24 @@ public class App {
 				System.out.println("== 게시물 상세 ==");
 
 				String[] number = command.split(" ");
+				int detailNum = Integer.parseInt(number[2]);
 
-				if (Integer.parseInt(number[2]) <= 0) {
+				if (detailNum <= 0) {
 					System.out.println("게시물이 존재하지 않습니다");
 					continue;
 				}
 
-				Article detailArticle = getArticle(Integer.parseInt(number[2]));
-
-				if (detailArticle == null) {
+				if (detailNum > list.size()) {
 					System.out.println("게시물이 존재하지 않습니다.");
 					continue;
 				}
 
+				Article detailArticle = list.get(Integer.parseInt(number[2]) - 1);
+
 				System.out.printf("번호 : %d\n", detailArticle.id);
 				System.out.printf("제목 : %s\n", detailArticle.title);
 				System.out.printf("내용 : %s\n", detailArticle.body);
-				System.out.printf("내용 : %s\n", detailArticle.regDate);
+				System.out.printf("날짜 : %s\n", detailArticle.regDate);
 			} // 프로그램 종료
 			else if (command.equals("system exit")) {
 				System.out.println("== 프로그램 종료 ==");
@@ -192,16 +158,17 @@ public class App {
 				}
 				System.out.println("==게시물 삭제==");
 				String[] str = command.split(" ");
-				Article deleteArticle = getArticle(Integer.parseInt(str[2]));
-				if (Integer.parseInt(str[2]) <= 0 || deleteArticle == null) {
+
+				int deleteNum = Integer.parseInt(str[2]);
+
+				if (deleteNum <= 0 || deleteNum > list.size()) {
 					System.out.println("존재하지 않는 게시물은 삭제할 수 없습니다.");
 					continue;
 				}
 
-				int num = Integer.parseInt(str[2]);
-				System.out.printf("%d번 게시물이 삭제되었습니다.\n", num);
+				System.out.printf("%d번 게시물이 삭제되었습니다.\n", deleteNum);
 
-				remove(num);
+				list.remove(deleteNum - 1);
 
 			} // 게시물 수정
 			else if (command.startsWith("article modify ")) {
@@ -213,28 +180,28 @@ public class App {
 
 				String[] str = command.split(" ");
 
-				int num = Integer.parseInt(str[2]);
-				Article article = getArticle(Integer.parseInt(str[2]));
+				int modifyNum = Integer.parseInt(str[2]);
 
-				if (num <= 0 || article == null) {
+				if (modifyNum <= 0 || modifyNum > list.size()) {
 					System.out.println("존재하지 않는 게시물입니다.");
 					continue;
 				}
 
 				String title;
 				String body;
-				System.out.printf("%d번 게시물 수정\n", article.id);
-				System.out.printf("번호 : %d\n", article.id);
+				System.out.printf("%d번 게시물 수정\n", list.get(modifyNum - 1).id);
+				System.out.printf("번호 : %d\n", list.get(modifyNum - 1).id);
 				System.out.printf("새 제목 : ");
 				title = scanner.nextLine();
 				System.out.printf("새 내용 : ");
 				body = scanner.nextLine();
 
-				articles[getIndex(num)].title = title;
-				articles[getIndex(num)].body = body;
-				System.out.printf("%d번 게시물이 수정되었습니다.\n", num);
+				list.get(modifyNum - 1).title = title;
+				list.get(modifyNum - 1).body = body;
 
-			} // 게시물 검색
+				System.out.printf("%d번 게시물이 수정되었습니다.\n", modifyNum);
+
+			} // 게시물 검색 (article search 키워드 페이지)
 			else if (command.startsWith("article search ")) {
 				if (command.equals("article search")) {
 					System.out.println("존재하지 않는 명령어");
@@ -242,43 +209,39 @@ public class App {
 
 				String[] keyWord = command.split(" ");
 
-				int searchNum = Integer.parseInt(keyWord[3]);
+				ArrayList<Article> searchList = new ArrayList<Article>(); // 검색된 게시물만 담을 새 리스트 생성
 
-				int count = 0;
-
-				for (int i = 0; i < articleSize(); i++) { // 키워드로 검색된 게시물 갯수 세기
-
-					if (articles[i].title.contains(keyWord[2])) {
-						count++;
-
-					}
-				}
-
-				Article[] search = new Article[count]; // 검색된 게시물만 담을 새 배열 생성
-
-				int k = 0;
-
-				if (search.length == 0) {
+				if (searchList.size() == 0) {
 					System.out.println("검색 결과가 없습니다.");
 					continue;
 				}
 
-				for (int i = 0; i < search.length; i++) { // 키워드로 검색된 게시물만 search 배열에 대입
-					for (int j = k; j < articleSize(); j++) {
-						if (articles[j].title.contains(keyWord[2])) {
-							search[i] = articles[j];
-							k = j + 1;
-							break;
-						}
+				int searchListIndex = 0;
+				for (Article article : list) { // 키워드로 검색된 게시물만 searchList 배열에 대입
+					if (article.title.contains(keyWord[2])) {
+						searchList.add(new Article());
+						searchListIndex++;
 					}
 				}
 
-				if (search.length < 10 * (searchNum - 1) || searchNum <= 0) {
+				if (keyWord.length < 4) { // 페이지 없이 키워드로만 검색
+
+					for (int i = articleSize() - 1; i >= articleSize() - 10; i--) {
+						if (articles[i].title.contains(keyWord[2])) {
+							System.out.printf("%d / %s\n", articles[i].id, articles[i].title);
+						}
+					}
+					continue;
+				}
+
+				int searchNum = Integer.parseInt(keyWord[3]);
+
+				if (searchList.length < 10 * (searchNum - 1) || searchNum <= 0) {
 					System.out.println("존재하지 않는 페이지입니다.");
 					continue;
 				}
 				int itemsInAPage = 10;
-				int start = search.length - 1;
+				int start = searchList.length - 1;
 				start -= (searchNum - 1) * itemsInAPage;
 				int end = start - (itemsInAPage - 1);
 				if (end < 0) {
@@ -289,10 +252,67 @@ public class App {
 
 				for (int i = start; i >= end; i--) {
 
-					System.out.printf("%d / %s\n", search[i].id, search[i].title);
+					System.out.printf("%d / %s\n", searchList[i].id, searchList[i].title);
 
 				}
 
+			} // member join 명령어
+			else if (command.equals("member join")) {
+
+				String memberId;
+				String password;
+				String name;
+
+				System.out.printf("로그인 아이디 : ");
+				memberId = scanner.nextLine();
+				System.out.printf("로그인 비밀번호 : ");
+				password = scanner.nextLine();
+				System.out.printf("이름 : ");
+				name = scanner.nextLine();
+
+				memberAdd(memberId, password, name);
+
+				System.out.println("가입이 완료되었습니다.");
+
+			} // member login 명령어
+			else if (command.equals("member login")) {
+				if (loginstatus) {
+					System.out.println("이미 로그인 되었습니다.");
+					continue;
+				}
+				String memberId;
+				String password;
+
+				System.out.printf("로그인 아이디 : ");
+				memberId = scanner.nextLine();
+				System.out.printf("로그인 비밀번호 : ");
+				password = scanner.nextLine();
+				if (membersCount == 0) {
+					continue;
+				}
+
+				int count = 0;
+				for (int i = 0; i < members.length; i++) {
+					if (members[i].id.equals(memberId) && members[i].password.equals(password)) {
+						System.out.printf("%s님 환영합니다.\n", members[i].name);
+						loginstatus = true;
+						count++;
+						continue;
+					}
+				}
+				if (count == 0) {
+					System.out.println("일치하는 회원이 없습니다.");
+				}
+			}
+			// member logout 명령어
+			else if (command.equals("member logout")) {
+				if (loginstatus) {
+					System.out.println("로그아웃 되었습니다.");
+					loginstatus = false;
+					continue;
+				} else if (!loginstatus) {
+					System.out.println("로그인 되지 않았습니다.");
+				}
 			}
 
 			// 존재하지 않는 명령어
