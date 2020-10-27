@@ -1,10 +1,7 @@
 package com.sbs.example.easytextboard;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Scanner;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class App {
 
@@ -12,8 +9,6 @@ public class App {
 	public App() {
 		inIt();
 	}
-
-	// 날짜 입력 클래스
 
 	// 게시물 객체 ArrayList
 	ArrayList<Article> articles = new ArrayList<Article>();
@@ -46,13 +41,6 @@ public class App {
 			System.out.printf("%d / %s\n", list.get(i).id, list.get(i).title);
 
 		}
-	}
-
-	int[] result;
-
-	private int[] asd() {
-		result = new int[] { 1 };
-		return result;
 	}
 
 	// getIndexById 메소드
