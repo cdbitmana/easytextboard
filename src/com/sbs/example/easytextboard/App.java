@@ -264,7 +264,7 @@ public class App {
 
 			}
 
-			// 멤버 조인
+			// 멤버 가입
 			else if (command.equals("member join")) {
 				String id;
 				String password;
