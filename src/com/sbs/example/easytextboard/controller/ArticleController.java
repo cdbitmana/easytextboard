@@ -1,6 +1,7 @@
 package com.sbs.example.easytextboard.controller;
 
 import java.util.ArrayList;
+
 import java.util.Scanner;
 import com.sbs.example.easytextboard.dto.Article;
 
@@ -9,7 +10,7 @@ public class ArticleController extends Controller {
 	ArrayList<Article> articles;
 	int lastArticleId = 0;
 
-	// 게시물컨트롤러 생성자
+	// 기본 생성자
 	public ArticleController() {
 		articles = new ArrayList<Article>();
 		inIt();
@@ -193,6 +194,9 @@ public class ArticleController extends Controller {
 			System.out.println("번호 / 제목");
 			printList(searchList, Num);
 
+		} else {
+			System.out.println("존재하지 않는 명령어");
+			return;
 		}
 
 	}

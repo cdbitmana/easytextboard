@@ -10,10 +10,9 @@ public class MemberController extends Controller {
 	ArrayList<Member> members;
 	int checkId;
 	int memberId;
-	int memberIndex;
 	boolean loginStatus = false;
 
-	// 멤버컨트롤러 생성자
+	// 기본 생성자
 	public MemberController() {
 		members = new ArrayList<Member>();
 	}
@@ -179,6 +178,9 @@ public class MemberController extends Controller {
 				loginStatus = false;
 
 			}
+		} else {
+			System.out.println("존재하지 않는 명령어");
+			return;
 		}
 
 	}

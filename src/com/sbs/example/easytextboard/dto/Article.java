@@ -13,6 +13,7 @@ public class Article {
 	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	String format = format1.format(time.getTime());
 
+	// 기본 생성자
 	public Article(int id, String title, String body) {
 		this.id = id;
 		this.title = title;
