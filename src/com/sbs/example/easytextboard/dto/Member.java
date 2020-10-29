@@ -1,10 +1,10 @@
-package com.sbs.example.easytextboard;
+package com.sbs.example.easytextboard.dto;
 
 public class Member {
-	int memberId;
-	String id;
-	String password;
-	String name;
+	public int memberId;
+	public String id;
+	public String password;
+	public String name;
 
 	public Member(int memberId,String id, String password, String name) {
 		this.id = id;
