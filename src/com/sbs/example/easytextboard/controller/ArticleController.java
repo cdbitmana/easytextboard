@@ -3,6 +3,8 @@ package com.sbs.example.easytextboard.controller;
 import java.util.ArrayList;
 
 import java.util.Scanner;
+
+import com.sbs.example.easytextboard.container.Container;
 import com.sbs.example.easytextboard.dto.Article;
 
 public class ArticleController extends Controller {
@@ -21,7 +23,10 @@ public class ArticleController extends Controller {
 
 		// 게시물 생성
 		if (command.equals("article add")) {
-
+			if (!Container.session.isLogined()) {
+				System.out.println("먼저 로그인을 해야 합니다.");
+				return;
+			}
 			String title;
 			String body;
 

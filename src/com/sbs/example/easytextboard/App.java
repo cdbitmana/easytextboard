@@ -8,7 +8,7 @@ import com.sbs.example.easytextboard.controller.*;
 import com.sbs.example.easytextboard.dto.*;
 
 public class App {
-
+	
 	// run 메소드
 	public void run() {
 
