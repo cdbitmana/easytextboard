@@ -1,5 +1,7 @@
 package com.sbs.example.easytextboard.dto;
 
+import com.sbs.example.easytextboard.container.Container;
+
 public class Member {
 	public int memberId;
 	public String id;
@@ -14,4 +16,6 @@ public class Member {
 		this.memberId = memberId;
 
 	}
+
+	
 }

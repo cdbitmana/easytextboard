@@ -4,54 +4,28 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.sbs.example.easytextboard.container.Container;
+import com.sbs.example.easytextboard.dto.Article;
 import com.sbs.example.easytextboard.dto.Member;
+
+import service.MemberService;
+
+import com.sbs.example.easytextboard.controller.*;
 
 public class MemberController extends Controller {
 
-	// 멤버 객체 ArrayList
-	ArrayList<Member> members;
-	Member member;
-	int memberId;
-	boolean loginStatus = false;
+	MemberService memberService;
 
-	// 기본 생성자
 	public MemberController() {
-		members = new ArrayList<Member>();
-
-	}
-
-	// memberJoin 메소드
-	public void memberJoin(String id, String password, String name) {
-		memberId++;
-		members.add(new Member(memberId, id, password, name));
-
-	}
-
-	// isJoinableLoginId 메소드
-	public boolean isJoinableLoginId(String loginId) {
-		for (Member member : members) {
-			if (member.id.equals(loginId)) {
-				System.out.println("이미 사용중인 아이디입니다.");
-				return false;
-			}
+		memberService = Container.memberService;
+		for (int i = 0; i < 3; i++) {
+			memberService.memberJoin("user" + (i + 1), "user" + (i + 1), "user" + (i + 1));
 		}
-		return true;
-	}
-
-	// getMemberById 메소드
-	public Member getMemberById(String id) {
-		for (Member member : members) {
-			if (member.id.equals(id)) {
-				return member;
-			}
-		}
-		return null;
 	}
 
 	// run 메소드
 	public void run(Scanner scanner, String command) {
 
-		// 멤버 가입
+		// 멤버 가입 (member join)
 		if (command.equals("member join")) {
 			int joinIdCount = 0;
 			String id;
@@ -69,7 +43,7 @@ public class MemberController extends Controller {
 					joinIdCount++;
 					continue;
 				}
-				if (!isJoinableLoginId(id)) {
+				if (!memberService.isJoinableLoginId(id)) {
 					joinIdCount++;
 					continue;
 				}
@@ -104,17 +78,17 @@ public class MemberController extends Controller {
 				break;
 			}
 
-			memberJoin(id, password, name);
-			System.out.printf("%d번 회원이 생성되었습니다.\n", memberId);
+			memberService.memberJoin(id, password, name);
+			System.out.printf("%d번 회원이 생성되었습니다.\n", memberService.getMemberId());
 		}
 
-		// 멤버 로그인
+		// 멤버 로그인 (member login)
 		else if (command.equals("member login")) {
 			int loginIdCount = 0;
 			int loginPwCount = 0;
 			String loginId = "";
 			String loginPassword = "";
-
+			Member member = null;
 			boolean idCheck = false;
 			boolean pwCheck = false;
 			while (true) {
@@ -137,7 +111,7 @@ public class MemberController extends Controller {
 					continue;
 				}
 
-				member = getMemberById(loginId);
+				member = memberService.getMemberById(loginId);
 
 				if (member == null) {
 					System.out.println("존재하지 않는 아이디입니다.");
@@ -170,12 +144,16 @@ public class MemberController extends Controller {
 			}
 			if (idCheck && pwCheck) {
 				System.out.printf("%d번 회원이 로그인 되었습니다.\n", member.memberId);
+				memberService.login(member);
 				Container.session.loginedMemberId = member.memberId;
+				Container.session.loginId = member.id;
+				Container.session.loginName = member.name;
+
 				return;
 			}
 
 		}
-		// 멤버 상세
+		// 멤버 상세 (member whoami)
 		else if (command.equals("member whoami")) {
 
 			if (!Container.session.isLogined()) {
@@ -183,14 +161,14 @@ public class MemberController extends Controller {
 
 			} else {
 
-				System.out.printf("회원번호 : %s\n", member.memberId);
-				System.out.printf("아이디 : %s\n", member.id);
-				System.out.printf("이름 : %s\n", member.name);
+				System.out.printf("회원번호 : %s\n", memberService.getMember().memberId);
+				System.out.printf("아이디 : %s\n", memberService.getMember().id);
+				System.out.printf("이름 : %s\n", memberService.getMember().name);
 
 			}
 
 		}
-		// 멤버 로그아웃
+		// 멤버 로그아웃 (member logout)
 		else if (command.equals("member logout")) {
 			if (!Container.session.isLogined()) {
 				System.out.println("로그아웃 상태입니다.");
@@ -200,7 +178,30 @@ public class MemberController extends Controller {
 				Container.session.loginedMemberId = 0;
 
 			}
-		} else {
+		}
+		// 멤버 수정 (member modify)
+		else if (command.equals("member modify")) {
+
+			if (!Container.session.isLogined()) {
+				System.out.println("로그아웃 상태입니다.");
+				return;
+			}
+			Member member = memberService.getMember();
+			System.out.printf("새 이름 : ");
+			String name = scanner.nextLine();
+			for (int i = 0; i < Container.articleService.getArticles().size(); i++) {
+				if (Container.articleService.getArticles().get(i).writerName == member.name) {
+					Container.articleService.getArticles().get(i).writerName = name;
+				}
+			}
+
+			member.name = name;
+
+			System.out.println("아이디가 변경되었습니다.");
+
+		}
+
+		else {
 			System.out.println("존재하지 않는 명령어");
 			return;
 		}
