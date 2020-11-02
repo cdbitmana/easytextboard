@@ -6,9 +6,7 @@ import java.util.Scanner;
 import com.sbs.example.easytextboard.container.Container;
 import com.sbs.example.easytextboard.dto.Article;
 import com.sbs.example.easytextboard.dto.Member;
-
-import service.MemberService;
-
+import com.sbs.example.easytextboard.service.MemberService;
 import com.sbs.example.easytextboard.controller.*;
 
 public class MemberController extends Controller {

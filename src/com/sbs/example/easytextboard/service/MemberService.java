@@ -1,11 +1,10 @@
-package service;
+package com.sbs.example.easytextboard.service;
 
 import java.util.ArrayList;
 
 import com.sbs.example.easytextboard.container.Container;
+import com.sbs.example.easytextboard.dao.MemberDao;
 import com.sbs.example.easytextboard.dto.Member;
-
-import dao.MemberDao;
 
 public class MemberService {
 

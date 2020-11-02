@@ -6,8 +6,7 @@ import java.util.Scanner;
 
 import com.sbs.example.easytextboard.container.Container;
 import com.sbs.example.easytextboard.dto.Article;
-
-import service.ArticleService;
+import com.sbs.example.easytextboard.service.ArticleService;
 
 public class ArticleController extends Controller {
 

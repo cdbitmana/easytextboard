@@ -1,4 +1,4 @@
-package dao;
+package com.sbs.example.easytextboard.dao;
 
 import java.util.ArrayList;
 

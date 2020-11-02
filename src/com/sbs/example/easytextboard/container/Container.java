@@ -1,11 +1,10 @@
 package com.sbs.example.easytextboard.container;
 
+import com.sbs.example.easytextboard.dao.ArticleDao;
+import com.sbs.example.easytextboard.dao.MemberDao;
+import com.sbs.example.easytextboard.service.ArticleService;
+import com.sbs.example.easytextboard.service.MemberService;
 import com.sbs.example.easytextboard.session.Session;
-
-import dao.ArticleDao;
-import dao.MemberDao;
-import service.ArticleService;
-import service.MemberService;
 
 public class Container {
 
