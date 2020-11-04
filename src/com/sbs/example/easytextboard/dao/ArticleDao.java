@@ -2,70 +2,133 @@ package com.sbs.example.easytextboard.dao;
 
 import java.util.ArrayList;
 
-import com.sbs.example.easytextboard.container.Container;
-import com.sbs.example.easytextboard.dto.Article;
+import com.sbs.example.easytextboard.container.*;
+import com.sbs.example.easytextboard.dto.*;
 
 public class ArticleDao {
 
+	private int articleNumber;
 	private ArrayList<Article> articles;
-	private int lastArticleId = 0;
 
 	public ArticleDao() {
-		articles = new ArrayList<Article>();
-		for (int i = 0; i < 32; i++) {
-			add("title" + (lastArticleId + 1), "body" + (lastArticleId + 1));
+		articles = new ArrayList<>();
+		articleNumber = 1;
+		makeTestArticle();
+	}
+
+	public void makeTestArticle() {
+		for (int i = 0; i < 5; i++) {
+			add("title" + (i + 1), "body" + (i + 1), "aaa");
+
+		}
+		for (int i = 5; i < 10; i++) {
+			add("title" + (i + 1), "body" + (i + 1), "bbb");
+
 		}
 	}
 
-	// getLastArticleId 메소드 : lastArticleId 값 리턴
-	public int getLastArticleId() {
-		return lastArticleId;
-	}
-
-	// getArticles 메소드 : articles 리스트 리턴
 	public ArrayList<Article> getArticles() {
 		return articles;
 	}
 
-	// add 메소드 : 게시물 추가
-	public void add(String title, String body) {
-
-		lastArticleId += 1;
-		articles.add(new Article(lastArticleId, title, body, Container.session.loginName));
+	public Article getArticleByNum(int number) {
+		for (Article article : articles) {
+			if (article.getNumber() == number) {
+				return article;
+			}
+		}
+		return null;
 	}
 
-	// printList 메소드 : 게시물 리스트를 10개씩 페이지로 출력
-	public void printList(ArrayList<Article> list, int listNum) {
+	public int add(String title, String body, String name) {
+		Article article = new Article();
+		article.setNumber(articleNumber);
+		article.setTitle(title);
+		article.setBody(body);
+		article.setWriter(name);
+		articles.add(article);
+		articleNumber++;
+		return article.getNumber();
+	}
+
+	public Article getArticleByIndex(int index) {
+		return articles.get(index);
+	}
+
+	public void modifyWriter(String writer, String newName) {
+		for (Article article : articles) {
+			if (article.getWriter().equals(writer)) {
+				article.setWriter(newName);
+			}
+		}
+	}
+
+	public int remove(int articleNum) {
+		for (Article article : articles) {
+			if (article.getNumber() == articleNum) {
+				int num = article.getNumber();
+				articles.remove(article);
+				return num;
+			}
+		}
+		return 0;
+
+	}
+
+	public int modify(int articleNum, String title, String body) {
+		for (Article article : articles) {
+			if (article.getNumber() == articleNum) {
+				article.setTitle(title);
+				article.setBody(body);
+				return article.getNumber();
+			}
+		}
+		return 0;
+
+	}
+
+	public void printList(int listNum) {
+		System.out.println("== 게시물 리스트 ==");
+
+		System.out.println("번호 / 제목 / 작성자");
 		int itemsInAPage = 10;
-		int start = list.size() - 1;
-		start -= itemsInAPage * (listNum - 1);
+		int start = articles.size() - 1;
+		start -= (listNum - 1) * itemsInAPage;
 		int end = start - (itemsInAPage - 1);
 		if (end < 0) {
 			end = 0;
 		}
-
 		for (int i = start; i >= end; i--) {
-			System.out.printf("%d / %s / %s\n", list.get(i).id, list.get(i).title, list.get(i).writerName);
-
+			System.out.printf(" %d / %s / %s\n", articles.get(i).getNumber(), articles.get(i).getTitle(),
+					articles.get(i).getWriter());
 		}
 	}
 
-	// getIndexById 메소드 : 게시물 번호에 맞는 게시물 인덱스 리턴
-	public int getIndexById(int id) {
-		for (int i = 0; i < articles.size(); i++) {
-			if (articles.get(i).id == id) {
-				return i;
+	public ArrayList<Article> searchArticle(String title) {
+		ArrayList<Article> searchArticles = new ArrayList<>();
+		for (Article article : articles) {
+			if (article.getTitle().contains(title)) {
+				searchArticles.add(article);
 			}
 		}
-		return -1;
+		return searchArticles;
 	}
 
-	// getArticle 메소드 : 게시물 번호에 맞는 게시물 객체 리턴
-	public Article getArticle(int id) {
-		int index = getIndexById(id);
-		if (index == -1) {
-			return null;
+	public void searchList(int listNum, ArrayList<Article> articles) {
+		System.out.println("== 게시물 리스트 ==");
+
+		System.out.println("번호 / 제목 / 작성자");
+		int itemsInAPage = 10;
+		int start = articles.size() - 1;
+		start -= (listNum - 1) * itemsInAPage;
+		int end = start - (itemsInAPage - 1);
+		if (end < 0) {
+			end = 0;
 		}
-		return articles.get(index);
+		for (int i = start; i >= end; i--) {
+			System.out.printf(" %d / %s / %s\n", articles.get(i).getNumber(), articles.get(i).getTitle(),
+					articles.get(i).getWriter());
+		}
 	}
+
 }

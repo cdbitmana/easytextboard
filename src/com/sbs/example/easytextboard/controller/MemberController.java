@@ -1,96 +1,89 @@
 package com.sbs.example.easytextboard.controller;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.sbs.example.easytextboard.container.Container;
-import com.sbs.example.easytextboard.dto.Article;
-import com.sbs.example.easytextboard.dto.Member;
-import com.sbs.example.easytextboard.service.MemberService;
-import com.sbs.example.easytextboard.controller.*;
+import com.sbs.example.easytextboard.container.*;
+import com.sbs.example.easytextboard.dto.*;
+import com.sbs.example.easytextboard.service.*;
 
-public class MemberController extends Controller {
+public class MemberController {
 
-	MemberService memberService;
+	private MemberService memberService;
 
 	public MemberController() {
 		memberService = Container.memberService;
-		for (int i = 0; i < 3; i++) {
-			memberService.memberJoin("user" + (i + 1), "user" + (i + 1), "user" + (i + 1));
-		}
 	}
 
-	// run 메소드
-	public void run(Scanner scanner, String command) {
+	public void doCommand(Scanner sc, String command) {
 
-		// 멤버 가입 (member join)
+		// member join
 		if (command.equals("member join")) {
 			int joinIdCount = 0;
-			String id;
-			String password;
-			String name;
+			int joinPwCount = 0;
+			int joinNameCount = 0;
+			String id = "";
+			String pw = "";
+			String name = "";
 			while (true) {
+
 				if (joinIdCount >= 3) {
 					System.out.println("잠시 후 다시 이용해 주세요.");
 					return;
 				}
 				System.out.printf("아이디 : ");
-				id = scanner.nextLine().trim();
+				id = sc.nextLine().trim();
 				if (id.length() == 0) {
 					System.out.println("아이디를 입력해 주세요.");
 					joinIdCount++;
 					continue;
 				}
-				if (!memberService.isJoinableLoginId(id)) {
+				if (memberService.isExistId(id)) {
+					System.out.println("이미 존재하는 아이디 입니다.");
 					joinIdCount++;
 					continue;
 				}
 				break;
 			}
+
 			while (true) {
-				if (joinIdCount >= 3) {
+				if (joinPwCount >= 3) {
 					System.out.println("잠시 후 다시 이용해 주세요.");
 					return;
 				}
 				System.out.printf("비밀번호 : ");
-				password = scanner.nextLine().trim();
-				if (password.length() == 0) {
+				pw = sc.nextLine();
+				if (pw.length() == 0) {
 					System.out.println("비밀번호를 입력해 주세요.");
-					joinIdCount++;
+					joinPwCount++;
 					continue;
 				}
 				break;
 			}
 			while (true) {
-				if (joinIdCount >= 3) {
+				if (joinNameCount >= 3) {
 					System.out.println("잠시 후 다시 이용해 주세요.");
 					return;
 				}
 				System.out.printf("이름 : ");
-				name = scanner.nextLine().trim();
-				if (name.length() == 0) {
+				name = sc.nextLine();
+				if (pw.length() == 0) {
 					System.out.println("이름을 입력해 주세요.");
-					joinIdCount++;
+					joinNameCount++;
 					continue;
 				}
 				break;
 			}
 
-			memberService.memberJoin(id, password, name);
-			System.out.printf("%d번 회원이 생성되었습니다.\n", memberService.getMemberId());
+			System.out.printf("%d번 회원으로 가입되었습니다.\n", memberService.join(id, pw, name));
+
 		}
 
-		// 멤버 로그인 (member login)
+		// member login
 		else if (command.equals("member login")) {
 			int loginIdCount = 0;
 			int loginPwCount = 0;
-			String loginId = "";
-			String loginPassword = "";
-			Member member = null;
-			boolean idCheck = false;
-			boolean pwCheck = false;
+			Member member;
 			while (true) {
-
 				if (Container.session.isLogined()) {
 					System.out.println("이미 로그인 상태입니다.");
 					return;
@@ -100,108 +93,80 @@ public class MemberController extends Controller {
 					System.out.println("잠시 후 다시 이용해 주세요.");
 					return;
 				}
-
 				System.out.printf("아이디 : ");
-				loginId = scanner.nextLine().trim();
-				if (loginId.length() == 0) {
+				String id = sc.nextLine();
+				if (id.length() == 0) {
 					System.out.println("아이디를 입력해 주세요.");
 					loginIdCount++;
 					continue;
 				}
-
-				member = memberService.getMemberById(loginId);
-
-				if (member == null) {
-					System.out.println("존재하지 않는 아이디입니다.");
+				if (!memberService.isExistId(id)) {
+					System.out.println("일치하는 아이디가 없습니다.");
 					loginIdCount++;
 					continue;
 				}
-				idCheck = true;
+				member = memberService.getMemberById(id);
 				break;
-
 			}
+
 			while (true) {
 				if (loginPwCount >= 3) {
 					System.out.println("잠시 후 다시 이용해 주세요.");
 					return;
 				}
 				System.out.printf("비밀번호 : ");
-				loginPassword = scanner.nextLine().trim();
-				if (loginPassword.length() == 0) {
-					System.out.println("비밀번호를 입력해 주세요.");
+				String pw = sc.nextLine();
+				if (pw.length() == 0) {
+					System.out.println("비밀번호를 입력해 주세요");
 					loginPwCount++;
 					continue;
 				}
-				if (!member.password.equals(loginPassword)) {
-					System.out.println("비밀번호가 일치하지 않습니다.");
+				if (!memberService.isExistPw(pw)) {
+					System.out.println("비밀번호가 맞지 않습니다.");
 					loginPwCount++;
 					continue;
 				}
-				pwCheck = true;
+
 				break;
-			}
-			if (idCheck && pwCheck) {
-				System.out.printf("%d번 회원이 로그인 되었습니다.\n", member.memberId);
-				memberService.login(member);
-				Container.session.loginedMemberId = member.memberId;
-				Container.session.loginId = member.id;
-				Container.session.loginName = member.name;
 
-				return;
 			}
+			Container.session.setLoginedId(member.getNumber());
+			System.out.printf("%d번 회원 %s님 로그인 되었습니다.\n", member.getNumber(), member.getName());
 
 		}
-		// 멤버 상세 (member whoami)
-		else if (command.equals("member whoami")) {
 
-			if (!Container.session.isLogined()) {
-				System.out.println("로그아웃 상태입니다.");
-
-			} else {
-
-				System.out.printf("회원번호 : %s\n", memberService.getMember().memberId);
-				System.out.printf("아이디 : %s\n", memberService.getMember().id);
-				System.out.printf("이름 : %s\n", memberService.getMember().name);
-
-			}
-
-		}
-		// 멤버 로그아웃 (member logout)
+		// member logout
 		else if (command.equals("member logout")) {
-			if (!Container.session.isLogined()) {
-				System.out.println("로그아웃 상태입니다.");
-
-			} else if (Container.session.isLogined()) {
+			if (Container.session.isLogined()) {
 				System.out.println("로그아웃 되었습니다.");
-				Container.session.loginedMemberId = 0;
-
+				Container.session.setLoginedId(0);
+			} else if (!Container.session.isLogined()) {
+				System.out.println("이미 로그아웃 상태입니다.");
 			}
-		}
-		// 멤버 수정 (member modify)
-		else if (command.equals("member modify")) {
 
+		}
+
+		// member modify
+		else if (command.equals("member modify")) {
 			if (!Container.session.isLogined()) {
-				System.out.println("로그아웃 상태입니다.");
+				System.out.println("로그인 후 이용해 주세요.");
 				return;
 			}
-			Member member = memberService.getMember();
+			String newName = "";
+			System.out.println("회원이름 수정");
 			System.out.printf("새 이름 : ");
-			String name = scanner.nextLine();
-			for (int i = 0; i < Container.articleService.getArticles().size(); i++) {
-				if (Container.articleService.getArticles().get(i).writerName == member.name) {
-					Container.articleService.getArticles().get(i).writerName = name;
-				}
-			}
-
-			member.name = name;
-
-			System.out.println("아이디가 변경되었습니다.");
-
+			newName = sc.nextLine();
+			memberService.modify(Container.session.getLoginedId(), newName);
+			System.out.println("회원 정보가 수정되었습니다.");
 		}
 
-		else {
-			System.out.println("존재하지 않는 명령어");
-			return;
+		// member whoami
+		else if (command.equals("member whoami")) {
+			if (!Container.session.isLogined()) {
+				System.out.println("로그인 후 이용해 주세요.");
+				return;
+			}
+			memberService.whoami();
 		}
 
 	}

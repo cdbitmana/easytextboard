@@ -1,27 +1,40 @@
 package com.sbs.example.easytextboard.dto;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import com.sbs.example.easytextboard.container.Container;
-
 public class Article {
-	public int id;
-	public String title;
-	public String body;
-	public String regDate;
-	public String writerName;
+	private int number;
+	private String title;
+	private String body;
+	private String writer;
 
-	Calendar time = Calendar.getInstance();
-	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	String format = format1.format(time.getTime());
+	public int getNumber() {
+		return number;
+	}
 
-	// 기본 생성자
-	public Article(int id, String title, String body, String writerName) {
-		this.id = id;
+	public String getTitle() {
+		return title;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public void setBody(String body) {
 		this.body = body;
-		this.regDate = format;
-		this.writerName = writerName;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
 	}
 }

@@ -1,21 +1,41 @@
 package com.sbs.example.easytextboard.dto;
 
-import com.sbs.example.easytextboard.container.Container;
-
 public class Member {
-	public int memberId;
-	public String id;
-	public String password;
-	public String name;
+	private int number;
+	private String id;
+	private String pw;
+	private String name;
 
-	// 기본 생성자
-	public Member(int memberId, String id, String password, String name) {
-		this.id = id;
-		this.password = password;
-		this.name = name;
-		this.memberId = memberId;
-
+	public int getNumber() {
+		return number;
 	}
 
-	
+	public String getId() {
+		return id;
+	}
+
+	public String getPw() {
+		return pw;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setPw(String pw) {
+		this.pw = pw;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

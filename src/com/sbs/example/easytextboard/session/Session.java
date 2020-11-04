@@ -1,18 +1,21 @@
 package com.sbs.example.easytextboard.session;
 
-import com.sbs.example.easytextboard.dto.*;
-
 public class Session {
+	private int loginedId;
 
-	public int loginedMemberId;
-	public String loginId;
-	public String loginName;
+	public Session() {
+		loginedId = 0;
+	}
 
 	public boolean isLogined() {
-
-		return loginedMemberId != 0;
-
+		return loginedId != 0;
 	}
-	
 
+	public void setLoginedId(int loginedId) {
+		this.loginedId = loginedId;
+	}
+
+	public int getLoginedId() {
+		return loginedId;
+	}
 }

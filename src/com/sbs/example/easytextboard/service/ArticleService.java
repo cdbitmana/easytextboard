@@ -2,46 +2,54 @@ package com.sbs.example.easytextboard.service;
 
 import java.util.ArrayList;
 
-import com.sbs.example.easytextboard.container.Container;
-import com.sbs.example.easytextboard.dao.ArticleDao;
-import com.sbs.example.easytextboard.dto.Article;
+import com.sbs.example.easytextboard.container.*;
+import com.sbs.example.easytextboard.dao.*;
+import com.sbs.example.easytextboard.dto.*;
 
 public class ArticleService {
 
-	ArticleDao articleDao;
+	private ArticleDao articleDao;
 
-	// 기본 생성자
 	public ArticleService() {
 		articleDao = Container.articleDao;
 	}
 
-	// getLastArticleId 메소드 : lastArticleId 값 리턴
-	public int getLastArticleId() {
-		return articleDao.getLastArticleId();
-	}
-
-	// getArticles 메소드 : articles 리스트 리턴
 	public ArrayList<Article> getArticles() {
 		return articleDao.getArticles();
 	}
 
-	// add 메소드 : 게시물 추가
-	public void add(String title, String body) {
-		articleDao.add(title, body);
+	public Article getArticleByNum(int number) {
+		return articleDao.getArticleByNum(number);
 	}
 
-	// printList 메소드 : 게시물 리스트를 10개씩 페이지로 출력
-	public void printList(ArrayList<Article> list, int listNum) {
-		articleDao.printList(list, listNum);
+	public int add(String title, String body, String name) {
+		return articleDao.add(title, body, name);
 	}
 
-	// getIndexById 메소드 : 게시물 번호에 맞는 게시물 인덱스 리턴
-	public int getIndexById(int id) {
-		return articleDao.getIndexById(id);
+	public Article getArticleByIndex(int index) {
+		return articleDao.getArticleByIndex(index);
 	}
 
-	// getArticle 메소드 : 게시물 번호에 맞는 게시물 객체 리턴
-	public Article getArticle(int id) {
-		return articleDao.getArticle(id);
+	public void printList(int listNum) {
+		articleDao.printList(listNum);
 	}
+
+	public int remove(int articleNum) {
+		return articleDao.remove(articleNum);
+	}
+
+	public int modify(int articleNum, String title, String body) {
+		return articleDao.modify(articleNum, title, body);
+
+	}
+
+	public ArrayList<Article> searchArticle(String title) {
+		return articleDao.searchArticle(title);
+
+	}
+
+	public void searchList(int listNum, ArrayList<Article> articles) {
+		articleDao.searchList(listNum, articles);
+	}
+
 }

@@ -1,5 +1,9 @@
 package com.sbs.example.easytextboard.controller;
 
-public class Controller {
+import java.util.Scanner;
+
+public abstract class Controller {
+
+	public abstract void doCommand(Scanner sc, String command);
 	
 }

@@ -2,61 +2,92 @@ package com.sbs.example.easytextboard.dao;
 
 import java.util.ArrayList;
 
-import com.sbs.example.easytextboard.dto.Member;
+import com.sbs.example.easytextboard.container.*;
+import com.sbs.example.easytextboard.dto.*;
 
 public class MemberDao {
 
-	// 멤버 객체 ArrayList
-	ArrayList<Member> members;
-	private Member member;
-	private int memberId;
+	private ArrayList<Member> members;
+	int memberNum;
 
-	// 기본 생성자
 	public MemberDao() {
-		members = new ArrayList<Member>();
-
+		members = new ArrayList<>();
+		memberNum = 1;
+		makeTestMember();
 	}
 
-	// login 메소드 : MemberService 에서 로그인이 실행되면 member필드에 로그인된 멤버의 정보를 가져옴
-	public void login(Member member) {
-		this.member = member;
+	public void makeTestMember() {
+		join("aaa", "aaa", "aaa");
+		join("bbb", "bbb", "bbb");
 	}
 
-	// getMember 메소드 : member 객체를 리턴
-	public Member getMember() {
-		return member;
-	}
-
-	// getMemberId 메소드 : memberId 필드를 리턴
-	public int getMemberId() {
-		return memberId;
-	}
-
-	// memberJoin 메소드 : 멤버 회원 가입
-	public void memberJoin(String id, String password, String name) {
-		memberId++;
-		members.add(new Member(memberId, id, password, name));
-
-	}
-
-	// isJoinableLoginId 메소드 : 회원가입 시 로그인 중복 검사
-	public boolean isJoinableLoginId(String loginId) {
+	public boolean isExistId(String id) {
 		for (Member member : members) {
-			if (member.id.equals(loginId)) {
-				System.out.println("이미 사용중인 아이디입니다.");
-				return false;
+			if (member.getId().equals(id)) {
+
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
-	// getMemberById 메소드 : 아이디에 맞는 멤버 객체 리턴
+	public boolean isExistPw(String pw) {
+		for (Member member : members) {
+			if (member.getPw().equals(pw)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public Member getMemberById(String id) {
 		for (Member member : members) {
-			if (member.id.equals(id)) {
+			if (member.getId().equals(id)) {
 				return member;
 			}
 		}
 		return null;
 	}
+
+	public Member getLoginedMember(int loginedId) {
+		for (Member member : members) {
+			if (member.getNumber() == loginedId) {
+				return member;
+			}
+		}
+		return null;
+
+	}
+
+	public int join(String id, String pw, String name) {
+		Member member = new Member();
+		member.setNumber(memberNum);
+		member.setId(id);
+		member.setPw(pw);
+		member.setName(name);
+
+		members.add(member);
+		memberNum++;
+		return member.getNumber();
+	}
+
+	public void modify(int number, String newName) {
+		Member member;
+		member = getLoginedMember(number);
+		Container.articleDao.modifyWriter(member.getName(), newName);
+		member.setName(newName);
+
+	}
+
+	public void whoami() {
+		for (Member member : members) {
+			if (member.getNumber() == Container.session.getLoginedId()) {
+				System.out.println("== 회원 정보 ==");
+				System.out.println("번호 / 아이디 / 이름");
+				System.out.printf("%d / %s / %s\n", member.getNumber(), member.getId(), member.getName());
+			}
+		}
+
+	}
+
 }
