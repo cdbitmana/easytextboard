@@ -5,6 +5,7 @@ public class Article {
 	private String title;
 	private String body;
 	private String writer;
+	private int writeMemberNum;
 
 	public int getNumber() {
 		return number;
@@ -22,6 +23,10 @@ public class Article {
 		return writer;
 	}
 
+	public int getWriteMemberNum() {
+		return writeMemberNum;
+	}
+
 	public void setNumber(int number) {
 		this.number = number;
 	}
@@ -36,5 +41,9 @@ public class Article {
 
 	public void setWriter(String writer) {
 		this.writer = writer;
+	}
+
+	public void setWriteMemberNum(int writeMemberNum) {
+		this.writeMemberNum = writeMemberNum;
 	}
 }

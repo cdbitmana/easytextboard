@@ -6,7 +6,7 @@ import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dto.*;
 import com.sbs.example.easytextboard.service.*;
 
-public class MemberController {
+public class MemberController extends Controller {
 
 	private MemberService memberService;
 
@@ -167,6 +167,8 @@ public class MemberController {
 				return;
 			}
 			memberService.whoami();
+		} else {
+			System.out.println("존재하지 않는 명령어");
 		}
 
 	}

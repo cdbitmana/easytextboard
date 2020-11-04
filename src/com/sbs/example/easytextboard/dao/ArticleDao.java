@@ -18,11 +18,12 @@ public class ArticleDao {
 
 	public void makeTestArticle() {
 		for (int i = 0; i < 5; i++) {
-			add("title" + (i + 1), "body" + (i + 1), "aaa");
+			add("title" + (i + 1), "body" + (i + 1), "aaa", 1);
+			
 
 		}
 		for (int i = 5; i < 10; i++) {
-			add("title" + (i + 1), "body" + (i + 1), "bbb");
+			add("title" + (i + 1), "body" + (i + 1), "bbb", 2);
 
 		}
 	}
@@ -40,12 +41,13 @@ public class ArticleDao {
 		return null;
 	}
 
-	public int add(String title, String body, String name) {
+	public int add(String title, String body, String name, int writerNumber) {
 		Article article = new Article();
 		article.setNumber(articleNumber);
 		article.setTitle(title);
 		article.setBody(body);
 		article.setWriter(name);
+		article.setWriteMemberNum(writerNumber);
 		articles.add(article);
 		articleNumber++;
 		return article.getNumber();
@@ -55,9 +57,9 @@ public class ArticleDao {
 		return articles.get(index);
 	}
 
-	public void modifyWriter(String writer, String newName) {
+	public void modifyWriter(int writeMemberNum, String newName) {
 		for (Article article : articles) {
-			if (article.getWriter().equals(writer)) {
+			if (article.getWriteMemberNum() == writeMemberNum) {
 				article.setWriter(newName);
 			}
 		}

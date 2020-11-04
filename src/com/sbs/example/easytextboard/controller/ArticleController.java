@@ -3,11 +3,11 @@ package com.sbs.example.easytextboard.controller;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.sbs.example.easytextboard.container.*;
-import com.sbs.example.easytextboard.dto.*;
-import com.sbs.example.easytextboard.service.*;
+import com.sbs.example.easytextboard.container.Container;
+import com.sbs.example.easytextboard.dto.Article;
+import com.sbs.example.easytextboard.service.ArticleService;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 
 	private ArticleService articleService;
 
@@ -32,7 +32,8 @@ public class ArticleController {
 			String body = sc.nextLine();
 
 			int number = articleService.add(title, body,
-					Container.memberDao.getLoginedMember(Container.session.getLoginedId()).getName());
+					Container.memberDao.getLoginedMember(Container.session.getLoginedId()).getName(),
+					Container.session.getLoginedId());
 
 			System.out.printf("%d번 게시물이 등록되었습니다.\n", number);
 		}
@@ -189,6 +190,9 @@ public class ArticleController {
 				return;
 			}
 			articleService.searchList(listNum, searchArticles);
+
+		} else {
+			System.out.println("존재하지 않는 명령어");
 
 		}
 

@@ -74,7 +74,7 @@ public class MemberDao {
 	public void modify(int number, String newName) {
 		Member member;
 		member = getLoginedMember(number);
-		Container.articleDao.modifyWriter(member.getName(), newName);
+		Container.articleDao.modifyWriter(member.getNumber(), newName);
 		member.setName(newName);
 
 	}
