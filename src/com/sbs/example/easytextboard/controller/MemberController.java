@@ -121,7 +121,7 @@ public class MemberController extends Controller {
 					loginPwCount++;
 					continue;
 				}
-				if (!memberService.isExistPw(pw)) {
+				if (!member.getPw().equals(pw)) {
 					System.out.println("비밀번호가 맞지 않습니다.");
 					loginPwCount++;
 					continue;

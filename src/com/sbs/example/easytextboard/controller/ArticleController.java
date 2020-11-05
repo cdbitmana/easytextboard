@@ -88,10 +88,10 @@ public class ArticleController extends Controller {
 			}
 
 			System.out.println("번호 / 제목 / 내용 / 작성자");
-			System.out.printf("%d / %s / %s / %s\n", articleService.getArticleByIndex(articleNum - 1).getNumber(),
-					articleService.getArticleByIndex(articleNum - 1).getTitle(),
-					articleService.getArticleByIndex(articleNum - 1).getBody(),
-					articleService.getArticleByIndex(articleNum - 1).getWriter());
+			System.out.printf("%d / %s / %s / %s\n", articleService.getArticleByNum(articleNum).getNumber(),
+					articleService.getArticleByNum(articleNum).getTitle(),
+					articleService.getArticleByNum(articleNum).getBody(),
+					articleService.getArticleByNum(articleNum).getWriter());
 
 		}
 
