@@ -23,15 +23,11 @@ public class ArticleService {
 	}
 
 	public int add(String title, String body, String name, int writerNumber) {
-		return articleDao.add(title, body, name,writerNumber);
+		return articleDao.add(title, body, writerNumber);
 	}
 
 	public Article getArticleByIndex(int index) {
 		return articleDao.getArticleByIndex(index);
-	}
-
-	public void printList(int listNum) {
-		articleDao.printList(listNum);
 	}
 
 	public int remove(int articleNum) {
@@ -46,10 +42,6 @@ public class ArticleService {
 	public ArrayList<Article> searchArticle(String title) {
 		return articleDao.searchArticle(title);
 
-	}
-
-	public void searchList(int listNum, ArrayList<Article> articles) {
-		articleDao.searchList(listNum, articles);
 	}
 
 }

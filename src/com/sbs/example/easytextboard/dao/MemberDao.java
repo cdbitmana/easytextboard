@@ -31,13 +31,13 @@ public class MemberDao {
 		return false;
 	}
 
-	public boolean isExistPw(String pw) {
+	public Member getMemberByNum(int number) {
 		for (Member member : members) {
-			if (member.getPw().equals(pw)) {
-				return true;
+			if (member.getNumber() == number) {
+				return member;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	public Member getMemberById(String id) {
@@ -74,7 +74,6 @@ public class MemberDao {
 	public void modify(int number, String newName) {
 		Member member;
 		member = getLoginedMember(number);
-		Container.articleDao.modifyWriter(member.getNumber(), newName);
 		member.setName(newName);
 
 	}

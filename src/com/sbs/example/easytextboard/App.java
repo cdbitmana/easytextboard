@@ -8,14 +8,19 @@ import com.sbs.example.easytextboard.controller.*;
 import com.sbs.example.easytextboard.dto.*;
 
 public class App {
-	ArticleController articleController = new ArticleController();
-	MemberController memberController = new MemberController();
+	ArticleController articleController;
+	MemberController memberController;
+
+	public App() {
+		articleController = new ArticleController();
+		memberController = new MemberController();
+	}
 
 	// run 메소드
 	public void run() {
 
 		Scanner scanner = new Scanner(System.in);
-
+		Controller controller;
 		while (true) {
 			System.out.printf("명령어) ");
 			String command = scanner.nextLine();
@@ -26,7 +31,7 @@ public class App {
 				break;
 			}
 
-			Controller controller = getControllerByCmd(command);
+			controller = getControllerByCmd(command);
 
 			if (controller == null) {
 				System.out.println("존재하지 않는 명령어");

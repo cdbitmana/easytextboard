@@ -16,8 +16,8 @@ public class MemberService {
 		return memberDao.isExistId(id);
 	}
 
-	public boolean isExistPw(String pw) {
-		return memberDao.isExistPw(pw);
+	public Member getMemberByNum(int number) {
+		return memberDao.getMemberByNum(number);
 	}
 
 	public Member getMemberById(String id) {

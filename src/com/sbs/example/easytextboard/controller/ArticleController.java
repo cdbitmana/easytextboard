@@ -5,15 +5,18 @@ import java.util.Scanner;
 
 import com.sbs.example.easytextboard.container.Container;
 import com.sbs.example.easytextboard.dto.Article;
+import com.sbs.example.easytextboard.dto.Member;
 import com.sbs.example.easytextboard.service.ArticleService;
+import com.sbs.example.easytextboard.service.MemberService;
 
 public class ArticleController extends Controller {
 
 	private ArticleService articleService;
+	private MemberService memberService;
 
 	public ArticleController() {
 		articleService = Container.articleService;
-
+		memberService = Container.memberService;
 	}
 
 	public void doCommand(Scanner sc, String command) {
@@ -53,7 +56,7 @@ public class ArticleController extends Controller {
 				return;
 			} catch (Exception e) {
 				listNum = 1;
-				articleService.printList(listNum);
+				print(listNum);
 				return;
 			}
 			if ((listNum - 1) * 10 >= articleService.getArticles().size()) {
@@ -61,7 +64,7 @@ public class ArticleController extends Controller {
 				return;
 			}
 
-			articleService.printList(listNum);
+			print(listNum);
 
 		}
 
@@ -86,12 +89,13 @@ public class ArticleController extends Controller {
 				System.out.println("존재하지 않는 게시물입니다.");
 				return;
 			}
-
+			Member member;
+			Article article = articleService.getArticleByNum(articleNum);
+			member = memberService.getMemberByNum(article.getWriteMemberNum());
 			System.out.println("번호 / 제목 / 내용 / 작성자");
 			System.out.printf("%d / %s / %s / %s\n", articleService.getArticleByNum(articleNum).getNumber(),
 					articleService.getArticleByNum(articleNum).getTitle(),
-					articleService.getArticleByNum(articleNum).getBody(),
-					articleService.getArticleByNum(articleNum).getWriter());
+					articleService.getArticleByNum(articleNum).getBody(), member.getName());
 
 		}
 
@@ -173,7 +177,7 @@ public class ArticleController extends Controller {
 					return;
 				}
 				listNum = 1;
-				articleService.searchList(listNum, searchArticles);
+				searchList(listNum, searchArticles);
 				return;
 			}
 			if (listNum > articleService.getArticles().size()) {
@@ -189,13 +193,55 @@ public class ArticleController extends Controller {
 				System.out.println("존재하지 않는 페이지입니다.");
 				return;
 			}
-			articleService.searchList(listNum, searchArticles);
+			searchList(listNum, searchArticles);
 
 		} else {
 			System.out.println("존재하지 않는 명령어");
 
 		}
 
+	}
+
+	public void print(int listNum) {
+		Member member;
+		Article article;
+		System.out.println("== 게시물 리스트 ==");
+
+		System.out.println("번호 / 제목 / 작성자");
+		int itemsInAPage = 10;
+		int start = articleService.getArticles().size() - 1;
+		start -= (listNum - 1) * itemsInAPage;
+		int end = start - (itemsInAPage - 1);
+		if (end < 0) {
+			end = 0;
+		}
+		for (int i = start; i >= end; i--) {
+			article = articleService.getArticleByIndex(i);
+			member = memberService.getMemberByNum(article.getWriteMemberNum());
+			System.out.printf(" %d / %s / %s\n", article.getNumber(), article.getTitle(), member.getName());
+		}
+	}
+
+	public void searchList(int listNum, ArrayList<Article> articles) {
+		Member member;
+		Article article;
+		System.out.println("== 게시물 리스트 ==");
+
+		System.out.println("번호 / 제목 / 작성자");
+		int itemsInAPage = 10;
+		int start = articles.size() - 1;
+		start -= (listNum - 1) * itemsInAPage;
+		int end = start - (itemsInAPage - 1);
+		if (end < 0) {
+			end = 0;
+		}
+
+		for (int i = start; i >= end; i--) {
+			article = articles.get(i);
+			member = memberService.getMemberByNum(article.getWriteMemberNum());
+			System.out.printf(" %d / %s / %s\n", articles.get(i).getNumber(), articles.get(i).getTitle(),
+					member.getName());
+		}
 	}
 
 }
