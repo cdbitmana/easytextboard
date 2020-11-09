@@ -14,10 +14,9 @@ public class ArticleService {
 
 	public ArticleService() {
 		articleDao = Container.articleDao;
-		boards = new ArrayList<>();
+		boards = articleDao.getBoards();
 		boardNumber = 0;
 
-		makeBoard("공지사항");
 	}
 
 	public int makeBoard(String name) {
@@ -73,6 +72,21 @@ public class ArticleService {
 			}
 		}
 		return false;
+	}
+
+	public ArrayList<Article> getArticlesByBoardId() {
+		ArrayList<Article> articles = new ArrayList<>();
+		for (Article article : getArticles()) {
+			if (article.getBoardId() == Container.session.getSelectBoardId()) {
+				articles.add(article);
+			}
+		}
+		return articles;
+
+	}
+
+	public int add(String title, String body, int loginedId, int selectBoardId, int lastArticleId) {
+		return articleDao.add(title, body, loginedId, selectBoardId, lastArticleId);
 	}
 
 }

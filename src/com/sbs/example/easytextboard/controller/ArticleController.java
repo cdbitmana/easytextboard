@@ -19,15 +19,10 @@ public class ArticleController extends Controller {
 	public ArticleController() {
 		articleService = Container.articleService;
 		memberService = Container.memberService;
-		for (int i = 0; i < 5; i++) {
-			add("title" + (i + 1), "body" + (i + 1), 1, 1, i);
 
-		}
-		for (int i = 5; i < 10; i++) {
-			add("title" + (i + 1), "body" + (i + 1), 2, 1, i);
-
-		}
 	}
+
+	
 
 	public void doCommand(Scanner sc, String command) {
 
@@ -50,8 +45,8 @@ public class ArticleController extends Controller {
 			System.out.printf("내용 : ");
 			String body = sc.nextLine();
 
-			int number = add(title, body, Container.session.getLoginedId(), Container.session.getSelectBoardId(),
-					board.getLastArticleId());
+			int number = articleService.add(title, body, Container.session.getLoginedId(),
+					Container.session.getSelectBoardId(), board.getLastArticleId());
 
 			System.out.printf("%d번 게시물이 등록되었습니다.\n", number);
 		}
@@ -85,14 +80,14 @@ public class ArticleController extends Controller {
 
 		// article detail
 		else if (command.startsWith("article detail")) {
-			ArrayList<Article> articles = new ArrayList<>();
-			for (Article article : articleService.getArticles()) {
-				if (article.getBoardId() == Container.session.getSelectBoardId()) {
-					articles.add(article);
+
+			for (Board board : articleService.getBoards()) {
+				if (board.getBoardId() == Container.session.getSelectBoardId()) {
+					this.board = board;
 				}
 			}
 
-			if (articles.size() == 0) {
+			if (board.getLastArticleId() == 0) {
 				System.out.println("게시물이 없습니다.");
 				return;
 			}
@@ -108,17 +103,17 @@ public class ArticleController extends Controller {
 				System.out.println("게시물 번호를 입력해 주세요.");
 				return;
 			}
-			if (articleNum > articles.size()) {
+			if (articleNum > board.getLastArticleId()) {
 				System.out.println("존재하지 않는 게시물입니다.");
 				return;
 			}
 
-			for (Article article : articles) {
-				if (article.getNumber() == articleNum) {
+			for (Article article : articleService.getArticles()) {
+				if (article.getNumber() == articleNum && article.getBoardId() == Container.session.getSelectBoardId()) {
 					Member member = memberService.getMemberByNum(article.getWriteMemberNum());
-					System.out.println("번호 / 제목 / 내용 / 작성자");
-					System.out.printf("%d / %s / %s / %s\n", article.getNumber(), article.getTitle(), article.getBody(),
-							member.getName());
+					System.out.println("게시판 / 번호 / 제목 / 내용 / 작성자");
+					System.out.printf("%s / %d / %s / %s / %s\n", board.getBoardName(), article.getNumber(),
+							article.getTitle(), article.getBody(), member.getName());
 				}
 			}
 
@@ -126,12 +121,10 @@ public class ArticleController extends Controller {
 
 		// article delete
 		else if (command.startsWith("article delete")) {
-			ArrayList<Article> articles = new ArrayList<>();
-			for (Article article : articleService.getArticles()) {
-				if (article.getBoardId() == Container.session.getSelectBoardId()) {
-					articles.add(article);
-				}
-			}
+
+			ArrayList<Article> articles;
+			articles = articleService.getArticlesByBoardId();
+
 			if (articles.size() == 0) {
 				System.out.println("게시물이 없습니다.");
 				return;
@@ -147,6 +140,7 @@ public class ArticleController extends Controller {
 				System.out.println("게시물 번호를 입력해 주세요.");
 				return;
 			}
+
 			if (articleNum > articles.size()) {
 				System.out.println("존재하지 않는 게시물입니다.");
 				return;
@@ -154,7 +148,12 @@ public class ArticleController extends Controller {
 
 			for (Article article : articles) {
 				if (article.getNumber() == articleNum) {
+					if (article.getWriteMemberNum() != Container.session.getLoginedId()) {
+						System.out.println("본인의 게시물만 삭제할 수 있습니다.");
+						return;
+					}
 					System.out.printf("%d번 게시물이 삭제되었습니다.\n", articleService.remove(article));
+
 				}
 			}
 
@@ -162,12 +161,9 @@ public class ArticleController extends Controller {
 
 		// article modify
 		else if (command.startsWith("article modify")) {
-			ArrayList<Article> articles = new ArrayList<>();
-			for (Article article : articleService.getArticles()) {
-				if (article.getBoardId() == Container.session.getSelectBoardId()) {
-					articles.add(article);
-				}
-			}
+			ArrayList<Article> articles;
+			articles = articleService.getArticlesByBoardId();
+
 			if (articles.size() == 0) {
 				System.out.println("게시물이 없습니다.");
 				return;
@@ -188,13 +184,16 @@ public class ArticleController extends Controller {
 				return;
 			}
 
-			System.out.printf("새 제목 : ");
-			String title = sc.nextLine();
-			System.out.printf("새 내용 : ");
-			String body = sc.nextLine();
-
 			for (Article article : articles) {
 				if (article.getNumber() == articleNum) {
+					if (article.getWriteMemberNum() != Container.session.getLoginedId()) {
+						System.out.println("본인의 게시물만 수정할 수 있습니다.");
+						return;
+					}
+					System.out.printf("새 제목 : ");
+					String title = sc.nextLine();
+					System.out.printf("새 내용 : ");
+					String body = sc.nextLine();
 					article.setTitle(title);
 					article.setBody(body);
 					System.out.printf("%d번 게시물이 수정되었습니다.\n", article.getNumber());
@@ -205,10 +204,7 @@ public class ArticleController extends Controller {
 
 		// article search
 		else if (command.startsWith("article search")) {
-			if (articleService.getArticles().size() == 0) {
-				System.out.println("게시물이 없습니다.");
-				return;
-			}
+
 			String[] str = command.split(" ");
 			int listNum = 0;
 			ArrayList<Article> searchArticles = new ArrayList<>();
@@ -229,12 +225,9 @@ public class ArticleController extends Controller {
 					System.out.println("검색 결과가 없습니다.");
 					return;
 				}
+
 				listNum = 1;
 				searchList(listNum, searchArticles);
-				return;
-			}
-			if (listNum > articleService.getArticles().size()) {
-				System.out.println("존재하지 않는 게시물입니다.");
 				return;
 			}
 
@@ -382,27 +375,6 @@ public class ArticleController extends Controller {
 			System.out.printf(" %d / %s / %s\n", articles.get(i).getNumber(), articles.get(i).getTitle(),
 					member.getName());
 		}
-	}
-
-	// add 메소드
-	public int add(String title, String body, int writerNumber, int boardId, int lastArticleId) {
-		Board board1 = null;
-		ArrayList<Article> articles = articleService.getArticles();
-		for (Board board : articleService.getBoards()) {
-			if (board.getBoardId() == Container.session.getSelectBoardId()) {
-				board1 = board;
-			}
-		}
-		Article article = new Article();
-		article.setNumber(lastArticleId + 1);
-		article.setTitle(title);
-		article.setBody(body);
-		article.setWriteMemberNum(writerNumber);
-		article.setBoardId(boardId);
-		board1.setLastArticleId(article.getNumber());
-		articles.add(article);
-
-		return article.getNumber();
 	}
 
 }

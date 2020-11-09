@@ -2,6 +2,7 @@ package com.sbs.example.easytextboard.container;
 
 import com.sbs.example.easytextboard.session.*;
 import com.sbs.example.easytextboard.service.*;
+import com.sbs.example.easytextboard.controller.*;
 import com.sbs.example.easytextboard.dao.*;
 
 public class Container {
@@ -10,6 +11,8 @@ public class Container {
 	public static ArticleDao articleDao;
 	public static MemberService memberService;
 	public static ArticleService articleService;
+	public static MemberController memberController;
+	public static ArticleController articleController;
 
 	static {
 		session = new Session();
@@ -17,5 +20,7 @@ public class Container {
 		articleDao = new ArticleDao();
 		memberService = new MemberService();
 		articleService = new ArticleService();
+		memberController = new MemberController();
+		articleController = new ArticleController();
 	}
 }

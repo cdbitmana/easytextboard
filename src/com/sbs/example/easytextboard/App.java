@@ -4,16 +4,37 @@ import java.util.ArrayList;
 
 import java.util.Scanner;
 
+import com.sbs.example.easytextboard.container.Container;
 import com.sbs.example.easytextboard.controller.*;
+import com.sbs.example.easytextboard.dao.*;
 import com.sbs.example.easytextboard.dto.*;
+import com.sbs.example.easytextboard.service.*;
 
 public class App {
 	ArticleController articleController;
 	MemberController memberController;
+	ArticleService articleService;
+	MemberService memberService;
+	ArticleDao articleDao;
+	MemberDao memberDao;
 
 	public App() {
-		articleController = new ArticleController();
-		memberController = new MemberController();
+		articleController = Container.articleController;
+		memberController = Container.memberController;
+		articleService = Container.articleService;
+		memberService = Container.memberService;
+		articleDao = Container.articleDao;
+		memberDao = Container.memberDao;
+
+		makeTestData();
+	}
+
+	private void makeTestData() {
+
+		articleService.makeBoard("공지사항");
+		memberDao.makeTestMember();
+		articleDao.makeTestArticle();
+
 	}
 
 	// run 메소드

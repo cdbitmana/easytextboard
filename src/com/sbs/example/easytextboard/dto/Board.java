@@ -7,9 +7,8 @@ public class Board {
 	private int lastArticleId;
 
 	public Board() {
-		id = 1;
+
 		lastArticleId = 0;
-		name = "공지사항";
 
 	}
 

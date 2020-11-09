@@ -9,16 +9,24 @@ import com.sbs.example.easytextboard.service.*;
 public class ArticleDao {
 
 	private ArrayList<Article> articles;
-	Board board;
-	ArrayList<Board> boards;
+	private ArrayList<Board> boards;
 
 	public ArticleDao() {
+		boards = new ArrayList<>();
 		articles = new ArrayList<>();
-		makeTestArticle();
+
 	}
 
+	// makeTestArticle
 	public void makeTestArticle() {
+		for (int i = 0; i < 5; i++) {
+			add("title" + (i + 1), "body" + (i + 1), 1, 1, i);
 
+		}
+		for (int i = 5; i < 10; i++) {
+			add("title" + (i + 1), "body" + (i + 1), 2, 1, i);
+
+		}
 	}
 
 	public ArrayList<Article> getArticles() {
@@ -46,8 +54,6 @@ public class ArticleDao {
 
 	}
 
-
-
 	public ArrayList<Article> searchArticle(String title) {
 		ArrayList<Article> searchArticles = new ArrayList<>();
 		for (Article article : articles) {
@@ -56,6 +62,30 @@ public class ArticleDao {
 			}
 		}
 		return searchArticles;
+	}
+
+	public ArrayList<Board> getBoards() {
+		return boards;
+	}
+
+	public int add(String title, String body, int writerNumber, int boardId, int lastArticleId) {
+		Board board1 = null;
+
+		for (Board board : boards) {
+			if (board.getBoardId() == Container.session.getSelectBoardId()) {
+				board1 = board;
+			}
+		}
+		Article article = new Article();
+		article.setNumber(lastArticleId + 1);
+		article.setTitle(title);
+		article.setBody(body);
+		article.setWriteMemberNum(writerNumber);
+		article.setBoardId(boardId);
+		board1.setLastArticleId(article.getNumber());
+		articles.add(article);
+
+		return article.getNumber();
 	}
 
 }

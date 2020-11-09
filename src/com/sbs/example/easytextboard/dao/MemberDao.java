@@ -13,7 +13,7 @@ public class MemberDao {
 	public MemberDao() {
 		members = new ArrayList<>();
 		memberNum = 1;
-		makeTestMember();
+		
 	}
 
 	public void makeTestMember() {
