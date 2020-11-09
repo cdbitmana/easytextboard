@@ -109,9 +109,9 @@ public class ArticleController extends Controller {
 			for (Article article : articleService.getArticles()) {
 				if (article.getNumber() == articleNum && article.getBoardId() == Container.session.getSelectBoardId()) {
 					Member member = memberService.getMemberByNum(article.getWriteMemberNum());
-					System.out.println("게시판 / 번호 / 제목 / 내용 / 작성자");
-					System.out.printf("%s / %d / %s / %s / %s\n", board.getBoardName(), article.getNumber(),
-							article.getTitle(), article.getBody(), member.getName());
+					System.out.println("번호 / 제목 / 내용 / 작성자");
+					System.out.printf("%d / %s / %s / %s\n", article.getNumber(), article.getTitle(), article.getBody(),
+							member.getName());
 				}
 			}
 
