@@ -33,24 +33,19 @@ public class App {
 
 		articleService.makeBoard("공지사항");
 		articleService.makeBoard("자유");
+
 		memberService.join("aaa", "aaa", "aaa");
 		memberService.join("bbb", "bbb", "bbb");
 
 		for (int i = 0; i < 5; i++) {
-			articleService.add("title" + (i + 1), "body" + (i + 1), 1, 1, i);
+			articleService.add("공지title" + (i + 1), "body" + (i + 1), 1, 1, i);
+			articleService.add("자유title" + (i + 1), "body" + (i + 1), 1, 2, i);
 
 		}
 		for (int i = 5; i < 10; i++) {
-			articleService.add("title" + (i + 1), "body" + (i + 1), 2, 1, i);
-
+			articleService.add("공지title" + (i + 1), "body" + (i + 1), 2, 1, i);
+			articleService.add("자유title" + (i + 1), "body" + (i + 1), 2, 2, i);
 		}
-
-		Container.session.setSelectBoardId(2);
-		for (int i = 0; i < 5; i++) {
-			articleService.add("title" + (i + 1), "body" + (i + 1), 1, 2, i);
-
-		}
-		Container.session.setSelectBoardId(1);
 
 	}
 

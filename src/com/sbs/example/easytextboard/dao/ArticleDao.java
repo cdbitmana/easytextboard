@@ -60,11 +60,11 @@ public class ArticleDao {
 		Board board1 = null;
 
 		for (Board board : boards) {
-			if (board.getBoardId() == Container.session.getSelectBoardId()) {
+			if (board.getBoardId() == boardId) {
 				board1 = board;
 			}
 		}
-		
+
 		Article article = new Article();
 		article.setNumber(lastArticleId + 1);
 		article.setTitle(title);
