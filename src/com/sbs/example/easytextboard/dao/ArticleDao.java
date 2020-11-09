@@ -8,26 +8,17 @@ import com.sbs.example.easytextboard.service.*;
 
 public class ArticleDao {
 
-	private int articleNumber;
 	private ArrayList<Article> articles;
+	Board board;
+	ArrayList<Board> boards;
 
 	public ArticleDao() {
-
 		articles = new ArrayList<>();
-		articleNumber = 1;
 		makeTestArticle();
 	}
 
 	public void makeTestArticle() {
 
-		for (int i = 0; i < 5; i++) {
-			add("title" + (i + 1), "body" + (i + 1), 1);
-
-		}
-		for (int i = 5; i < 10; i++) {
-			add("title" + (i + 1), "body" + (i + 1), 2);
-
-		}
 	}
 
 	public ArrayList<Article> getArticles() {
@@ -43,50 +34,24 @@ public class ArticleDao {
 		return null;
 	}
 
-	public int add(String title, String body, int writerNumber) {
-		Article article = new Article();
-		article.setNumber(articleNumber);
-		article.setTitle(title);
-		article.setBody(body);
-
-		article.setWriteMemberNum(writerNumber);
-		articles.add(article);
-		articleNumber++;
-		return article.getNumber();
-	}
-
 	public Article getArticleByIndex(int index) {
 		return articles.get(index);
 	}
 
-	public int remove(int articleNum) {
-		for (Article article : articles) {
-			if (article.getNumber() == articleNum) {
-				int num = article.getNumber();
-				articles.remove(article);
-				return num;
-			}
-		}
-		return 0;
+	public int remove(Article article) {
+
+		int num = article.getNumber();
+		articles.remove(article);
+		return num;
 
 	}
 
-	public int modify(int articleNum, String title, String body) {
-		for (Article article : articles) {
-			if (article.getNumber() == articleNum) {
-				article.setTitle(title);
-				article.setBody(body);
-				return article.getNumber();
-			}
-		}
-		return 0;
 
-	}
 
 	public ArrayList<Article> searchArticle(String title) {
 		ArrayList<Article> searchArticles = new ArrayList<>();
 		for (Article article : articles) {
-			if (article.getTitle().contains(title)) {
+			if (article.getTitle().contains(title) && article.getBoardId() == Container.session.getSelectBoardId()) {
 				searchArticles.add(article);
 			}
 		}

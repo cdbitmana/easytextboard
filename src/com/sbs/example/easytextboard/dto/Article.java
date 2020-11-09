@@ -5,6 +5,11 @@ public class Article {
 	private String title;
 	private String body;
 	private int writeMemberNum;
+	private int boardId;
+
+	public int getBoardId() {
+		return boardId;
+	}
 
 	public int getNumber() {
 		return number;
@@ -32,6 +37,10 @@ public class Article {
 
 	public void setBody(String body) {
 		this.body = body;
+	}
+
+	public void setBoardId(int boardId) {
+		this.boardId = boardId;
 	}
 
 	public void setWriteMemberNum(int writeMemberNum) {
