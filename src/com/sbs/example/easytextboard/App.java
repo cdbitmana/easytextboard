@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import com.sbs.example.easytextboard.container.Container;
 import com.sbs.example.easytextboard.controller.*;
-import com.sbs.example.easytextboard.dao.*;
 
 import com.sbs.example.easytextboard.service.*;
 
@@ -15,8 +14,6 @@ public class App {
 	MemberController memberController;
 	ArticleService articleService;
 	MemberService memberService;
-	ArticleDao articleDao;
-	MemberDao memberDao;
 
 	public App() {
 		articleController = Container.articleController;
