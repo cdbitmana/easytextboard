@@ -7,7 +7,7 @@ import java.util.Scanner;
 import com.sbs.example.easytextboard.container.Container;
 import com.sbs.example.easytextboard.controller.*;
 import com.sbs.example.easytextboard.dao.*;
-import com.sbs.example.easytextboard.dto.*;
+
 import com.sbs.example.easytextboard.service.*;
 
 public class App {
@@ -23,8 +23,6 @@ public class App {
 		memberController = Container.memberController;
 		articleService = Container.articleService;
 		memberService = Container.memberService;
-		articleDao = Container.articleDao;
-		memberDao = Container.memberDao;
 
 		makeTestData();
 	}
