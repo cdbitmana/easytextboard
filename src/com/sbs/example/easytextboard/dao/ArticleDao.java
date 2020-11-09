@@ -17,18 +17,6 @@ public class ArticleDao {
 
 	}
 
-	// makeTestArticle
-	public void makeTestArticle() {
-		for (int i = 0; i < 5; i++) {
-			add("title" + (i + 1), "body" + (i + 1), 1, 1, i);
-
-		}
-		for (int i = 5; i < 10; i++) {
-			add("title" + (i + 1), "body" + (i + 1), 2, 1, i);
-
-		}
-	}
-
 	public ArrayList<Article> getArticles() {
 		return articles;
 	}
@@ -76,6 +64,7 @@ public class ArticleDao {
 				board1 = board;
 			}
 		}
+		
 		Article article = new Article();
 		article.setNumber(lastArticleId + 1);
 		article.setTitle(title);

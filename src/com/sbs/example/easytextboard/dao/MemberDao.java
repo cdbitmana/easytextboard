@@ -16,10 +16,7 @@ public class MemberDao {
 		
 	}
 
-	public void makeTestMember() {
-		join("aaa", "aaa", "aaa");
-		join("bbb", "bbb", "bbb");
-	}
+	
 
 	public boolean isExistId(String id) {
 		for (Member member : members) {

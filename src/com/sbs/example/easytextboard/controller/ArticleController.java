@@ -22,8 +22,6 @@ public class ArticleController extends Controller {
 
 	}
 
-	
-
 	public void doCommand(Scanner sc, String command) {
 
 		// article add
@@ -251,6 +249,7 @@ public class ArticleController extends Controller {
 		else if (command.startsWith("article selectBoard")) {
 			String[] str = command.split(" ");
 			int boardNum = 0;
+
 			selectBoard(str, boardNum);
 
 		}
@@ -291,6 +290,10 @@ public class ArticleController extends Controller {
 
 		for (Board board : boards) {
 			if (board.getBoardId() == boardNum) {
+				if (boardNum == Container.session.getSelectBoardId()) {
+					System.out.printf("이미 %s 게시판입니다.\n", board.getBoardName());
+					return;
+				}
 				Container.session.setSelectBoardId(boardNum);
 				System.out.printf("%s(%d번) 게시판이 선택되었습니다.\n", board.getBoardName(), board.getBoardId());
 
@@ -349,8 +352,8 @@ public class ArticleController extends Controller {
 		for (int i = start; i >= end; i--) {
 			member = Container.memberService.getMemberByNum(articles.get(i).getWriteMemberNum());
 
-			System.out.printf("%d / %s / %s / %s\n", articles.get(i).getNumber(), articles.get(i).getTitle(),
-					member.getName(), board.getBoardName());
+			System.out.printf("%d / %s / %s\n", articles.get(i).getNumber(), articles.get(i).getTitle(),
+					member.getName());
 		}
 	}
 
