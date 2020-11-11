@@ -43,8 +43,8 @@ public class ArticleService {
 		return articleDao.getArticleByIndex(index);
 	}
 
-	public int remove(Article article) {
-		return articleDao.remove(article);
+	public void remove(int id) {
+		articleDao.remove(id);
 	}
 
 	public ArrayList<Article> searchArticle(String title) {
@@ -85,8 +85,18 @@ public class ArticleService {
 
 	}
 
-	public int add(String title, String body, int loginedId, int selectBoardId, int lastArticleId) {
-		return articleDao.add(title, body, loginedId, selectBoardId, lastArticleId);
+	public int add(String title, String body, int loginedId, int selectBoardId) {
+		return articleDao.add(title, body, loginedId, selectBoardId);
+	}
+
+	public void printList() {
+		articleDao.printList();
+
+	}
+
+	public void modify(String title, String body, int articleNum) {
+		articleDao.modify(title,body,articleNum);
+		
 	}
 
 }

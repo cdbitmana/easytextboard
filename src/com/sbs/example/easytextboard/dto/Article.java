@@ -1,7 +1,10 @@
 package com.sbs.example.easytextboard.dto;
 
+import java.util.Date;
+
 public class Article {
 	private int number;
+	private String regDate;
 	private String title;
 	private String body;
 	private int writeMemberNum;
@@ -9,6 +12,10 @@ public class Article {
 
 	public int getBoardId() {
 		return boardId;
+	}
+	
+	public String getRegDate() {
+		return regDate;
 	}
 
 	public int getNumber() {
@@ -29,6 +36,10 @@ public class Article {
 
 	public void setNumber(int number) {
 		this.number = number;
+	}
+	
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
 	}
 
 	public void setTitle(String title) {
