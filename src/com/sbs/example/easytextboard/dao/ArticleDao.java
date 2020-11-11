@@ -204,7 +204,7 @@ public class ArticleDao {
 				rs3 = pstmt2.executeQuery();
 				if (rs3.next()) {
 					nickname = rs3.getString(4);
-				}
+				} 
 
 				System.out.printf("%d / %s / %s / %s / %d\n", id, regDate, title, nickname, hit);
 
