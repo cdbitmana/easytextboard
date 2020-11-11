@@ -1,5 +1,7 @@
 package com.sbs.example.easytextboard.service;
 
+import java.util.Scanner;
+
 import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dao.*;
 import com.sbs.example.easytextboard.dto.*;
@@ -24,8 +26,8 @@ public class MemberService {
 		return memberDao.getMemberById(id);
 	}
 
-	public int join(String id, String pw, String name) {
-		return memberDao.join(id, pw, name);
+	public int join(Scanner sc) {
+		return memberDao.join(sc);
 
 	}
 
@@ -37,6 +39,11 @@ public class MemberService {
 	public void whoami() {
 		memberDao.whoami();
 
+	}
+
+	public Member login(Scanner sc) {
+		return memberDao.login(sc);
+		
 	}
 
 }

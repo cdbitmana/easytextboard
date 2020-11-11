@@ -31,7 +31,7 @@ public class ArticleDao {
 
 			String url = "jdbc:mysql://localhost/a1";
 
-			conn = DriverManager.getConnection(url, "sbsst", "");
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
 			String sql = "select * from article where id = " + number;
 
@@ -78,7 +78,7 @@ public class ArticleDao {
 
 			String url = "jdbc:mysql://localhost/a1";
 
-			conn = DriverManager.getConnection(url, "sbsst", "");
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
 			String sql = "select * from article where id =" + id;
 			pstmt = conn.prepareStatement(sql);
@@ -122,7 +122,7 @@ public class ArticleDao {
 
 			String url = "jdbc:mysql://localhost/a1";
 
-			conn = DriverManager.getConnection(url, "sbsst", "");
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
 			String sql = "insert into article set regDate = now(),title ='" + title + "', `body` ='" + body
 					+ "', writerId =" + writerNumber + ", boardId =" + boardId;
@@ -166,12 +166,16 @@ public class ArticleDao {
 	public void printList() {
 
 		try {
-
+			ResultSet rs2;
+			PreparedStatement pstmt2;
+			ResultSet rs3;
+			int writerId = 0;
+			String nickname = "";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			String url = "jdbc:mysql://localhost/a1";
 
-			conn = DriverManager.getConnection(url, "sbsst", "");
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
 			String sql = "select * from article order by id desc";
 
@@ -179,29 +183,55 @@ public class ArticleDao {
 
 			rs = pstmt.executeQuery();
 
+			String sql2 = "select * from article order by id desc";
+
+			pstmt2 = conn.prepareStatement(sql2);
+			rs2 = pstmt2.executeQuery();
+
 			while (rs.next()) {
+
+				int hit = 0;
 				int id = rs.getInt(1);
 				String regDate = rs.getString(2);
 				String title = rs.getString(3);
-				String nickname = rs.getString(6);
-				int hit = rs.getInt(6);
+
+				if (rs2.next()) {
+					writerId = rs2.getInt(5);
+
+				}
+				sql = "select * from `member` where id =" + writerId;
+				pstmt2 = conn.prepareStatement(sql);
+				rs3 = pstmt2.executeQuery();
+				if (rs3.next()) {
+					nickname = rs3.getString(4);
+				}
 
 				System.out.printf("%d / %s / %s / %s / %d\n", id, regDate, title, nickname, hit);
+
 			}
 
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패");
 		} catch (SQLException e) {
 			System.out.println("에러: " + e);
+
 		} finally {
 			try {
 				if (conn != null && !conn.isClosed()) {
 					conn.close();
 				}
+				if (pstmt != null && !pstmt.isClosed()) {
+					pstmt.close();
+				}
+				if (rs != null && !rs.isClosed()) {
+					rs.close();
+				}
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+
 	}
 
 	public void modify(String title, String body, int articleNum) {
@@ -211,7 +241,7 @@ public class ArticleDao {
 
 			String url = "jdbc:mysql://localhost/a1";
 
-			conn = DriverManager.getConnection(url, "sbsst", "");
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
 			String sql = "select * from article where id =" + articleNum;
 
