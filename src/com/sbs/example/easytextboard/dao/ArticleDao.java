@@ -123,6 +123,10 @@ public class ArticleDao {
 	public int add(String title, String body, int writerNumber, int boardId) {
 		Connection conn = null;
 		Statement stmt = null;
+		Statement stmt2 = null;
+		Statement stmt3 = null;
+		Statement stmt4 = null;
+		Statement stmt5 = null;
 		ResultSet rs = null;
 		int boardLastArticleId = 0;
 		try {
@@ -133,14 +137,9 @@ public class ArticleDao {
 
 			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
-			String sql = "insert into article set regDate = now(),title ='" + title + "', `body` ='" + body
-					+ "', writerId =" + writerNumber + ", boardId =" + boardId;
+			String sql = "select * from `board` where id =" + boardId;
 
 			stmt = conn.createStatement();
-
-			stmt.executeUpdate(sql);
-
-			sql = "select * from `board` where id =" + boardId;
 
 			rs = stmt.executeQuery(sql);
 
@@ -148,13 +147,34 @@ public class ArticleDao {
 				boardLastArticleId = rs.getInt(3);
 			}
 
-			sql = "update `board` set lastArticleId = " + (boardLastArticleId + 1) + " where id =" + boardId;
+			sql = "insert into article set regDate = now(),title ='" + title + "', `body` ='" + body + "', writerId ="
+					+ writerNumber + ", boardId =" + boardId + ", boardLastArticleId =" + boardLastArticleId;
 
-			stmt.executeUpdate(sql);
+			stmt2 = conn.createStatement();
+
+			stmt2.executeUpdate(sql);
 
 			sql = "select * from `board` where id =" + boardId;
 
-			rs = stmt.executeQuery(sql);
+			stmt3 = conn.createStatement();
+
+			rs = stmt3.executeQuery(sql);
+
+			if (rs.next()) {
+				boardLastArticleId = rs.getInt(3);
+			}
+
+			sql = "update `board` set lastArticleId = " + (boardLastArticleId + 1) + " where id =" + boardId;
+
+			stmt4 = conn.createStatement();
+
+			stmt4.executeUpdate(sql);
+
+			sql = "select * from `board` where id =" + boardId;
+
+			stmt5 = conn.createStatement();
+
+			rs = stmt5.executeQuery(sql);
 
 			while (rs.next()) {
 				boardLastArticleId = rs.getInt(3);
@@ -220,7 +240,7 @@ public class ArticleDao {
 			while (rs.next()) {
 
 				int hit = 0;
-				int id = rs.getInt(1);
+				int id = rs.getInt(7);
 				String regDate = rs.getString(2);
 				String title = rs.getString(3);
 
