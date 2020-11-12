@@ -9,39 +9,32 @@ import com.sbs.example.easytextboard.service.*;
 public class MemberController extends Controller {
 
 	private MemberService memberService;
+	private Scanner sc;
 
 	public MemberController() {
+		sc = Container.scanner;
 		memberService = Container.memberService;
 	}
 
-	public void doCommand(Scanner sc, String command) {
+	public void doCommand(String command) {
 
 		// member join
 		if (command.equals("member join")) {
 
-			int number = memberService.join(sc);
-			if (number == -1) {
-				System.out.println("이미 존재하는 아이디입니다.");
-				return;
-			}
-			System.out.printf("%d번 회원으로 가입되었습니다.\n", number);
+			join();
 
 		}
 
 		// member login
 		else if (command.equals("member login")) {
-			Member member;
+
 			if (Container.session.isLogined()) {
 				System.out.println("이미 로그인 상태입니다.");
 				return;
 			}
 
-			member = memberService.login(sc);
-			if (member == null) {
-				return;
-			}
-			Container.session.setLoginedId(member.getNumber());
-			System.out.printf("%d번 회원으로 로그인 되었습니다.\n", member.getNumber());
+			login();
+
 		}
 
 		// member logout
@@ -76,7 +69,7 @@ public class MemberController extends Controller {
 				return;
 			}
 			Member member = new Member();
-			member = memberService.whoami();
+			member = memberService.getLoginedMember();
 
 			int id = member.getNumber();
 			String loginId = member.getId();
@@ -88,6 +81,58 @@ public class MemberController extends Controller {
 		} else {
 			System.out.println("존재하지 않는 명령어");
 		}
+
+	}
+
+	// join
+	private void join() {
+		Member member = new Member();
+		System.out.printf("아이디 : ");
+		String loginId = sc.nextLine().trim();
+
+		member = memberService.getMemberByLoginId(loginId);
+
+		if (member != null) {
+			System.out.println("이미 존재하는 아이디입니다.");
+			return;
+		}
+
+		System.out.printf("비밀번호 : ");
+		String pw = sc.nextLine().trim();
+
+		System.out.printf("이름 : ");
+		String name = sc.nextLine().trim();
+
+		int id = memberService.memberJoin(loginId, pw, name);
+
+		System.out.printf("%d번 회원으로 가입되었습니다.\n", id);
+
+	}
+
+	// login
+	private void login() {
+		Member member;
+
+		System.out.printf("아이디 : ");
+		String loginId = sc.nextLine().trim();
+
+		member = memberService.getMemberByLoginId(loginId);
+
+		if (member == null) {
+			System.out.println("일치하는 아이디가 없습니다.");
+			return;
+		}
+
+		System.out.printf("비밀번호 : ");
+		String pw = sc.nextLine().trim();
+
+		if (!member.getPw().equals(pw)) {
+			System.out.println("비밀번호가 맞지 않습니다.");
+			return;
+		}
+
+		System.out.printf("%d번 회원으로 로그인 되었습니다.\n", member.getNumber());
+		Container.session.setLoginedId(member.getNumber());
 
 	}
 

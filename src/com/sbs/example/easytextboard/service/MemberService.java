@@ -14,27 +14,27 @@ public class MemberService {
 		memberDao = Container.memberDao;
 	}
 
-	public Member getMemberByNum(int number) {
-		return memberDao.getMemberByNum(number);
+	public Member getMemberById(int number) {
+		return memberDao.getMemberById(number);
 	}
 
-	public int join(Scanner sc) {
-		return memberDao.join(sc);
-
-	}
+	
 
 	public void modify(int number, String newName) {
 		memberDao.modify(number, newName);
 
 	}
 
-	public Member login(Scanner sc) {
-		return memberDao.login(sc);
-
+	public Member getLoginedMember() {
+		return memberDao.getLoginedMember();
 	}
 
-	public Member whoami() {
-		return memberDao.whoami();
+	public Member getMemberByLoginId(String loginId) {
+		return memberDao.getMemberByLoginId(loginId);
+	}
+
+	public int memberJoin(String loginId, String pw, String name) {
+		return memberDao.memberJoin(loginId,pw,name);
 	}
 
 }

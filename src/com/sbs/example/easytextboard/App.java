@@ -45,7 +45,7 @@ public class App {
 				System.out.println("존재하지 않는 명령어");
 				continue;
 			}
-			controller.doCommand(scanner, command);
+			controller.doCommand(command);
 
 		}
 		scanner.close();

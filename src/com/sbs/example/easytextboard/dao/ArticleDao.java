@@ -30,7 +30,7 @@ public class ArticleDao {
 
 			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "select * from article"+Container.session.getSelectBoardId()+" where id = " + number;
+			String sql = "select * from article" + Container.session.getSelectBoardId() + " where id = " + number;
 
 			stmt = conn.createStatement();
 
@@ -81,7 +81,7 @@ public class ArticleDao {
 		return null;
 	}
 
-	// remove
+	// removeArticle
 	public void removeArticle(int id) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -105,13 +105,13 @@ public class ArticleDao {
 
 		} finally {
 			try {
-				if (rs != null) {
+				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
-				if (stmt != null) {
+				if (stmt != null && !stmt.isClosed()) {
 					stmt.close();
 				}
-				if (conn != null) {
+				if (conn != null && !conn.isClosed()) {
 					conn.close();
 				}
 			} catch (SQLException e) {
@@ -245,21 +245,12 @@ public class ArticleDao {
 
 			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "select * from article" + Container.session.getSelectBoardId() + " where id =" + articleNum;
+			String sql = "update article" + Container.session.getSelectBoardId() + " set updateDate = now() , title = '"
+					+ title + "', `body` = '" + body + "' where id = " + articleNum;
 
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
-			while (!rs.next()) {
-				System.out.println("존재하지 않는 게시물입니다.");
-				return;
-			}
-
-			sql = "update article" + Container.session.getSelectBoardId() + " set title = '" + title + "', `body` = '"
-					+ body + "' where id = " + articleNum;
 
 			stmt.executeUpdate(sql);
-
-			System.out.printf("%d번 게시물이 수정되었습니다.\n", articleNum);
 
 		} catch (ClassNotFoundException e) {
 
@@ -438,7 +429,6 @@ public class ArticleDao {
 			while (rs.next()) {
 				int id = rs.getInt(1);
 				String BoardName = rs.getString(2);
-				int lastArticleId = rs.getInt(3);
 
 				board.setBoardId(id);
 				board.setBoardName(BoardName);

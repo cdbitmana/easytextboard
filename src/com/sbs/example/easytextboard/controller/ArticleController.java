@@ -11,7 +11,7 @@ import com.sbs.example.easytextboard.service.ArticleService;
 import com.sbs.example.easytextboard.service.MemberService;
 
 public class ArticleController extends Controller {
-
+	private Scanner sc;
 	private ArticleService articleService;
 	private MemberService memberService;
 	private Board board;
@@ -19,10 +19,11 @@ public class ArticleController extends Controller {
 	public ArticleController() {
 		articleService = Container.articleService;
 		memberService = Container.memberService;
+		sc = Container.scanner;
 
 	}
 
-	public void doCommand(Scanner sc, String command) {
+	public void doCommand(String command) {
 
 		// article add
 		if (command.equals("article add")) {
@@ -30,45 +31,39 @@ public class ArticleController extends Controller {
 				System.out.println("로그인 후 이용해 주세요.");
 				return;
 			}
+			articleAdd();
 
-			System.out.println("== 게시물 등록 ==");
-			System.out.printf("제목 : ");
-			String title = sc.nextLine();
-			System.out.printf("내용 : ");
-			String body = sc.nextLine();
-
-			int number = articleService.addArticle(title, body, Container.session.getLoginedId(),
-					Container.session.getSelectBoardId());
-
-			System.out.printf("%d번 게시물이 등록되었습니다.\n", number);
 		}
 
 		// article list
 		else if (command.startsWith("article list")) {
 
+			String[] str = command.split(" ");
+			int listNum = 0;
 			ArrayList<Article> articles = articleService.getArticles();
-
-			System.out.println("== 게시물 리스트 ==");
-			System.out.println("번호 / 날짜 / 작성자 / 제목 / 조회수");
-
-			for (Article article : articles) {
-				Member member = new Member();
-				member = memberService.getMemberByNum(article.getWriteMemberNum());
-				System.out.printf("%d / %s / %s / %s / %d\n", article.getId(), article.getRegDate(), member.getName(),
-						article.getTitle(), article.getArticleHit());
+			try {
+				listNum = Integer.parseInt(str[2]);
+			} catch (NumberFormatException e) {
+				System.out.println("페이지는 숫자로 입력해야 합니다.");
+				return;
+			} catch (ArrayIndexOutOfBoundsException e) {
+				listNum = 1;
+				printList(articles, listNum);
+				return;
 			}
+
+			printList(articles, listNum);
 
 		}
 
 		// article detail
 		else if (command.startsWith("article detail")) {
-			Article article = new Article();
 
 			String[] str = command.split(" ");
-			int articleNum = 0;
+			int articleId = 0;
 
 			try {
-				articleNum = Integer.parseInt(str[2]);
+				articleId = Integer.parseInt(str[2]);
 			} catch (NumberFormatException e) {
 				System.out.println("게시물 번호는 숫자로 입력해 주세요.");
 				return;
@@ -77,30 +72,17 @@ public class ArticleController extends Controller {
 				return;
 			}
 
-			Member member = new Member();
-			article = articleService.getArticleByNum(articleNum);
-			if (article == null) {
-				System.out.println("해당 게시물이 없습니다.");
-				return;
-			}
-			int id = article.getId();
-			String title = article.getTitle();
-			String body = article.getBody();
-			member = memberService.getMemberByNum(article.getWriteMemberNum());
-			String writer = member.getName();
-			int hit = article.getArticleHit();
+			articleDetail(command, articleId);
 
-			System.out.println("번호 / 제목 / 내용 / 작성자 / 조회수");
-			System.out.printf("%d / %s / %s / %s / %d\n", id, title, body, writer, hit);
 		}
 
 		// article delete
 		else if (command.startsWith("article delete")) {
 
 			String[] str = command.split(" ");
-			int articleNum = 0;
+			int articleId = 0;
 			try {
-				articleNum = Integer.parseInt(str[2]);
+				articleId = Integer.parseInt(str[2]);
 			} catch (NumberFormatException e) {
 				System.out.println("게시물 번호는 숫자로 입력해 주세요.");
 				return;
@@ -109,13 +91,13 @@ public class ArticleController extends Controller {
 				return;
 			}
 
-			Article article = articleService.getArticleByNum(articleNum);
+			Article article = articleService.getArticleByNum(articleId);
 			if (article == null) {
 				System.out.println("존재하지 않는 게시물입니다.");
 				return;
 			}
 
-			articleService.removeArticle(articleNum);
+			articleService.removeArticle(articleId);
 
 		}
 
@@ -123,9 +105,9 @@ public class ArticleController extends Controller {
 		else if (command.startsWith("article modify")) {
 
 			String[] str = command.split(" ");
-			int articleNum = 0;
+			int articleId = 0;
 			try {
-				articleNum = Integer.parseInt(str[2]);
+				articleId = Integer.parseInt(str[2]);
 			} catch (NumberFormatException e) {
 				System.out.println("게시물 번호는 숫자로 입력해 주세요.");
 				return;
@@ -133,20 +115,15 @@ public class ArticleController extends Controller {
 				System.out.println("게시물 번호를 입력해 주세요.");
 				return;
 			}
-			Article article = articleService.getArticleByNum(articleNum);
+			Article article = articleService.getArticleByNum(articleId);
 
 			if (article == null) {
 				System.out.println("존재하지 않는 게시물입니다.");
 				return;
 			}
 
-			System.out.printf("새 제목 : ");
-			String title = sc.nextLine();
-			System.out.printf("새 내용 : ");
-			String body = sc.nextLine();
-
-			articleService.modifyArticle(title, body, articleNum);
-
+			articleModify(articleId);
+			System.out.printf("%d번 게시물이 수정되었습니다.\n", articleId);
 		}
 
 		// article search
@@ -167,7 +144,7 @@ public class ArticleController extends Controller {
 			} catch (NumberFormatException e) {
 				System.out.println("페이지는 숫자로 입력해 주세요.");
 				return;
-			} catch (Exception e) {
+			} catch (ArrayIndexOutOfBoundsException e) {
 				if (searchArticles.size() == 0) {
 					System.out.println("검색 결과가 없습니다.");
 					return;
@@ -186,6 +163,7 @@ public class ArticleController extends Controller {
 				System.out.println("존재하지 않는 페이지입니다.");
 				return;
 			}
+
 			searchList(listNum, searchArticles);
 
 		}
@@ -219,8 +197,81 @@ public class ArticleController extends Controller {
 
 	}
 
-	// selectBoard 메소드
+	// printList
+	private void printList(ArrayList<Article> articles, int listNum) {
+		Article article;
+		Member member;
+		int itemsInAPage = 10;
+		int start = 0;
+		start += (listNum - 1) * itemsInAPage;
+		int end = start + (itemsInAPage - 1);
+		if (end >= articles.size()) {
+			end = articles.size() - 1;
+		}
+		System.out.println("== 게시물 리스트 ==");
+		System.out.println("번호 / 날짜 / 작성자 / 제목 / 조회수");
+		for (int i = start; i <= end; i++) {
+			article = articles.get(i);
+			member = memberService.getMemberById(article.getWriteMemberNum());
+			int id = article.getId();
+			String regDate = article.getRegDate();
+			String nickName = member.getName();
+			String title = article.getTitle();
+			int hit = article.getArticleHit();
+			System.out.printf(" %d / %s / %s / %s / %d\n", id, regDate, nickName, title, hit);
+		}
+
+	}
+
+	// articleModify
+	private void articleModify(int articleId) {
+		System.out.printf("새 제목 : ");
+		String title = sc.nextLine();
+		System.out.printf("새 내용 : ");
+		String body = sc.nextLine();
+
+		articleService.modifyArticle(title, body, articleId);
+
+	}
+
+	// articleDetail
+	private void articleDetail(String command, int articleId) {
+		Article article = new Article();
+		Member member = new Member();
+		article = articleService.getArticleByNum(articleId);
+		if (article == null) {
+			System.out.println("해당 게시물이 없습니다.");
+			return;
+		}
+		int id = article.getId();
+		String title = article.getTitle();
+		String body = article.getBody();
+		member = memberService.getMemberById(article.getWriteMemberNum());
+		String writer = member.getName();
+		int hit = article.getArticleHit();
+
+		System.out.println("번호 / 제목 / 내용 / 작성자 / 조회수");
+		System.out.printf("%d / %s / %s / %s / %d\n", id, title, body, writer, hit);
+
+	}
+
+	// articleAdd
+	private void articleAdd() {
+		System.out.println("== 게시물 등록 ==");
+		System.out.printf("제목 : ");
+		String title = sc.nextLine();
+		System.out.printf("내용 : ");
+		String body = sc.nextLine();
+
+		int number = articleService.addArticle(title, body, Container.session.getLoginedId(),
+				Container.session.getSelectBoardId());
+
+		System.out.printf("%d번 게시물이 등록되었습니다.\n", number);
+	}
+
+	// selectBoard
 	private void selectBoard(String[] str, int boardNum) {
+		
 		try {
 			boardNum = Integer.parseInt(str[2]);
 		} catch (NumberFormatException e) {
@@ -252,19 +303,16 @@ public class ArticleController extends Controller {
 
 	}
 
-	// makeBoard 메소드
+	// makeBoard
 	private void makeBoard(Scanner sc) {
 		Board board = new Board();
 
 		System.out.println("== 게시판 생성 ==");
 		System.out.printf("게시판 이름 : ");
 		String name = sc.nextLine();
-		int boardId = 0;
+
 		board = articleService.getBoardByName(name);
 		if (board != null) {
-			boardId = board.getBoardId();
-		}
-		if (articleService.isExistBoard(boardId)) {
 			System.out.println("이미 존재하는 게시판입니다.");
 			return;
 		}
@@ -273,25 +321,30 @@ public class ArticleController extends Controller {
 		System.out.printf("%s(%d번) 게시판이 생성되었습니다.\n", name, number);
 	}
 
-	// searchList 메소드
+	// searchList
 	public void searchList(int listNum, ArrayList<Article> articles) {
 		Member member;
 		Article article;
 		System.out.println("== 게시물 리스트 ==");
 
-		System.out.println("번호 / 제목 / 작성자");
+		System.out.println("번호 / 날짜 / 작성자 / 제목 / 조회수");
 		int itemsInAPage = 10;
-		int start = articles.size() - 1;
-		start -= (listNum - 1) * itemsInAPage;
-		int end = start - (itemsInAPage - 1);
-		if (end < 0) {
-			end = 0;
+		int start = 0;
+		start += (listNum - 1) * itemsInAPage;
+		int end = start + (itemsInAPage - 1);
+		if (end >= articles.size()) {
+			end = articles.size() - 1;
 		}
 
-		for (int i = start; i >= end; i--) {
+		for (int i = start; i <= end; i++) {
 			article = articles.get(i);
-			member = memberService.getMemberByNum(article.getWriteMemberNum());
-			System.out.printf(" %d / %s / %s\n", articles.get(i).getId(), articles.get(i).getTitle(), member.getName());
+			member = memberService.getMemberById(article.getWriteMemberNum());
+			int id = article.getId();
+			String regDate = article.getRegDate();
+			String nickName = member.getName();
+			String title = article.getTitle();
+			int hit = article.getArticleHit();
+			System.out.printf(" %d / %s / %s / %s / %d\n", id, regDate, nickName, title, hit);
 		}
 	}
 

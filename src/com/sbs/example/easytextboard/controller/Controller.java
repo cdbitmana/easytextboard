@@ -4,6 +4,6 @@ import java.util.Scanner;
 
 public abstract class Controller {
 
-	public abstract void doCommand(Scanner sc, String command);
+	public abstract void doCommand( String command);
 	
 }
