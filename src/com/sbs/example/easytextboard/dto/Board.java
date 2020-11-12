@@ -4,16 +4,9 @@ public class Board {
 
 	private int id;
 	private String name;
-	private int lastArticleId;
 
 	public Board() {
 
-		lastArticleId = 0;
-
-	}
-
-	public int getLastArticleId() {
-		return lastArticleId;
 	}
 
 	public int getBoardId() {
@@ -31,10 +24,6 @@ public class Board {
 
 	public void setBoardName(String name) {
 		this.name = name;
-	}
-
-	public void setLastArticleId(int lastArticleId) {
-		this.lastArticleId = lastArticleId;
 	}
 
 }

@@ -26,8 +26,8 @@ public class ArticleService {
 		return articleDao.getArticleByNum(number);
 	}
 
-	public void remove(int id) {
-		articleDao.remove(id);
+	public void removeArticle(int id) {
+		articleDao.removeArticle(id);
 	}
 
 	public ArrayList<Board> getBoards() {
@@ -42,22 +42,22 @@ public class ArticleService {
 		return articleDao.isExistBoard(id);
 	}
 
-	public int add(String title, String body, int loginedId, int selectBoardId) {
-		return articleDao.add(title, body, loginedId, selectBoardId);
+	public int addArticle(String title, String body, int loginedId, int selectBoardId) {
+		return articleDao.addArticle(title, body, loginedId, selectBoardId);
 	}
 
-	public void printList() {
-		articleDao.printList();
-
-	}
-
-	public void modify(String title, String body, int articleNum) {
-		articleDao.modify(title, body, articleNum);
+	public ArrayList<Article> getArticles() {
+		return articleDao.getArticles();
 
 	}
 
-	public ArrayList<Article> searchArticles(String searchKeyword) {
-		return articleDao.searchArticles(searchKeyword);
+	public void modifyArticle(String title, String body, int articleNum) {
+		articleDao.modifyArticle(title, body, articleNum);
+
+	}
+
+	public ArrayList<Article> getArticlesByKeyword(String searchKeyword) {
+		return articleDao.getArticlesByKeyword(searchKeyword);
 
 	}
 
@@ -66,4 +66,5 @@ public class ArticleService {
 
 	}
 
+	
 }

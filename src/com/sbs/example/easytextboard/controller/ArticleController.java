@@ -37,7 +37,7 @@ public class ArticleController extends Controller {
 			System.out.printf("내용 : ");
 			String body = sc.nextLine();
 
-			int number = articleService.add(title, body, Container.session.getLoginedId(),
+			int number = articleService.addArticle(title, body, Container.session.getLoginedId(),
 					Container.session.getSelectBoardId());
 
 			System.out.printf("%d번 게시물이 등록되었습니다.\n", number);
@@ -46,9 +46,17 @@ public class ArticleController extends Controller {
 		// article list
 		else if (command.startsWith("article list")) {
 
+			ArrayList<Article> articles = articleService.getArticles();
+
 			System.out.println("== 게시물 리스트 ==");
 			System.out.println("번호 / 날짜 / 작성자 / 제목 / 조회수");
-			print();
+
+			for (Article article : articles) {
+				Member member = new Member();
+				member = memberService.getMemberByNum(article.getWriteMemberNum());
+				System.out.printf("%d / %s / %s / %s / %d\n", article.getId(), article.getRegDate(), member.getName(),
+						article.getTitle(), article.getArticleHit());
+			}
 
 		}
 
@@ -75,7 +83,7 @@ public class ArticleController extends Controller {
 				System.out.println("해당 게시물이 없습니다.");
 				return;
 			}
-			int id = article.getNumber();
+			int id = article.getId();
 			String title = article.getTitle();
 			String body = article.getBody();
 			member = memberService.getMemberByNum(article.getWriteMemberNum());
@@ -107,7 +115,7 @@ public class ArticleController extends Controller {
 				return;
 			}
 
-			articleService.remove(articleNum);
+			articleService.removeArticle(articleNum);
 
 		}
 
@@ -137,7 +145,7 @@ public class ArticleController extends Controller {
 			System.out.printf("새 내용 : ");
 			String body = sc.nextLine();
 
-			articleService.modify(title, body, articleNum);
+			articleService.modifyArticle(title, body, articleNum);
 
 		}
 
@@ -148,7 +156,7 @@ public class ArticleController extends Controller {
 			int listNum = 0;
 			ArrayList<Article> searchArticles = new ArrayList<>();
 			try {
-				searchArticles = articleService.searchArticles(str[2]);
+				searchArticles = articleService.getArticlesByKeyword(str[2]);
 			} catch (Exception e) {
 				System.out.println("존재하지 않는 명령어");
 				return;
@@ -265,12 +273,6 @@ public class ArticleController extends Controller {
 		System.out.printf("%s(%d번) 게시판이 생성되었습니다.\n", name, number);
 	}
 
-	// print 메소드
-	public void print() {
-		articleService.printList();
-
-	}
-
 	// searchList 메소드
 	public void searchList(int listNum, ArrayList<Article> articles) {
 		Member member;
@@ -289,8 +291,7 @@ public class ArticleController extends Controller {
 		for (int i = start; i >= end; i--) {
 			article = articles.get(i);
 			member = memberService.getMemberByNum(article.getWriteMemberNum());
-			System.out.printf(" %d / %s / %s\n", articles.get(i).getNumber(), articles.get(i).getTitle(),
-					member.getName());
+			System.out.printf(" %d / %s / %s\n", articles.get(i).getId(), articles.get(i).getTitle(), member.getName());
 		}
 	}
 

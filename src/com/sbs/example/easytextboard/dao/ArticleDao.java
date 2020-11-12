@@ -8,15 +8,15 @@ import com.sbs.example.easytextboard.dto.*;
 
 public class ArticleDao {
 
-	private ArrayList<Article> articles;
 	private ArrayList<Board> boards;
 
-	private String url = "jdbc:mysql://localhost/a1";
+	private String url = "jdbc:mysql://localhost/a1?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
+	private String userId = "sbsst";
+	private String userPw = "sbs123414";
 
 	public ArticleDao() {
 
 		boards = new ArrayList<>();
-		articles = new ArrayList<>();
 
 	}
 
@@ -28,10 +28,9 @@ public class ArticleDao {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "select * from article where id = " + number + " and boardId ="
-					+ Container.session.getSelectBoardId();
+			String sql = "select * from article"+Container.session.getSelectBoardId()+" where id = " + number;
 
 			stmt = conn.createStatement();
 
@@ -41,17 +40,20 @@ public class ArticleDao {
 				Article article = new Article();
 				int id = rs.getInt(1);
 				String regDate = rs.getString(2);
-				String title = rs.getString(3);
-				String body = rs.getString(4);
-				int writerId = rs.getInt(5);
-				int boardId = rs.getInt(6);
+				String updateDate = rs.getString(3);
+				String title = rs.getString(4);
+				String body = rs.getString(5);
+				int writerId = rs.getInt(6);
 
-				article.setNumber(id);
+				int hit = rs.getInt(7);
+
+				article.setId(id);
 				article.setRegDate(regDate);
+				article.setUpdateDate(updateDate);
 				article.setTitle(title);
 				article.setBody(body);
 				article.setWriteMemberNum(writerId);
-				article.setBoardId(boardId);
+				article.setArticleHit(hit);
 
 				return article;
 
@@ -80,16 +82,16 @@ public class ArticleDao {
 	}
 
 	// remove
-	public void remove(int id) {
+	public void removeArticle(int id) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "delete from article where id =" + id;
+			String sql = "delete from article" + Container.session.getSelectBoardId() + " where id =" + id;
 
 			stmt = conn.createStatement();
 
@@ -119,186 +121,131 @@ public class ArticleDao {
 
 	}
 
-	// add
-	public int add(String title, String body, int writerNumber, int boardId) {
+	// addArticle
+	public int addArticle(String title, String body, int writerNumber, int boardId) {
+
 		Connection conn = null;
 		Statement stmt = null;
 		Statement stmt2 = null;
-		Statement stmt3 = null;
-		Statement stmt4 = null;
-		Statement stmt5 = null;
 		ResultSet rs = null;
-		int boardLastArticleId = 0;
-		try {
+		int id = 0;
 
+		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			url = "jdbc:mysql://localhost/a1";
+			conn = DriverManager.getConnection(url, userId, userPw);
 
-			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
-
-			String sql = "select * from `board` where id =" + boardId;
+			String sql = "insert into article" + boardId + " set regDate = now() , updateDate = now() , title = '"
+					+ title + "', `body` ='" + body + "', writerId =" + writerNumber + ", hit = 0";
 
 			stmt = conn.createStatement();
 
-			rs = stmt.executeQuery(sql);
+			stmt.executeUpdate(sql);
 
-			if (rs.next()) {
-				boardLastArticleId = rs.getInt(3);
-			}
-
-			sql = "insert into article set regDate = now(),title ='" + title + "', `body` ='" + body + "', writerId ="
-					+ writerNumber + ", boardId =" + boardId + ", boardLastArticleId =" + boardLastArticleId;
+			sql = "select * from article" + boardId + " order by id desc limit 1";
 
 			stmt2 = conn.createStatement();
 
-			stmt2.executeUpdate(sql);
+			rs = stmt2.executeQuery(sql);
 
-			sql = "select * from `board` where id =" + boardId;
+			rs.next();
 
-			stmt3 = conn.createStatement();
-
-			rs = stmt3.executeQuery(sql);
-
-			if (rs.next()) {
-				boardLastArticleId = rs.getInt(3);
-			}
-
-			sql = "update `board` set lastArticleId = " + (boardLastArticleId + 1) + " where id =" + boardId;
-
-			stmt4 = conn.createStatement();
-
-			stmt4.executeUpdate(sql);
-
-			sql = "select * from `board` where id =" + boardId;
-
-			stmt5 = conn.createStatement();
-
-			rs = stmt5.executeQuery(sql);
-
-			while (rs.next()) {
-				boardLastArticleId = rs.getInt(3);
-
-			}
-
-			return boardLastArticleId;
+			id = rs.getInt(1);
 
 		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패");
 
 		} catch (SQLException e) {
-			System.out.println("에러: " + e);
 
 		} finally {
 			try {
-				if (rs != null) {
+				if (rs != null && !rs.isClosed()) {
 					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-
-			}
-		}
-		return boardLastArticleId;
-
-	}
-
-	// printList
-	public void printList() {
-		Connection conn = null;
-		Statement stmt = null;
-		Statement stmt2 = null;
-		Statement stmt3 = null;
-		ResultSet rs = null;
-		ResultSet rs2 = null;
-
-		try {
-
-			int writerId = 0;
-			String nickname = "";
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			url = "jdbc:mysql://localhost/a1";
-
-			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
-
-			String sql = "select * from article where boardId = " + Container.session.getSelectBoardId()
-					+ " order by id desc";
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
-
-			String sql2 = "select * from article where boardId = " + Container.session.getSelectBoardId()
-					+ " order by id desc";
-			stmt2 = conn.createStatement();
-			rs = stmt2.executeQuery(sql2);
-
-			while (rs.next()) {
-
-				int hit = 0;
-				int id = rs.getInt(7);
-				String regDate = rs.getString(2);
-				String title = rs.getString(3);
-
-				writerId = rs.getInt(5);
-
-				sql = "select * from `member` where id =" + writerId;
-
-				stmt3 = conn.createStatement();
-
-				rs2 = stmt3.executeQuery(sql);
-				if (rs2.next()) {
-					nickname = rs.getString(4);
-				}
-
-				System.out.printf("%d / %s / %s / %s / %d\n", id, regDate, title, nickname, hit);
-
-			}
-
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패");
-		} catch (SQLException e) {
-			System.out.println("에러: " + e);
-
-		} finally {
-			try {
-				if (conn != null && !conn.isClosed()) {
-					conn.close();
 				}
 				if (stmt != null && !stmt.isClosed()) {
 					stmt.close();
 				}
-				if (rs != null && !rs.isClosed()) {
-					rs.close();
+				if (conn != null && !conn.isClosed()) {
+					conn.close();
 				}
-				if (rs2 != null && !rs2.isClosed()) {
-					rs2.close();
-				}
-
 			} catch (SQLException e) {
-				e.printStackTrace();
+
 			}
 		}
 
+		return id;
+
 	}
 
-	// modify
-	public void modify(String title, String body, int articleNum) {
+	// getArticles
+	public ArrayList<Article> getArticles() {
+		ArrayList<Article> articles = new ArrayList<>();
+		Article article;
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			conn = DriverManager.getConnection(url, userId, userPw);
+
+			String sql = "select * from article" + Container.session.getSelectBoardId() + " order by id desc";
+
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				String regDate = rs.getString(2);
+				String updateDate = rs.getString(3);
+				String title = rs.getString(4);
+				String body = rs.getString(5);
+				int writerId = rs.getInt(6);
+				int hit = rs.getInt(7);
+
+				article = new Article(id, regDate, updateDate, title, body, writerId, hit);
+
+				articles.add(article);
+
+			}
+
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		} finally {
+			try {
+				if (rs != null && !rs.isClosed()) {
+					rs.close();
+				}
+				if (stmt != null && !stmt.isClosed()) {
+					stmt.close();
+				}
+				if (conn != null && !conn.isClosed()) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+
+			}
+		}
+
+		return articles;
+
+	}
+
+	// modifyArticle
+	public void modifyArticle(String title, String body, int articleNum) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			url = "jdbc:mysql://localhost/a1";
+			conn = DriverManager.getConnection(url, userId, userPw);
 
-			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
-
-			String sql = "select * from article where id =" + articleNum;
+			String sql = "select * from article" + Container.session.getSelectBoardId() + " where id =" + articleNum;
 
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
@@ -307,7 +254,8 @@ public class ArticleDao {
 				return;
 			}
 
-			sql = "update article set title = '" + title + "', `body` = '" + body + "' where id = " + articleNum;
+			sql = "update article" + Container.session.getSelectBoardId() + " set title = '" + title + "', `body` = '"
+					+ body + "' where id = " + articleNum;
 
 			stmt.executeUpdate(sql);
 
@@ -319,13 +267,13 @@ public class ArticleDao {
 
 		} finally {
 			try {
-				if (rs != null) {
+				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
-				if (stmt != null) {
+				if (stmt != null && !stmt.isClosed()) {
 					stmt.close();
 				}
-				if (conn != null) {
+				if (conn != null && !conn.isClosed()) {
 					conn.close();
 				}
 			} catch (SQLException e) {
@@ -335,8 +283,8 @@ public class ArticleDao {
 
 	}
 
-	// searchArticles
-	public ArrayList<Article> searchArticles(String searchKeyword) {
+	// getArticlesByKeyword
+	public ArrayList<Article> getArticlesByKeyword(String searchKeyword) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -347,30 +295,26 @@ public class ArticleDao {
 
 			url = "jdbc:mysql://localhost/a1";
 
-			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "select * from article where title like '%" + searchKeyword + "%'" + " and boardId ="
-					+ Container.session.getSelectBoardId();
+			String sql = "select * from article" + Container.session.getSelectBoardId() + " where title like '%"
+					+ searchKeyword + "%'";
 
 			stmt = conn.createStatement();
 
 			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
-				Article article = new Article();
+				Article article;
 				int id = rs.getInt(1);
 				String regDate = rs.getString(2);
-				String title = rs.getString(3);
-				String body = rs.getString(4);
-				int writerId = rs.getInt(5);
-				int boardId = rs.getInt(6);
+				String updateDate = rs.getString(3);
+				String title = rs.getString(4);
+				String body = rs.getString(5);
+				int writerId = rs.getInt(6);
+				int hit = rs.getInt(7);
 
-				article.setNumber(id);
-				article.setRegDate(regDate);
-				article.setTitle(title);
-				article.setBody(body);
-				article.setWriteMemberNum(writerId);
-				article.setBoardId(boardId);
+				article = new Article(id, regDate, updateDate, title, body, writerId, hit);
 
 				articles.add(article);
 			}
@@ -383,13 +327,13 @@ public class ArticleDao {
 
 		} finally {
 			try {
-				if (rs != null) {
+				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
-				if (stmt != null) {
+				if (stmt != null && !stmt.isClosed()) {
 					stmt.close();
 				}
-				if (conn != null) {
+				if (conn != null && !conn.isClosed()) {
 					conn.close();
 				}
 			} catch (SQLException e) {
@@ -405,43 +349,61 @@ public class ArticleDao {
 	public int makeBoard(String name) {
 		Connection conn = null;
 		Statement stmt = null;
+		Statement stmt2 = null;
+		Statement stmt3 = null;
 		ResultSet rs = null;
-
+		int id = 0;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			url = "jdbc:mysql://localhost/a1";
 
-			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "insert into `board` set `name` = '" + name + "', lastArticleId =" + 0;
+			String sql = "insert into `board` set `name` = '" + name + "'";
 
 			stmt = conn.createStatement();
 
 			stmt.executeUpdate(sql);
 
-			sql = "select * from `board` where `name` = '" + name + "'";
+			sql = "select * from `board` where `name` = '" + name + "'" + "order by id desc limit 1";
 
-			rs = stmt.executeQuery(sql);
+			stmt2 = conn.createStatement();
+
+			rs = stmt2.executeQuery(sql);
 
 			while (rs.next()) {
-				int id = rs.getInt(1);
-
-				return id;
+				id = rs.getInt(1);
 			}
+
+			sql = "create table article" + id + " (id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,"
+					+ "regDate DATETIME NOT NULL," + "updateDate DATETIME NOT NULL," + "title VARCHAR(100) NOT NULL,"
+					+ "`body` TEXT NOT NULL," + "writerId INT(10) UNSIGNED NOT NULL,"
+					+ "hit INT(100) UNSIGNED NOT NULL)";
+
+			stmt3 = conn.createStatement();
+
+			stmt3.executeUpdate(sql);
+
 		} catch (ClassNotFoundException e) {
 
 		} catch (SQLException e) {
 
 		} finally {
 			try {
-				if (rs != null) {
+				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
-				if (stmt != null) {
+				if (stmt != null && !stmt.isClosed()) {
 					stmt.close();
 				}
-				if (conn != null) {
+				if (stmt2 != null && !stmt2.isClosed()) {
+					stmt2.close();
+				}
+				if (stmt3 != null & !stmt3.isClosed()) {
+					stmt3.close();
+				}
+				if (conn != null && !conn.isClosed()) {
 					conn.close();
 				}
 			} catch (SQLException e) {
@@ -449,7 +411,7 @@ public class ArticleDao {
 			}
 		}
 
-		return 0;
+		return id;
 	}
 
 	// getBoardByName
@@ -465,7 +427,7 @@ public class ArticleDao {
 
 			String url = "jdbc:mysql://localhost/a1";
 
-			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+			conn = DriverManager.getConnection(url, userId, userPw);
 
 			String sql = "select * from `board` where `name` = '" + name + "'";
 
@@ -480,7 +442,6 @@ public class ArticleDao {
 
 				board.setBoardId(id);
 				board.setBoardName(BoardName);
-				board.setLastArticleId(lastArticleId);
 
 				return board;
 
@@ -520,7 +481,7 @@ public class ArticleDao {
 
 			String url = "jdbc:mysql://localhost/a1";
 
-			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+			conn = DriverManager.getConnection(url, userId, userPw);
 
 			String sql = "select * from `board` where id =" + id;
 
@@ -566,7 +527,7 @@ public class ArticleDao {
 
 			String url = "jdbc:mysql://localhost/a1";
 
-			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+			conn = DriverManager.getConnection(url, userId, userPw);
 
 			String sql = "select * from `board` where id =" + id;
 
@@ -577,11 +538,9 @@ public class ArticleDao {
 			while (rs.next()) {
 				int boardId = rs.getInt(1);
 				String name = rs.getString(2);
-				int lastArticleId = rs.getInt(3);
 
 				board.setBoardId(boardId);
 				board.setBoardName(name);
-				board.setLastArticleId(lastArticleId);
 
 				return board;
 			}

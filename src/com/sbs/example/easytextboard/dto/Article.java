@@ -3,24 +3,42 @@ package com.sbs.example.easytextboard.dto;
 import java.util.Date;
 
 public class Article {
-	private int number;
+	private int id;
 	private String regDate;
+	private String updateDate;
 	private String title;
 	private String body;
-	private int writeMemberNum;
-	private int boardId;
+	private int writerId;
+	
 	private int hit;
 
-	public int getBoardId() {
-		return boardId;
+	public Article() {
+
 	}
+
+	public Article(int id, String regDate, String updateDate, String title, String body, int writerId,int hit) {
+		this.id = id;
+		this.regDate = regDate;
+		this.updateDate = updateDate;
+		this.title = title;
+		this.body = body;
+		this.writerId = writerId;
+		
+		this.hit = hit;
+	}
+
 	
+
 	public String getRegDate() {
 		return regDate;
 	}
 
-	public int getNumber() {
-		return number;
+	public String getUpdateDate() {
+		return updateDate;
+	}
+
+	public int getId() {
+		return this.id;
 	}
 
 	public String getTitle() {
@@ -30,22 +48,25 @@ public class Article {
 	public String getBody() {
 		return body;
 	}
-	
 
 	public int getWriteMemberNum() {
-		return writeMemberNum;
+		return writerId;
 	}
-	
+
 	public int getArticleHit() {
 		return hit;
 	}
 
-	public void setNumber(int number) {
-		this.number = number;
+	public void setId(int id) {
+		this.id = id;
 	}
-	
+
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
+	}
+
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
 	}
 
 	public void setTitle(String title) {
@@ -56,14 +77,12 @@ public class Article {
 		this.body = body;
 	}
 
-	public void setBoardId(int boardId) {
-		this.boardId = boardId;
-	}
+	
 
 	public void setWriteMemberNum(int writeMemberNum) {
-		this.writeMemberNum = writeMemberNum;
+		this.writerId = writeMemberNum;
 	}
-	
+
 	public void setArticleHit(int hit) {
 		this.hit = hit;
 	}

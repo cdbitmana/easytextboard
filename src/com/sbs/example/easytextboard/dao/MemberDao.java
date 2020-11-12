@@ -9,7 +9,7 @@ import com.sbs.example.easytextboard.dto.*;
 
 public class MemberDao {
 
-	private String url = "jdbc:mysql://localhost/a1";
+	private String url = "jdbc:mysql://localhost/a1?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
 
 	private ArrayList<Member> members;
 	int memberNum;
