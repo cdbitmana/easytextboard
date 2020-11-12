@@ -14,16 +14,8 @@ public class MemberService {
 		memberDao = Container.memberDao;
 	}
 
-	public boolean isExistId(String id) {
-		return memberDao.isExistId(id);
-	}
-
 	public Member getMemberByNum(int number) {
 		return memberDao.getMemberByNum(number);
-	}
-
-	public Member getMemberById(String id) {
-		return memberDao.getMemberById(id);
 	}
 
 	public int join(Scanner sc) {
@@ -36,11 +28,9 @@ public class MemberService {
 
 	}
 
-	
-
 	public Member login(Scanner sc) {
 		return memberDao.login(sc);
-		
+
 	}
 
 	public Member whoami() {

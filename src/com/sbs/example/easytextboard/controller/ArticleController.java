@@ -106,6 +106,7 @@ public class ArticleController extends Controller {
 				System.out.println("존재하지 않는 게시물입니다.");
 				return;
 			}
+
 			articleService.remove(articleNum);
 
 		}
@@ -196,12 +197,11 @@ public class ArticleController extends Controller {
 
 		// article currentBoard
 		else if (command.equals("article currentBoard")) {
-			for (Board board : articleService.getBoards()) {
-				if (board.getBoardId() == Container.session.getSelectBoardId()) {
-					System.out.printf("현재 %s 게시판입니다.\n", board.getBoardName());
-					break;
-				}
-			}
+			Board board = new Board();
+			board = articleService.getBoardById(Container.session.getSelectBoardId());
+			String name = board.getBoardName();
+			int id = board.getBoardId();
+			System.out.printf("%s(%d번) 게시판\n", name, id);
 		}
 
 		else {

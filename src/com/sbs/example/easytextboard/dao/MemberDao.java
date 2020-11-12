@@ -9,10 +9,7 @@ import com.sbs.example.easytextboard.dto.*;
 
 public class MemberDao {
 
-	Connection conn = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-	String url = "jdbc:mysql://localhost/a1";
+	private String url = "jdbc:mysql://localhost/a1";
 
 	private ArrayList<Member> members;
 	int memberNum;
@@ -23,17 +20,10 @@ public class MemberDao {
 
 	}
 
-	public boolean isExistId(String id) {
-		for (Member member : members) {
-			if (member.getId().equals(id)) {
-
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public Member getMemberByNum(int number) {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		Member member = new Member();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -44,9 +34,9 @@ public class MemberDao {
 
 			String sql = "select * from `member` where id = " + number;
 
-			pstmt = conn.prepareStatement(sql);
+			stmt = conn.createStatement();
 
-			rs = pstmt.executeQuery();
+			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				int id = rs.getInt(1);
@@ -67,31 +57,32 @@ public class MemberDao {
 
 		} catch (SQLException e) {
 
-		}
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
 
-		return null;
-	}
-
-	public Member getMemberById(String id) {
-		for (Member member : members) {
-			if (member.getId().equals(id)) {
-				return member;
 			}
 		}
+
 		return null;
 	}
 
-	public Member getLoginedMember(int loginedId) {
-		for (Member member : members) {
-			if (member.getNumber() == loginedId) {
-				return member;
-			}
-		}
-		return null;
-
-	}
-
+	// join
 	public int join(Scanner sc) {
+		Connection conn = null;
+		Statement stmt = null;
+		Statement stmt2 = null;
+		Statement stmt3 = null;
+		ResultSet rs = null;
 		int number = 0;
 		try {
 
@@ -109,11 +100,11 @@ public class MemberDao {
 			}
 
 			String sql = "select * from `member` where loginId ='" + id + "'";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
-				System.out.println("이미 존재하는 아이디입니다.");
+
 				return -1;
 			}
 
@@ -133,28 +124,51 @@ public class MemberDao {
 
 			sql = "insert `member` set loginId ='" + id + "', pw ='" + pw + "', `name` ='" + name + "'";
 
-			pstmt = conn.prepareStatement(sql);
-			pstmt.executeUpdate();
+			stmt2 = conn.createStatement();
+			stmt2.executeUpdate(sql);
 
 			sql = "select * from `member` order by id desc limit 1";
 
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			stmt3 = conn.createStatement();
+			rs = stmt3.executeQuery(sql);
 
 			while (rs.next()) {
 				number = rs.getInt(1);
 				return number;
 			}
 		} catch (ClassNotFoundException e) {
-			return number;
+
 		} catch (SQLException e) {
-			return number;
+
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (stmt2 != null) {
+					stmt2.close();
+				}
+				if (stmt3 != null) {
+					stmt3.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+
+			}
 		}
 		return number;
 	}
 
 	// modify
 	public void modify(int number, String newName) {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -163,19 +177,37 @@ public class MemberDao {
 
 			String sql = "update `member` set name = '" + newName + "' where id =" + number;
 
-			pstmt = conn.prepareStatement(sql);
+			stmt = conn.createStatement();
 
-			pstmt.executeUpdate();
+			stmt.executeUpdate(sql);
 
 		} catch (ClassNotFoundException e) {
 
 		} catch (SQLException e) {
 
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+
+			}
 		}
 	}
 
 	// login
 	public Member login(Scanner sc) {
+		Connection conn = null;
+		Statement stmt = null;
+		Statement stmt2 = null;
+		ResultSet rs = null;
 		Member member = new Member();
 
 		try {
@@ -193,9 +225,9 @@ public class MemberDao {
 
 			String sql = "select * from `member` where loginId ='" + id + "'";
 
-			pstmt = conn.prepareStatement(sql);
+			stmt = conn.createStatement();
 
-			rs = pstmt.executeQuery();
+			rs = stmt.executeQuery(sql);
 
 			if (!rs.next()) {
 				System.out.println("존재하지 않는 아이디입니다.");
@@ -210,9 +242,9 @@ public class MemberDao {
 			}
 			sql = "select * from `member` where loginId ='" + id + "'and pw = '" + pw + "'";
 
-			pstmt = conn.prepareStatement(sql);
+			stmt2 = conn.createStatement();
 
-			rs = pstmt.executeQuery();
+			rs = stmt2.executeQuery(sql);
 
 			if (!rs.next()) {
 				System.out.println("비밀번호가 맞지 않습니다.");
@@ -229,11 +261,32 @@ public class MemberDao {
 			return null;
 		} catch (SQLException e) {
 			return null;
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (stmt2 != null) {
+					stmt2.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+
+			} catch (SQLException e) {
+
+			}
 		}
 
 	}
 
 	public Member whoami() {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		Member member = new Member();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -242,9 +295,9 @@ public class MemberDao {
 
 			String sql = "select * from `member` where id=" + Container.session.getLoginedId();
 
-			pstmt = conn.prepareStatement(sql);
+			stmt = conn.createStatement();
 
-			rs = pstmt.executeQuery();
+			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				int id = rs.getInt(1);
@@ -264,6 +317,20 @@ public class MemberDao {
 
 		} catch (SQLException e) {
 
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+
+			}
 		}
 
 		return null;
