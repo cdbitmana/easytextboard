@@ -12,6 +12,7 @@ public class MemberDao {
 	Connection conn = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
+	String url = "jdbc:mysql://localhost/a1";
 
 	private ArrayList<Member> members;
 	int memberNum;
@@ -33,11 +34,41 @@ public class MemberDao {
 	}
 
 	public Member getMemberByNum(int number) {
-		for (Member member : members) {
-			if (member.getNumber() == number) {
+		Member member = new Member();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			url = "jdbc:mysql://localhost/a1";
+
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+
+			String sql = "select * from `member` where id = " + number;
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				String loginId = rs.getString(2);
+				String pw = rs.getString(3);
+				String name = rs.getString(4);
+
+				member.setNumber(id);
+				member.setId(loginId);
+				member.setPw(pw);
+				member.setName(name);
+
 				return member;
+
 			}
+
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
 		}
+
 		return null;
 	}
 
@@ -66,7 +97,7 @@ public class MemberDao {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			String url = "jdbc:mysql://localhost/a1";
+			url = "jdbc:mysql://localhost/a1";
 
 			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
@@ -122,31 +153,35 @@ public class MemberDao {
 		return number;
 	}
 
+	// modify
 	public void modify(int number, String newName) {
-		Member member;
-		member = getLoginedMember(number);
-		member.setName(newName);
 
-	}
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
 
-	public void whoami() {
-		for (Member member : members) {
-			if (member.getNumber() == Container.session.getLoginedId()) {
-				System.out.println("== 회원 정보 ==");
-				System.out.println("번호 / 아이디 / 이름");
-				System.out.printf("%d / %s / %s\n", member.getNumber(), member.getId(), member.getName());
-			}
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+
+			String sql = "update `member` set name = '" + newName + "' where id =" + number;
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
 		}
-
 	}
 
+	// login
 	public Member login(Scanner sc) {
 		Member member = new Member();
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			String url = "jdbc:mysql://localhost/a1";
+			url = "jdbc:mysql://localhost/a1";
 
 			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 			System.out.printf("아이디 : ");
@@ -196,6 +231,42 @@ public class MemberDao {
 			return null;
 		}
 
+	}
+
+	public Member whoami() {
+		Member member = new Member();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+
+			String sql = "select * from `member` where id=" + Container.session.getLoginedId();
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				String loginId = rs.getString(2);
+				String pw = rs.getString(3);
+				String name = rs.getString(4);
+
+				member.setNumber(id);
+				member.setId(loginId);
+				member.setPw(pw);
+				member.setName(name);
+
+				return member;
+			}
+
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		}
+
+		return null;
 	}
 
 }

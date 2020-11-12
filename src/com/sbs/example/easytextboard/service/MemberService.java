@@ -36,14 +36,15 @@ public class MemberService {
 
 	}
 
-	public void whoami() {
-		memberDao.whoami();
-
-	}
+	
 
 	public Member login(Scanner sc) {
 		return memberDao.login(sc);
 		
+	}
+
+	public Member whoami() {
+		return memberDao.whoami();
 	}
 
 }

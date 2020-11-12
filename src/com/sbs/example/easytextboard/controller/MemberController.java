@@ -37,8 +37,11 @@ public class MemberController extends Controller {
 			}
 
 			member = memberService.login(sc);
+			if (member == null) {
+				return;
+			}
 			Container.session.setLoginedId(member.getNumber());
-			System.out.println(member.getNumber());
+			System.out.printf("%d번 회원으로 로그인 되었습니다.\n", member.getNumber());
 		}
 
 		// member logout
@@ -72,7 +75,16 @@ public class MemberController extends Controller {
 				System.out.println("로그인 후 이용해 주세요.");
 				return;
 			}
-			memberService.whoami();
+			Member member = new Member();
+			member = memberService.whoami();
+
+			int id = member.getNumber();
+			String loginId = member.getId();
+			String name = member.getName();
+
+			System.out.printf("회원번호 : %d\n", id);
+			System.out.printf("아이디 : %s\n", loginId);
+			System.out.printf("이름 : %s\n", name);
 		} else {
 			System.out.println("존재하지 않는 명령어");
 		}

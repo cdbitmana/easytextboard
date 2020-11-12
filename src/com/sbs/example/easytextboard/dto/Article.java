@@ -9,6 +9,7 @@ public class Article {
 	private String body;
 	private int writeMemberNum;
 	private int boardId;
+	private int hit;
 
 	public int getBoardId() {
 		return boardId;
@@ -29,9 +30,14 @@ public class Article {
 	public String getBody() {
 		return body;
 	}
+	
 
 	public int getWriteMemberNum() {
 		return writeMemberNum;
+	}
+	
+	public int getArticleHit() {
+		return hit;
 	}
 
 	public void setNumber(int number) {
@@ -56,5 +62,9 @@ public class Article {
 
 	public void setWriteMemberNum(int writeMemberNum) {
 		this.writeMemberNum = writeMemberNum;
+	}
+	
+	public void setArticleHit(int hit) {
+		this.hit = hit;
 	}
 }

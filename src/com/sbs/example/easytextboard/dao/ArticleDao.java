@@ -14,7 +14,10 @@ public class ArticleDao {
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
 
+	private String url = "jdbc:mysql://localhost/a1";
+
 	public ArticleDao() {
+
 		boards = new ArrayList<>();
 		articles = new ArrayList<>();
 
@@ -24,16 +27,16 @@ public class ArticleDao {
 		return articles;
 	}
 
+	// getArticleByNum
 	public Article getArticleByNum(int number) {
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			String url = "jdbc:mysql://localhost/a1";
-
 			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
-			String sql = "select * from article where id = " + number;
+			String sql = "select * from article where id = " + number + " and boardId ="
+					+ Container.session.getSelectBoardId();
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -67,16 +70,18 @@ public class ArticleDao {
 		return null;
 	}
 
+	// getArticleByIndex
 	public Article getArticleByIndex(int index) {
 		return articles.get(index);
 	}
 
+	// remove
 	public void remove(int id) {
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			String url = "jdbc:mysql://localhost/a1";
+			url = "jdbc:mysql://localhost/a1";
 
 			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
@@ -100,27 +105,26 @@ public class ArticleDao {
 
 	}
 
+	// searchArticle
 	public ArrayList<Article> searchArticle(String title) {
 		ArrayList<Article> searchArticles = new ArrayList<>();
-		for (Article article : articles) {
-			if (article.getTitle().contains(title) && article.getBoardId() == Container.session.getSelectBoardId()) {
-				searchArticles.add(article);
-			}
-		}
+
 		return searchArticles;
 	}
 
+	// getBoards
 	public ArrayList<Board> getBoards() {
 		return boards;
 	}
 
+	// add
 	public int add(String title, String body, int writerNumber, int boardId) {
-		int num = 0;
+		int boardLastArticleId = 0;
 		try {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			String url = "jdbc:mysql://localhost/a1";
+			url = "jdbc:mysql://localhost/a1";
 
 			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
@@ -131,25 +135,41 @@ public class ArticleDao {
 
 			pstmt.executeUpdate();
 
-			sql = "select * from article order by id desc limit 1";
+			sql = "select * from `board` where id =" + boardId;
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				boardLastArticleId = rs.getInt(3);
+			}
+
+			sql = "update `board` set lastArticleId = " + (boardLastArticleId + 1) + " where id =" + boardId;
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.executeUpdate();
+
+			sql = "select * from `board` where id =" + boardId;
 
 			pstmt = conn.prepareStatement(sql);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				num = rs.getInt(1);
+				boardLastArticleId = rs.getInt(3);
 
 			}
 
-			return num;
+			return boardLastArticleId;
 
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패");
-			return num;
+
 		} catch (SQLException e) {
 			System.out.println("에러: " + e);
-			return num;
+
 		} finally {
 			try {
 				if (conn != null && !conn.isClosed()) {
@@ -160,9 +180,11 @@ public class ArticleDao {
 
 			}
 		}
+		return boardLastArticleId;
 
 	}
 
+	// printList
 	public void printList() {
 
 		try {
@@ -173,17 +195,19 @@ public class ArticleDao {
 			String nickname = "";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			String url = "jdbc:mysql://localhost/a1";
+			url = "jdbc:mysql://localhost/a1";
 
 			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
-			String sql = "select * from article order by id desc";
+			String sql = "select * from article where boardId = " + Container.session.getSelectBoardId()
+					+ " order by id desc";
 
 			pstmt = conn.prepareStatement(sql);
 
 			rs = pstmt.executeQuery();
 
-			String sql2 = "select * from article order by id desc";
+			String sql2 = "select * from article where boardId = " + Container.session.getSelectBoardId()
+					+ " order by id desc";
 
 			pstmt2 = conn.prepareStatement(sql2);
 			rs2 = pstmt2.executeQuery();
@@ -204,7 +228,7 @@ public class ArticleDao {
 				rs3 = pstmt2.executeQuery();
 				if (rs3.next()) {
 					nickname = rs3.getString(4);
-				} 
+				}
 
 				System.out.printf("%d / %s / %s / %s / %d\n", id, regDate, title, nickname, hit);
 
@@ -234,12 +258,13 @@ public class ArticleDao {
 
 	}
 
+	// modify
 	public void modify(String title, String body, int articleNum) {
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			String url = "jdbc:mysql://localhost/a1";
+			url = "jdbc:mysql://localhost/a1";
 
 			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
@@ -265,6 +290,196 @@ public class ArticleDao {
 
 		}
 
+	}
+
+	// searchArticles
+	public ArrayList<Article> searchArticles(String searchKeyword) {
+
+		ArrayList<Article> articles = new ArrayList<>();
+
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			url = "jdbc:mysql://localhost/a1";
+
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+
+			String sql = "select * from article where title like '%" + searchKeyword + "%'";
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				Article article = new Article();
+				int id = rs.getInt(1);
+				String regDate = rs.getString(2);
+				String title = rs.getString(3);
+				String body = rs.getString(4);
+				int writerId = rs.getInt(5);
+				int boardId = rs.getInt(6);
+
+				article.setNumber(id);
+				article.setRegDate(regDate);
+				article.setTitle(title);
+				article.setBody(body);
+				article.setWriteMemberNum(writerId);
+				article.setBoardId(boardId);
+
+				articles.add(article);
+			}
+
+			return articles;
+
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		}
+
+		return null;
+
+	}
+
+	// makeBoard
+	public int makeBoard(String name) {
+
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			url = "jdbc:mysql://localhost/a1";
+
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+
+			String sql = "insert into `board` set `name` = '" + name + "', lastArticleId =" + 0;
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.executeUpdate();
+
+			sql = "select * from `board` where `name` = '" + name + "'";
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt(1);
+
+				return id;
+			}
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		}
+
+		return 0;
+	}
+
+	// getBoardByName
+	public Board getBoardByName(String name) {
+		Board board = new Board();
+
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			String url = "jdbc:mysql://localhost/a1";
+
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+
+			String sql = "select * from `board` where `name` = '" + name + "'";
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				String BoardName = rs.getString(2);
+				int lastArticleId = rs.getInt(3);
+
+				board.setBoardId(id);
+				board.setBoardName(BoardName);
+				board.setLastArticleId(lastArticleId);
+
+				return board;
+
+			}
+
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		}
+
+		return null;
+	}
+
+	// isExistBoard
+	public boolean isExistBoard(int id) {
+
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			String url = "jdbc:mysql://localhost/a1";
+
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+
+			String sql = "select * from `board` where id =" + id;
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		}
+		return false;
+	}
+
+	// getBoardById
+	public Board getBoardById(int id) {
+		Board board = new Board();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			String url = "jdbc:mysql://localhost/a1";
+
+			conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+
+			String sql = "select * from `board` where id =" + id;
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int boardId = rs.getInt(1);
+				String name = rs.getString(2);
+				int lastArticleId = rs.getInt(3);
+
+				board.setBoardId(boardId);
+				board.setBoardName(name);
+				board.setLastArticleId(lastArticleId);
+
+				return board;
+			}
+
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		}
+
+		return null;
 	}
 
 }

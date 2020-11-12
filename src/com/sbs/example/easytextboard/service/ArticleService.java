@@ -9,25 +9,18 @@ import com.sbs.example.easytextboard.dto.*;
 public class ArticleService {
 
 	private ArticleDao articleDao;
-	private int boardNumber;
+	
 	private ArrayList<Board> boards;
 
 	public ArticleService() {
 		articleDao = Container.articleDao;
 		boards = articleDao.getBoards();
-		boardNumber = 0;
+		
 
 	}
 
 	public int makeBoard(String name) {
-		Board board = new Board();
-		board.setBoardId(boardNumber + 1);
-		board.setBoardName(name);
-		boardNumber = board.getBoardId();
-
-		boards.add(board);
-
-		return boardNumber;
+		return articleDao.makeBoard(name);
 
 	}
 
@@ -57,21 +50,11 @@ public class ArticleService {
 	}
 
 	public Board getBoardById(int id) {
-		for (Board board : boards) {
-			if (board.getBoardId() == id) {
-				return board;
-			}
-		}
-		return null;
+		return articleDao.getBoardById(id);
 	}
 
 	public boolean isExistBoard(int id) {
-		for (Board board : boards) {
-			if (board.getBoardId() == id) {
-				return true;
-			}
-		}
-		return false;
+		return articleDao.isExistBoard(id);
 	}
 
 	public ArrayList<Article> getArticlesByBoardId() {
@@ -98,5 +81,16 @@ public class ArticleService {
 		articleDao.modify(title,body,articleNum);
 		
 	}
+
+	public ArrayList<Article> searchArticles(String searchKeyword) {
+		return articleDao.searchArticles(searchKeyword);
+		
+	}
+
+	public Board getBoardByName(String name) {
+		return articleDao.getBoardByName(name);
+		
+	}
+
 
 }
