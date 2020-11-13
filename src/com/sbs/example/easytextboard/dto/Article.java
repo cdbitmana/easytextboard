@@ -49,11 +49,11 @@ public class Article {
 		return body;
 	}
 
-	public int getWriteMemberNum() {
+	public int getWriteMemberId() {
 		return writerId;
 	}
 
-	public int getArticleHit() {
+	public int getHit() {
 		return hit;
 	}
 
@@ -79,11 +79,11 @@ public class Article {
 
 	
 
-	public void setWriteMemberNum(int writeMemberNum) {
-		this.writerId = writeMemberNum;
+	public void setWriteMemberId(int writerId) {
+		this.writerId = writerId;
 	}
 
-	public void setArticleHit(int hit) {
+	public void setHit(int hit) {
 		this.hit = hit;
 	}
 }

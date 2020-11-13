@@ -20,8 +20,8 @@ public class MemberService {
 
 	
 
-	public void modify(int number, String newName) {
-		memberDao.modify(number, newName);
+	public void doModify(int number, String newName) {
+		memberDao.doModify(number, newName);
 
 	}
 
@@ -33,8 +33,8 @@ public class MemberService {
 		return memberDao.getMemberByLoginId(loginId);
 	}
 
-	public int memberJoin(String loginId, String pw, String name) {
-		return memberDao.memberJoin(loginId,pw,name);
+	public int doJoin(String loginId, String pw, String name) {
+		return memberDao.doJoin(loginId,pw,name);
 	}
 
 }

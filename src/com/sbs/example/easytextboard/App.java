@@ -28,6 +28,7 @@ public class App {
 	public void run() {
 
 		Scanner scanner = new Scanner(System.in);
+
 		Controller controller;
 		while (true) {
 			System.out.printf("명령어) ");

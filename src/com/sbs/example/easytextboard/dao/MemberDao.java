@@ -21,31 +21,31 @@ public class MemberDao {
 	}
 
 	// getMemberByNum
-	public Member getMemberById(int number) {
+	public Member getMemberById(int id) {
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Member member = new Member();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			url = "jdbc:mysql://localhost/a1";
-
 			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "select * from `member` where id = " + number;
+			String sql = "select * from `member` where id = ?";
 
-			stmt = conn.createStatement();
+			pstmt = conn.prepareStatement(sql);
 
-			rs = stmt.executeQuery(sql);
+			pstmt.setInt(1, id);
+
+			rs = pstmt.executeQuery(sql);
 
 			while (rs.next()) {
-				int id = rs.getInt(1);
+				int memberId = rs.getInt(1);
 				String loginId = rs.getString(2);
 				String pw = rs.getString(3);
 				String name = rs.getString(4);
 
-				member.setNumber(id);
+				member.setNumber(memberId);
 				member.setId(loginId);
 				member.setPw(pw);
 				member.setName(name);
@@ -63,8 +63,8 @@ public class MemberDao {
 				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
-				if (stmt != null && !stmt.isClosed()) {
-					stmt.close();
+				if (pstmt != null && !pstmt.isClosed()) {
+					pstmt.close();
 				}
 				if (conn != null && !conn.isClosed()) {
 					conn.close();
@@ -74,13 +74,13 @@ public class MemberDao {
 			}
 		}
 
-		return null;
+		return member;
 	}
 
-	// modify
-	public void modify(int number, String newName) {
+	// doModify
+	public void doModify(int number, String newName) {
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
@@ -88,11 +88,11 @@ public class MemberDao {
 
 			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "update `member` set name = '" + newName + "' where id =" + number;
+			String sql = "update `member` set `name` =  ?";
 
-			stmt = conn.createStatement();
+			pstmt = conn.prepareStatement(sql);
 
-			stmt.executeUpdate(sql);
+			pstmt.executeUpdate(sql);
 
 		} catch (ClassNotFoundException e) {
 
@@ -103,8 +103,8 @@ public class MemberDao {
 				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
-				if (stmt != null && !stmt.isClosed()) {
-					stmt.close();
+				if (pstmt != null && !pstmt.isClosed()) {
+					pstmt.close();
 				}
 				if (conn != null && !conn.isClosed()) {
 					conn.close();
@@ -118,7 +118,7 @@ public class MemberDao {
 	// getLoginedMember
 	public Member getLoginedMember() {
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Member member = new Member();
 		try {
@@ -126,11 +126,13 @@ public class MemberDao {
 
 			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "select * from `member` where id=" + Container.session.getLoginedId();
+			String sql = "select * from `member` where id = ?";
 
-			stmt = conn.createStatement();
+			pstmt = conn.prepareStatement(sql);
 
-			rs = stmt.executeQuery(sql);
+			pstmt.setInt(1, Container.session.getLoginedId());
+
+			rs = pstmt.executeQuery(sql);
 
 			while (rs.next()) {
 				int id = rs.getInt(1);
@@ -155,8 +157,8 @@ public class MemberDao {
 				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
-				if (stmt != null && !stmt.isClosed()) {
-					stmt.close();
+				if (pstmt != null && !pstmt.isClosed()) {
+					pstmt.close();
 				}
 				if (conn != null && !conn.isClosed()) {
 					conn.close();
@@ -166,25 +168,27 @@ public class MemberDao {
 			}
 		}
 
-		return null;
+		return member;
 	}
 
 	// getMemberByLoginId
 	public Member getMemberByLoginId(String loginId) {
 		Member member = new Member();
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "select * from `member` where loginId = '" + loginId + "'";
+			String sql = "select * from `member` where loginId = ?";
 
-			stmt = conn.createStatement();
+			pstmt = conn.prepareStatement(sql);
 
-			rs = stmt.executeQuery(sql);
+			pstmt.setString(1, loginId);
+
+			rs = pstmt.executeQuery(sql);
 
 			while (rs.next()) {
 				int id = rs.getInt(1);
@@ -209,8 +213,8 @@ public class MemberDao {
 				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
-				if (stmt != null && !stmt.isClosed()) {
-					stmt.close();
+				if (pstmt != null && !pstmt.isClosed()) {
+					pstmt.close();
 				}
 				if (conn != null && !conn.isClosed()) {
 					conn.close();
@@ -220,13 +224,13 @@ public class MemberDao {
 			}
 		}
 
-		return null;
+		return member;
 	}
 
-	// memberJoin
-	public int memberJoin(String loginId, String pw, String name) {
+	// doJoin
+	public int doJoin(String loginId, String pw, String name) {
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int id = 0;
 		try {
@@ -234,16 +238,17 @@ public class MemberDao {
 
 			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "insert into `member` set loginId = '" + loginId + "', pw = '" + pw + "', name = '" + name
-					+ "'";
+			String sql = "insert into `member` set loginId = ? , pw = ? , `name` = ?";
 
-			stmt = conn.createStatement();
+			pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-			stmt.executeUpdate(sql);
+			pstmt.setString(1, loginId);
+			pstmt.setString(2, pw);
+			pstmt.setString(3, name);
 
-			sql = "select * from `member` order by id desc limit 1";
+			pstmt.executeUpdate(sql);
 
-			rs = stmt.executeQuery(sql);
+			rs = pstmt.getGeneratedKeys();
 
 			rs.next();
 
@@ -258,8 +263,8 @@ public class MemberDao {
 				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
-				if (stmt != null && !stmt.isClosed()) {
-					stmt.close();
+				if (pstmt != null && !pstmt.isClosed()) {
+					pstmt.close();
 				}
 				if (conn != null && !conn.isClosed()) {
 					conn.close();
