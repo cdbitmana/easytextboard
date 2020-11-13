@@ -52,8 +52,8 @@ public class MemberController extends Controller {
 		Member member = new Member();
 		member = memberService.getLoginedMember();
 
-		int id = member.getNumber();
-		String loginId = member.getId();
+		int id = member.getId();
+		String loginId = member.getloginId();
 		String name = member.getName();
 
 		System.out.printf("회원번호 : %d\n", id);
@@ -139,8 +139,8 @@ public class MemberController extends Controller {
 			return;
 		}
 
-		System.out.printf("%d번 회원으로 로그인 되었습니다.\n", member.getNumber());
-		Container.session.setLoginedId(member.getNumber());
+		System.out.printf("%d번 회원으로 로그인 되었습니다.\n", member.getId());
+		Container.session.setLoginedId(member.getId());
 
 	}
 

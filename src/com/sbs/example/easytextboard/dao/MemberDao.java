@@ -1,8 +1,6 @@
 package com.sbs.example.easytextboard.dao;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dto.*;
@@ -11,21 +9,20 @@ public class MemberDao {
 
 	private String url = "jdbc:mysql://localhost/a1?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
 
-	private ArrayList<Member> members;
 	private String userId = "sbsst";
 	private String userPw = "sbs123414";
 
 	public MemberDao() {
-		members = new ArrayList<>();
 
 	}
 
-	// getMemberByNum
+	// getMemberById
 	public Member getMemberById(int id) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Member member = new Member();
+		Member member = null;
+
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -37,20 +34,19 @@ public class MemberDao {
 
 			pstmt.setInt(1, id);
 
-			rs = pstmt.executeQuery(sql);
+			rs = pstmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
+				member = new Member();
 				int memberId = rs.getInt(1);
 				String loginId = rs.getString(2);
 				String pw = rs.getString(3);
 				String name = rs.getString(4);
 
-				member.setNumber(memberId);
+				member.setId(memberId);
 				member.setId(loginId);
 				member.setPw(pw);
 				member.setName(name);
-
-				return member;
 
 			}
 
@@ -78,7 +74,7 @@ public class MemberDao {
 	}
 
 	// doModify
-	public void doModify(int number, String newName) {
+	public void doModify(int id, String newName) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -88,11 +84,14 @@ public class MemberDao {
 
 			conn = DriverManager.getConnection(url, userId, userPw);
 
-			String sql = "update `member` set `name` =  ?";
+			String sql = "update `member` set `name` =  ? where id = ?";
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.executeUpdate(sql);
+			pstmt.setString(1, newName);
+			pstmt.setInt(2, id);
+
+			pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException e) {
 
@@ -120,7 +119,7 @@ public class MemberDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Member member = new Member();
+		Member member = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -132,20 +131,20 @@ public class MemberDao {
 
 			pstmt.setInt(1, Container.session.getLoginedId());
 
-			rs = pstmt.executeQuery(sql);
+			rs = pstmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
+				member = new Member();
 				int id = rs.getInt(1);
 				String loginId = rs.getString(2);
 				String pw = rs.getString(3);
 				String name = rs.getString(4);
 
-				member.setNumber(id);
+				member.setId(id);
 				member.setId(loginId);
 				member.setPw(pw);
 				member.setName(name);
 
-				return member;
 			}
 
 		} catch (ClassNotFoundException e) {
@@ -173,7 +172,7 @@ public class MemberDao {
 
 	// getMemberByLoginId
 	public Member getMemberByLoginId(String loginId) {
-		Member member = new Member();
+		Member member = null;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -188,15 +187,16 @@ public class MemberDao {
 
 			pstmt.setString(1, loginId);
 
-			rs = pstmt.executeQuery(sql);
+			rs = pstmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
+				member = new Member();
 				int id = rs.getInt(1);
 				String loginId2 = rs.getString(2);
 				String pw = rs.getString(3);
 				String name = rs.getString(4);
 
-				member.setNumber(id);
+				member.setId(id);
 				member.setId(loginId2);
 				member.setPw(pw);
 				member.setName(name);
@@ -246,7 +246,7 @@ public class MemberDao {
 			pstmt.setString(2, pw);
 			pstmt.setString(3, name);
 
-			pstmt.executeUpdate(sql);
+			pstmt.executeUpdate();
 
 			rs = pstmt.getGeneratedKeys();
 

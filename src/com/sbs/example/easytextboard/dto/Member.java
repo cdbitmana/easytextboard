@@ -1,17 +1,17 @@
 package com.sbs.example.easytextboard.dto;
 
 public class Member {
-	private int number;
-	private String id;
+	private int id;
+	private String loginId;
 	private String pw;
 	private String name;
 
-	public int getNumber() {
-		return number;
+	public int getId() {
+		return id;
 	}
 
-	public String getId() {
-		return id;
+	public String getloginId() {
+		return loginId;
 	}
 
 	public String getPw() {
@@ -22,12 +22,12 @@ public class Member {
 		return name;
 	}
 
-	public void setNumber(int number) {
-		this.number = number;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setId(String loginId) {
+		this.loginId = loginId;
 	}
 
 	public void setPw(String pw) {

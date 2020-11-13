@@ -1,7 +1,5 @@
 package com.sbs.example.easytextboard.dto;
 
-import java.util.Date;
-
 public class Article {
 	private int id;
 	private String regDate;
@@ -9,31 +7,33 @@ public class Article {
 	private String title;
 	private String body;
 	private int writerId;
-	
+
 	private int hit;
 
 	public Article() {
 
 	}
 
-	public Article(int id, String regDate, String updateDate, String title, String body, int writerId,int hit) {
+	public Article(int id, String regDate, String updateDate, String title, String body, int writerId, int hit) {
 		this.id = id;
 		this.regDate = regDate;
 		this.updateDate = updateDate;
 		this.title = title;
 		this.body = body;
 		this.writerId = writerId;
-		
+
 		this.hit = hit;
 	}
-
-	
 
 	public String getRegDate() {
 		return regDate;
 	}
 
 	public String getUpdateDate() {
+		return updateDate;
+	}
+
+	public String getupdateDate() {
 		return updateDate;
 	}
 
@@ -77,8 +77,6 @@ public class Article {
 		this.body = body;
 	}
 
-	
-
 	public void setWriteMemberId(int writerId) {
 		this.writerId = writerId;
 	}
@@ -86,4 +84,5 @@ public class Article {
 	public void setHit(int hit) {
 		this.hit = hit;
 	}
+
 }

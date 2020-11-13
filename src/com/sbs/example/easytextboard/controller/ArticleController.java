@@ -19,7 +19,6 @@ public class ArticleController extends Controller {
 		articleService = Container.articleService;
 		memberService = Container.memberService;
 		sc = Container.scanner;
-
 	}
 
 	public void doCommand(String command) {
@@ -66,6 +65,7 @@ public class ArticleController extends Controller {
 
 	}
 
+	// showCurrentBoard
 	private void showCurrentBoard() {
 		Board board = null;
 		board = articleService.getBoardById(Container.session.getSelectBoardId());
@@ -114,29 +114,9 @@ public class ArticleController extends Controller {
 			System.out.println("페이지는 숫자로 입력해 주세요.");
 			return;
 		} catch (ArrayIndexOutOfBoundsException e) {
+
 			pageNumber = 1;
-			int itemsInAPage = 10;
-			int start = 0;
-			start = (pageNumber - 1) * itemsInAPage;
-			int end = start + itemsInAPage;
-			if (end >= searchArticles.size()) {
-				end = searchArticles.size() - 1;
-			}
-			System.out.println("== 게시물 리스트 ==");
-			System.out.println("번호 / 작성날짜 / 작성자 / 제목 / 내용 / 조회수");
-
-			for (int i = start; i <= end; i++) {
-				Member member = null;
-				member = memberService.getMemberById(searchArticles.get(i).getWriteMemberId());
-				int id = searchArticles.get(i).getId();
-				String regDate = searchArticles.get(i).getRegDate();
-				String name = member.getName();
-				String title = searchArticles.get(i).getTitle();
-				String body = searchArticles.get(i).getBody();
-				int hit = searchArticles.get(i).getHit();
-				System.out.printf("%d / %s / %s / %s / %s / %d\n", id, regDate, name, title, body, hit);
-			}
-
+			showAPage(pageNumber, searchArticles);
 			return;
 		}
 
@@ -149,27 +129,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		int itemsInAPage = 10;
-		int start = 0;
-		start = (pageNumber - 1) * itemsInAPage;
-		int end = start + itemsInAPage;
-		if (end >= searchArticles.size()) {
-			end = searchArticles.size() - 1;
-		}
-		System.out.println("== 게시물 리스트 ==");
-		System.out.println("번호 / 작성날짜 / 작성자 / 제목 / 내용 / 조회수");
-
-		for (int i = start; i <= end; i++) {
-			Member member = null;
-			member = memberService.getMemberById(searchArticles.get(i).getWriteMemberId());
-			int id = searchArticles.get(i).getId();
-			String regDate = searchArticles.get(i).getRegDate();
-			String name = member.getName();
-			String title = searchArticles.get(i).getTitle();
-			String body = searchArticles.get(i).getBody();
-			int hit = searchArticles.get(i).getHit();
-			System.out.printf("%d / %s / %s / %s / %s / %d\n", id, regDate, name, title, body, hit);
-		}
+		showAPage(pageNumber, searchArticles);
 
 	}
 
@@ -193,6 +153,11 @@ public class ArticleController extends Controller {
 			return;
 		}
 
+		if (Container.session.getLoginedId() != article.getWriteMemberId()) {
+			System.out.println("본인이 작성한 글만 수정할 수 있습니다.");
+			return;
+		}
+
 		System.out.printf("새 제목 : ");
 		String title = sc.nextLine();
 
@@ -206,6 +171,10 @@ public class ArticleController extends Controller {
 
 	// doDelete
 	private void doDelete(String command) {
+		if (!Container.session.isLogined()) {
+			System.out.println("로그인 후 이용해 주세요.");
+			return;
+		}
 
 		String[] commands = command.split(" ");
 		int articleId = 0;
@@ -222,6 +191,11 @@ public class ArticleController extends Controller {
 		Article article = articleService.getArticleById(articleId);
 		if (article == null) {
 			System.out.println("존재하지 않는 게시물입니다.");
+			return;
+		}
+
+		if (Container.session.getLoginedId() != article.getWriteMemberId()) {
+			System.out.println("본인이 작성한 글만 삭제할 수 있습니다.");
 			return;
 		}
 
@@ -248,11 +222,17 @@ public class ArticleController extends Controller {
 		}
 
 		article = articleService.getArticleById(articleId);
+
+		if (article == null) {
+			System.out.println("존재하지 않는 게시물입니다.");
+			return;
+		}
 		member = memberService.getMemberById(article.getWriteMemberId());
 
 		System.out.println("== 게시물 상세 ==");
 		System.out.printf("번호 : %d\n", article.getId());
 		System.out.printf("작성일 : %s\n", article.getRegDate());
+		System.out.printf("수정일 : %s\n", article.getupdateDate());
 		System.out.printf("작성자 : %s\n", member.getName());
 		System.out.printf("제목 : %s\n", article.getTitle());
 		System.out.printf("내용 : %s\n", article.getBody());
@@ -274,18 +254,26 @@ public class ArticleController extends Controller {
 			return;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			pageNumber = 1;
-		}
-		int itemsInAPage = 10;
-		int start = 0;
-		start = (pageNumber - 1) * itemsInAPage;
-		int end = start + itemsInAPage;
-		if (end >= articles.size()) {
-			end = articles.size() - 1;
+			showAPage(pageNumber, articles);
+			return;
 		}
 
 		System.out.println("== 게시물 리스트 ==");
-		System.out.println("번호 / 작성날짜 / 작성자 / 제목 / 내용 / 조회수");
 
+		showAPage(pageNumber, articles);
+
+	}
+
+	// showAPage
+	private void showAPage(int pageNumber, ArrayList<Article> articles) {
+		int itemsInAPage = 10;
+		int start = 0;
+		start += (pageNumber - 1) * itemsInAPage;
+		int end = start + (itemsInAPage - 1);
+		if (end >= articles.size()) {
+			end = articles.size() - 1;
+		}
+		System.out.println("번호 / 작성날짜 / 작성자 / 제목 / 내용 / 조회수");
 		for (int i = start; i <= end; i++) {
 			Member member = null;
 			member = memberService.getMemberById(articles.get(i).getWriteMemberId());
@@ -297,7 +285,6 @@ public class ArticleController extends Controller {
 			int hit = articles.get(i).getHit();
 			System.out.printf("%d / %s / %s / %s / %s / %d\n", id, regDate, name, title, body, hit);
 		}
-
 	}
 
 	// doAdd

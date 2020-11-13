@@ -1,7 +1,5 @@
 package com.sbs.example.easytextboard;
 
-import java.util.ArrayList;
-
 import java.util.Scanner;
 
 import com.sbs.example.easytextboard.container.Container;
