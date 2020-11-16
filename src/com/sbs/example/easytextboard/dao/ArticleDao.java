@@ -202,6 +202,7 @@ public class ArticleDao {
 	public int doMakeBoard(String name) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
 		ResultSet rs = null;
 		int id = 0;
 		try {
@@ -225,11 +226,11 @@ public class ArticleDao {
 
 			sql = "create table article? ( id int(10) unsigned not null primary key auto_increment , regDate datetime not null, updateDate datetime not null , title varchar(200) not null , `body` text not null ,writerId int (10) unsigned not null , hit int (100) unsigned not null)";
 
-			pstmt = con.prepareStatement(sql);
+			pstmt2 = con.prepareStatement(sql);
 
-			pstmt.setInt(1, id);
+			pstmt2.setInt(1, id);
 
-			pstmt.executeUpdate();
+			pstmt2.executeUpdate();
 
 		} catch (ClassNotFoundException e) {
 
@@ -242,6 +243,9 @@ public class ArticleDao {
 				}
 				if (pstmt != null && !pstmt.isClosed()) {
 					pstmt.close();
+				}
+				if (pstmt2 != null && !pstmt2.isClosed()) {
+					pstmt2.close();
 				}
 				if (con != null && !con.isClosed()) {
 					con.close();

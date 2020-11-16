@@ -6,6 +6,7 @@ import com.sbs.example.easytextboard.container.Container;
 import com.sbs.example.easytextboard.controller.*;
 
 import com.sbs.example.easytextboard.service.*;
+import com.sbs.example.mysqlutil.MysqlUtil;
 
 public class App {
 	ArticleController articleController;
@@ -26,13 +27,14 @@ public class App {
 	public void run() {
 
 		Scanner scanner = new Scanner(System.in);
-
 		Controller controller;
+
 		while (true) {
 			System.out.printf("명령어) ");
 			String command = scanner.nextLine();
 
-			// 프로그램 종료
+			MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "exam3");
+
 			if (command.equals("system exit")) {
 				System.out.println("프로그램을 종료합니다.");
 				break;
@@ -44,12 +46,14 @@ public class App {
 				System.out.println("존재하지 않는 명령어");
 				continue;
 			}
+
 			controller.doCommand(command);
 
 		}
 		scanner.close();
 	}
 
+	// getControllerByCmd
 	public Controller getControllerByCmd(String command) {
 		if (command.startsWith("article")) {
 			return articleController;

@@ -76,6 +76,7 @@ public class ArticleController extends Controller {
 
 	// doSelectBoard
 	private void doSelectBoard(String command) {
+
 		Board board = null;
 		String[] commands = command.split(" ");
 		int id = 0;
@@ -90,6 +91,12 @@ public class ArticleController extends Controller {
 		}
 
 		board = articleService.getBoardById(id);
+
+		if (Container.session.getSelectBoardId() == id) {
+			System.out.printf("이미 %s(%d번) 게시판입니다.\n", board.getBoardName(), board.getBoardId());
+			return;
+		}
+
 		Container.session.setSelectBoardId(board.getBoardId());
 
 		System.out.printf("%s(%d번) 게시판이 선택되었습니다.\n", board.getBoardName(), board.getBoardId());
@@ -142,7 +149,7 @@ public class ArticleController extends Controller {
 		} catch (NumberFormatException e) {
 			System.out.println("게시물 번호는 숫자로 입력해 주세요.");
 			return;
-		} catch (Exception e) {
+		} catch (ArrayIndexOutOfBoundsException e) {
 			System.out.println("게시물 번호를 입력해 주세요.");
 			return;
 		}
@@ -216,7 +223,7 @@ public class ArticleController extends Controller {
 		} catch (NumberFormatException e) {
 			System.out.println("게시물 번호는 숫자로 입력해 주세요.");
 			return;
-		} catch (Exception e) {
+		} catch (ArrayIndexOutOfBoundsException e) {
 			System.out.println("게시물 번호를 입력해 주세요.");
 			return;
 		}
