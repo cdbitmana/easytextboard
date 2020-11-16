@@ -2,6 +2,7 @@ package com.sbs.example.easytextboard.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM article? where id = ?", Container.session.getSelectBoardId(), id);
+		sql.append("SELECT * FROM article? WHERE id = ?", Container.session.getSelectBoardId(), id);
 
 		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
 
