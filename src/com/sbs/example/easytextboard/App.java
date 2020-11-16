@@ -6,7 +6,7 @@ import com.sbs.example.easytextboard.container.Container;
 import com.sbs.example.easytextboard.controller.*;
 
 import com.sbs.example.easytextboard.service.*;
-import com.sbs.example.mysqlutil.MysqlUtil;
+import com.sbs.example.easytextboard.mysqlutil.*;
 
 public class App {
 	ArticleController articleController;
