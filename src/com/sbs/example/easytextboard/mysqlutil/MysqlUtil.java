@@ -64,7 +64,7 @@ public class MysqlUtil {
 
 		if (connections.containsKey(currentThreadId) == false) {
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
+				Class.forName("com.mysql.cj.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
 				throw new MysqlUtilException(e);
 			}
@@ -181,7 +181,7 @@ public class MysqlUtil {
 		for (String key : row.keySet()) {
 			return ((int) row.get(key)) == 1;
 		}
-
+		
 		return false;
 	}
 

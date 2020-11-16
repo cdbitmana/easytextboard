@@ -2,15 +2,15 @@ package com.sbs.example.easytextboard.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dto.*;
+import com.sbs.example.easytextboard.mysqlutil.MysqlUtil;
+import com.sbs.example.easytextboard.mysqlutil.SecSql;
 
 public class ArticleDao {
-
-	private String url = "jdbc:mysql://localhost/a1?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-	private String userId = "sbsst";
-	private String userPw = "sbs123414";
 
 	public ArticleDao() {
 
@@ -18,120 +18,52 @@ public class ArticleDao {
 
 	// getArticleById
 	public Article getArticleById(int id) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+
 		Article article = null;
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			conn = DriverManager.getConnection(url, userId, userPw);
+		SecSql sql = new SecSql();
 
-			String sql = "select * from article? where id = ?";
+		sql.append("SELECT * FROM article? where id = ?", Container.session.getSelectBoardId(), id);
 
-			pstmt = conn.prepareStatement(sql);
+		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
 
-			pstmt.setInt(1, Container.session.getSelectBoardId());
-			pstmt.setInt(2, id);
-
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				article = new Article();
-				int articleId = rs.getInt(1);
-				String regDate = rs.getString(2);
-				String updateDate = rs.getString(3);
-				String title = rs.getString(4);
-				String body = rs.getString(5);
-				int writerId = rs.getInt(6);
-				int hit = rs.getInt(7);
-
-				article.setId(articleId);
-				article.setRegDate(regDate);
-				article.setUpdateDate(updateDate);
-				article.setTitle(title);
-				article.setBody(body);
-				article.setWriteMemberId(writerId);
-				article.setHit(hit);
-			}
-
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-
-			}
+		if (articleMap.size() > 0) {
+			article = new Article();
+			article.setId((int) articleMap.get("id"));
+			article.setRegDate((String) articleMap.get("regDate"));
+			article.setUpdateDate((String) articleMap.get("updateDate"));
+			article.setTitle((String) articleMap.get("title"));
+			article.setBody((String) articleMap.get("body"));
+			article.setWriterId((int) articleMap.get("writerId"));
+			article.setHit((int) articleMap.get("hit"));
 		}
+
 		return article;
 	}
 
 	// getArticles
 	public ArrayList<Article> getArticles() {
 		ArrayList<Article> articles = new ArrayList<>();
-		Article article;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		Article article = null;
 
-		try {
+		SecSql sql = new SecSql();
 
-			Class.forName("com.mysql.cj.jdbc.Driver");
+		sql.append("SELECT * FROM article? ORDER BY id DESC", Container.session.getSelectBoardId());
 
-			conn = DriverManager.getConnection(url, userId, userPw);
+		List<Map<String, Object>> articlesMapList = MysqlUtil.selectRows(sql);
 
-			String sql = "select * from article? order by id desc";
+		for (Map<String, Object> articleMap : articlesMapList) {
+			article = new Article();
+			article.setId((int) articleMap.get("id"));
+			article.setRegDate((String) articleMap.get("regDate"));
+			article.setUpdateDate((String) articleMap.get("updateDate"));
+			article.setTitle((String) articleMap.get("title"));
+			article.setBody((String) articleMap.get("body"));
+			article.setWriterId((int) articleMap.get("writerId"));
+			article.setHit((int) articleMap.get("hit"));
 
-			pstmt = conn.prepareStatement(sql);
+			articles.add(article);
 
-			pstmt.setInt(1, Container.session.getSelectBoardId());
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				int id = rs.getInt(1);
-				String regDate = rs.getString(2);
-				String updateDate = rs.getString(3);
-				String title = rs.getString(4);
-				String body = rs.getString(5);
-				int writerId = rs.getInt(6);
-				int hit = rs.getInt(7);
-
-				article = new Article(id, regDate, updateDate, title, body, writerId, hit);
-
-				articles.add(article);
-
-			}
-
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		} finally {
-			try {
-				if (rs != null && !rs.isClosed()) {
-					rs.close();
-				}
-				if (pstmt != null && !pstmt.isClosed()) {
-					pstmt.close();
-				}
-				if (conn != null && !conn.isClosed()) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-
-			}
 		}
 
 		return articles;
@@ -140,58 +72,30 @@ public class ArticleDao {
 
 	// getArticlesByKeyword
 	public ArrayList<Article> getArticlesByKeyword(String searchKeyword) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+
 		ArrayList<Article> articles = new ArrayList<>();
 
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
+		Article article = null;
 
-			conn = DriverManager.getConnection(url, userId, userPw);
+		SecSql sql = new SecSql();
 
-			String sql = "select * from article? where title like concat('%',?,'%') order by id desc";
+		sql.append("SELECT * FROM article? where title like CONCAT ('%' , ? , '%') ORDER BY id DESC",
+				Container.session.getSelectBoardId(), searchKeyword);
 
-			pstmt = conn.prepareStatement(sql);
+		List<Map<String, Object>> articlesMapList = MysqlUtil.selectRows(sql);
 
-			pstmt.setInt(1, Container.session.getSelectBoardId());
-			pstmt.setString(2, searchKeyword);
+		for (Map<String, Object> articleMap : articlesMapList) {
+			article = new Article();
+			article.setId((int) articleMap.get("id"));
+			article.setRegDate((String) articleMap.get("regDate"));
+			article.setUpdateDate((String) articleMap.get("updateDate"));
+			article.setTitle((String) articleMap.get("title"));
+			article.setBody((String) articleMap.get("body"));
+			article.setWriterId((int) articleMap.get("writerId"));
+			article.setHit((int) articleMap.get("hit"));
 
-			rs = pstmt.executeQuery();
+			articles.add(article);
 
-			while (rs.next()) {
-				Article article;
-				int id = rs.getInt(1);
-				String regDate = rs.getString(2);
-				String updateDate = rs.getString(3);
-				String title = rs.getString(4);
-				String body = rs.getString(5);
-				int writerId = rs.getInt(6);
-				int hit = rs.getInt(7);
-
-				article = new Article(id, regDate, updateDate, title, body, writerId, hit);
-
-				articles.add(article);
-			}
-
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		} finally {
-			try {
-				if (rs != null && !rs.isClosed()) {
-					rs.close();
-				}
-				if (pstmt != null && !pstmt.isClosed()) {
-					pstmt.close();
-				}
-				if (conn != null && !conn.isClosed()) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-
-			}
 		}
 
 		return articles;
@@ -200,60 +104,21 @@ public class ArticleDao {
 
 	// doMakeBoard
 	public int doMakeBoard(String name) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		PreparedStatement pstmt2 = null;
-		ResultSet rs = null;
 		int id = 0;
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			con = DriverManager.getConnection(url, userId, userPw);
+		SecSql sql = new SecSql();
 
-			String sql = "insert into `board` set `name` = ?";
+		sql.append("INSERT INTO `board` set `name` = ?", name);
 
-			pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		id = MysqlUtil.insert(sql);
 
-			pstmt.setString(1, name);
+		SecSql sql2 = new SecSql();
 
-			pstmt.executeUpdate();
+		sql2.append(
+				"CREATE TABLE article? ( id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT , regDate DATETIME NOT NULL , updateDate DATETIME NOT NULL , title VARCHAR(200) NOT NULL , `body` TEXT NOT NULL , writerId INT(10) UNSIGNED NOT NULL , hit INT(100) UNSIGNED NOT NULL)",
+				id);
 
-			rs = pstmt.getGeneratedKeys();
-
-			rs.next();
-
-			id = rs.getInt(1);
-
-			sql = "create table article? ( id int(10) unsigned not null primary key auto_increment , regDate datetime not null, updateDate datetime not null , title varchar(200) not null , `body` text not null ,writerId int (10) unsigned not null , hit int (100) unsigned not null)";
-
-			pstmt2 = con.prepareStatement(sql);
-
-			pstmt2.setInt(1, id);
-
-			pstmt2.executeUpdate();
-
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		} finally {
-			try {
-				if (rs != null && !rs.isClosed()) {
-					rs.close();
-				}
-				if (pstmt != null && !pstmt.isClosed()) {
-					pstmt.close();
-				}
-				if (pstmt2 != null && !pstmt2.isClosed()) {
-					pstmt2.close();
-				}
-				if (con != null && !con.isClosed()) {
-					con.close();
-				}
-			} catch (SQLException e) {
-
-			}
-		}
+		MysqlUtil.update(sql2);
 
 		return id;
 	}
@@ -261,52 +126,18 @@ public class ArticleDao {
 	// getBoardByName
 	public Board getBoardByName(String name) {
 
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		Board board = null;
 
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
+		SecSql sql = new SecSql();
 
-			conn = DriverManager.getConnection(url, userId, userPw);
+		sql.append("SELECT * FROM `board` where `name` = ?", name);
 
-			String sql = "select * from `board` where `name` = ?";
+		Map<String, Object> boardMap = MysqlUtil.selectRow(sql);
 
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, name);
-
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				board = new Board();
-				int id = rs.getInt(1);
-				String BoardName = rs.getString(2);
-
-				board.setBoardId(id);
-				board.setBoardName(BoardName);
-
-			}
-
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-
-			}
+		if (boardMap.size() > 0) {
+			board = new Board();
+			board.setBoardId((int) boardMap.get("id"));
+			board.setBoardName((String) boardMap.get("name"));
 		}
 
 		return board;
@@ -314,47 +145,19 @@ public class ArticleDao {
 
 	// getBoardById
 	public Board getBoardById(int id) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+
 		Board board = null;
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			conn = DriverManager.getConnection(url, userId, userPw);
+		SecSql sql = new SecSql();
 
-			String sql = "select * from `board` where id = ?";
+		sql.append("SELECT * FROM `board` where id = ?", id);
 
-			pstmt = conn.prepareStatement(sql);
+		Map<String, Object> boardMap = MysqlUtil.selectRow(sql);
 
-			pstmt.setInt(1, id);
-
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				board = new Board();
-				board.setBoardId(rs.getInt(1));
-				board.setBoardName(rs.getString(2));
-			}
-
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-
-			}
+		if (boardMap.size() > 0) {
+			board = new Board();
+			board.setBoardId((int) boardMap.get("id"));
+			board.setBoardName((String) boardMap.get("name"));
 		}
 
 		return board;
@@ -362,50 +165,15 @@ public class ArticleDao {
 
 	// doAdd
 	public int doAdd(String title, String body, int loginedId, int selectBoardId) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+
 		int id = 0;
+		SecSql sql = new SecSql();
 
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
+		sql.append(
+				"INSERT INTO article? SET regDate = NOW() , updateDate = NOW() , title = ? , `body` = ? , writerId = ? , hit = 0",
+				Container.session.getSelectBoardId(), title, body, Container.session.getLoginedId());
 
-			con = DriverManager.getConnection(url, userId, userPw);
-
-			String sql = "insert into article? set regDate = now() , updateDate = now(), title = ? , `body` = ? , writerId = ? , hit = 0";
-
-			pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-			pstmt.setInt(1, Container.session.getSelectBoardId());
-			pstmt.setString(2, title);
-			pstmt.setString(3, body);
-			pstmt.setInt(4, Container.session.getLoginedId());
-
-			pstmt.executeUpdate();
-
-			rs = pstmt.getGeneratedKeys();
-			rs.next();
-			id = rs.getInt(1);
-
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		} finally {
-			try {
-				if (rs != null && !rs.isClosed()) {
-					rs.close();
-				}
-				if (pstmt != null && !pstmt.isClosed()) {
-					pstmt.close();
-				}
-				if (con != null && !con.isClosed()) {
-					con.close();
-				}
-			} catch (SQLException e) {
-
-			}
-		}
+		id = MysqlUtil.insert(sql);
 
 		return id;
 
@@ -413,56 +181,25 @@ public class ArticleDao {
 
 	// doDelete
 	public void doDelete(int articleId) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
 
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
+		SecSql sql = new SecSql();
 
-			con = DriverManager.getConnection(url, userId, userPw);
+		sql.append("DELETE FROM article? where id = ?", Container.session.getSelectBoardId(), articleId);
 
-			String sql = "delete from article? where id = ?";
-
-			pstmt = con.prepareStatement(sql);
-
-			pstmt.setInt(1, Container.session.getSelectBoardId());
-			pstmt.setInt(2, articleId);
-
-			pstmt.executeUpdate();
-
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		}
+		MysqlUtil.delete(sql);
 
 	}
 
 	// doModify
 	public void doModify(int articleId, String title, String body) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			con = DriverManager.getConnection(url, userId, userPw);
+		SecSql sql = new SecSql();
 
-			String sql = "update article? set updateDate = now() , title = ? , `body` = ? where id = ?";
+		sql.append("UPDATE article? SET updateDate = NOW() , title = ? , `body` = ? WHERE id = ?",
+				Container.session.getSelectBoardId(), title, body, articleId);
 
-			pstmt = con.prepareStatement(sql);
+		MysqlUtil.update(sql);
 
-			pstmt.setInt(1, Container.session.getSelectBoardId());
-			pstmt.setString(2, title);
-			pstmt.setString(3, body);
-			pstmt.setInt(4, articleId);
-
-			pstmt.executeUpdate();
-
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		}
 	}
 
 }

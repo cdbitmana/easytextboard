@@ -7,7 +7,6 @@ public class Article {
 	private String title;
 	private String body;
 	private int writerId;
-
 	private int hit;
 
 	public Article() {
@@ -77,7 +76,7 @@ public class Article {
 		this.body = body;
 	}
 
-	public void setWriteMemberId(int writerId) {
+	public void setWriterId(int writerId) {
 		this.writerId = writerId;
 	}
 
