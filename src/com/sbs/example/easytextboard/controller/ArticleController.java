@@ -287,7 +287,7 @@ public class ArticleController extends Controller {
 			System.out.printf("\n");
 		} else {
 			for (int i = 0; i < replys.size(); i++) {
-				member = memberService.getMemberById(replys.get(i).getmemberId());
+				member = memberService.getMemberById(replys.get(i).getMemberId());
 				System.out.printf("  %d. %s - %s\n", replys.get(i).getId(), replys.get(i).getBody(), member.getName());
 			}
 

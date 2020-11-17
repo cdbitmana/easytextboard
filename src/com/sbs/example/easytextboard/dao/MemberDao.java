@@ -1,9 +1,8 @@
 package com.sbs.example.easytextboard.dao;
 
-import java.sql.*;
+
 import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
+
 
 import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dto.*;
