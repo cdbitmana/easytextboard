@@ -1,6 +1,5 @@
 package com.sbs.example.easytextboard.dao;
 
-
 import java.util.ArrayList;
 
 import java.util.List;
@@ -24,7 +23,9 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM article WHERE id = ? AND boardId = ?", id, Container.session.getSelectBoardId());
+		sql.append("SELECT * FROM article");
+		sql.append("WHERE id = ? ", id);
+		sql.append("AND boardId = ? ", Container.session.getSelectBoardId());
 
 		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
 
@@ -43,7 +44,9 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM article WHERE boardId = ? ORDER BY id DESC", Container.session.getSelectBoardId());
+		sql.append("SELECT * FROM article ");
+		sql.append("WHERE boardId = ? ", Container.session.getSelectBoardId());
+		sql.append("ORDER BY id DESC");
 
 		List<Map<String, Object>> articlesMapList = MysqlUtil.selectRows(sql);
 
@@ -67,8 +70,9 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM article WHERE title LIKE CONCAT ('%' , ? , '%') AND boardId = ? ORDER BY id DESC",
-				searchKeyword, Container.session.getSelectBoardId());
+		sql.append("SELECT * FROM article ");
+		sql.append("WHERE title LIKE CONCAT ('%' , ? , '%')", searchKeyword);
+		sql.append("AND boardId = ? ORDER BY id DESC", Container.session.getSelectBoardId());
 
 		List<Map<String, Object>> articlesMapList = MysqlUtil.selectRows(sql);
 
@@ -89,7 +93,9 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("INSERT INTO `board` SET `name` = ? , articleId = 0", name);
+		sql.append("INSERT INTO `board` ");
+		sql.append("SET `name` = ?", name);
+		sql.append(", articleId = 0");
 
 		id = MysqlUtil.insert(sql);
 
@@ -103,7 +109,8 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM `board` WHERE `name` = ?", name);
+		sql.append("SELECT * FROM `board`");
+		sql.append("WHERE `name` = ?", name);
 
 		Map<String, Object> boardMap = MysqlUtil.selectRow(sql);
 
@@ -122,7 +129,8 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM `board` WHERE id = ?", id);
+		sql.append("SELECT * FROM `board` ");
+		sql.append("WHERE id = ?", id);
 
 		Map<String, Object> boardMap = MysqlUtil.selectRow(sql);
 
@@ -140,10 +148,15 @@ public class ArticleDao {
 		int id = 0;
 		SecSql sql = new SecSql();
 		Board board = getBoardById(Container.session.getSelectBoardId());
-		sql.append(
-				"INSERT INTO article SET id = ? ,regDate = NOW() , updateDate = NOW() , title = ? , `body` = ? , writerId = ? , hit = 0 , replyId = 0, boardId = ?",
-				board.getArticleId() + 1, title, body, Container.session.getLoginedId(),
-				Container.session.getSelectBoardId());
+		sql.append("INSERT INTO article ");
+		sql.append("SET id = ?", board.getArticleId() + 1);
+		sql.append(",regDate = NOW() ");
+		sql.append(", updateDate = NOW()");
+		sql.append(", title = ? ", title);
+		sql.append(", `body` = ?", body);
+		sql.append(", writerId = ?", Container.session.getLoginedId());
+		sql.append(", hit = 0 , replyId = 0");
+		sql.append(", boardId = ?", Container.session.getSelectBoardId());
 
 		MysqlUtil.insert(sql);
 
@@ -151,7 +164,8 @@ public class ArticleDao {
 
 		Article article = getArticleById(board.getArticleId() + 1);
 
-		sql2.append("UPDATE `board` SET articleID = ?", article.getId());
+		sql2.append("UPDATE `board` ");
+		sql2.append("SET articleID = ?", article.getId());
 		sql2.append("WHERE id = ?", selectBoardId);
 
 		MysqlUtil.update(sql2);
@@ -165,14 +179,17 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("DELETE FROM article WHERE id = ? AND boardID = ?", articleId, Container.session.getSelectBoardId());
+		sql.append("DELETE FROM article ");
+		sql.append("WHERE id = ? ", articleId);
+		sql.append("AND boardID = ?", Container.session.getSelectBoardId());
 
 		MysqlUtil.delete(sql);
 
 		SecSql sql2 = new SecSql();
 
-		sql2.append("DELETE FROM articleReply WHERE articleId = ? AND boardId = ?", articleId,
-				Container.session.getSelectBoardId());
+		sql2.append("DELETE FROM articleReply ");
+		sql2.append("WHERE articleId = ?", articleId);
+		sql2.append("AND boardId = ?", Container.session.getSelectBoardId());
 
 		MysqlUtil.delete(sql2);
 	}
@@ -182,8 +199,12 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("UPDATE article SET updateDate = NOW() , title = ? , `body` = ? WHERE id = ? AND boardId = ?", title,
-				body, articleId, Container.session.getSelectBoardId());
+		sql.append("UPDATE article ");
+		sql.append("SET updateDate = NOW() ");
+		sql.append(", title = ? ", title);
+		sql.append(", `body` = ?", body);
+		sql.append("WHERE id = ? ", articleId);
+		sql.append("AND boardId = ?", Container.session.getSelectBoardId());
 
 		MysqlUtil.update(sql);
 
@@ -198,8 +219,10 @@ public class ArticleDao {
 
 		article = getArticleById(id);
 
-		sql.append("INSERT INTO articleReply SET id = ?, regDate = NOW() , `body` = ?", article.getReplyId() + 1,
-				reply);
+		sql.append("INSERT INTO articleReply ");
+		sql.append("SET id = ?", article.getReplyId() + 1);
+		sql.append(", regDate = NOW()");
+		sql.append(", `body` = ?", reply);
 		sql.append(", articleId = ?", id);
 		sql.append(", boardId = ?", Container.session.getSelectBoardId());
 		sql.append(", memberId = ?", Container.session.getLoginedId());
@@ -208,8 +231,10 @@ public class ArticleDao {
 
 		SecSql sql2 = new SecSql();
 
-		sql2.append("UPDATE article SET replyId = ? WHERE id = ? AND boardId = ?", article.getReplyId() + 1, id,
-				Container.session.getSelectBoardId());
+		sql2.append("UPDATE article ");
+		sql2.append("SET replyId = ?", article.getReplyId() + 1);
+		sql2.append("WHERE id = ?", id);
+		sql2.append("AND boardId = ?", Container.session.getSelectBoardId());
 
 		MysqlUtil.update(sql2);
 

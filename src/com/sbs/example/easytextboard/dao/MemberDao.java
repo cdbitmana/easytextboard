@@ -1,8 +1,6 @@
 package com.sbs.example.easytextboard.dao;
 
-
 import java.util.Map;
-
 
 import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dto.*;
@@ -22,7 +20,8 @@ public class MemberDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM `member` WHERE id = ?", id);
+		sql.append("SELECT * FROM `member` ");
+		sql.append("WHERE id = ?", id);
 
 		Map<String, Object> memberMap = MysqlUtil.selectRow(sql);
 
@@ -39,7 +38,9 @@ public class MemberDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("UPDATE `member` SET `name` = ? WHERE id = ?", newName, id);
+		sql.append("UPDATE `member` ");
+		sql.append("SET `name` = ?", newName);
+		sql.append("WHERE id = ?", id);
 
 		MysqlUtil.update(sql);
 
@@ -52,7 +53,8 @@ public class MemberDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM `member` WHERE id = ?", Container.session.getLoginedId());
+		sql.append("SELECT * FROM `member`");
+		sql.append("WHERE id = ?", Container.session.getLoginedId());
 
 		Map<String, Object> memberMap = MysqlUtil.selectRow(sql);
 
@@ -70,7 +72,8 @@ public class MemberDao {
 		Member member = null;
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM `member` WHERE loginId = ?", loginId);
+		sql.append("SELECT * FROM `member`");
+		sql.append("WHERE loginId = ?", loginId);
 
 		Map<String, Object> memberMap = MysqlUtil.selectRow(sql);
 
@@ -89,7 +92,10 @@ public class MemberDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("INSERT INTO `member` SET loginId = ? , pw = ? , `name` = ?", loginId, pw, name);
+		sql.append("INSERT INTO `member`");
+		sql.append("SET loginId = ?", loginId);
+		sql.append(", pw = ? ", pw);
+		sql.append(", `name` = ?", name);
 
 		id = MysqlUtil.insert(sql);
 
