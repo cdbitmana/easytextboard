@@ -54,4 +54,13 @@ public class ArticleService {
 
 	}
 
+	public int doWriteReply(String reply, int id) {
+		return articleDao.doWriteReply(reply, id);
+
+	}
+
+	public ArrayList<ArticleReply> getReplysByArticleId(int articleId) {
+		return articleDao.getReplysByArticleId(articleId);
+	}
+
 }

@@ -36,20 +36,20 @@ public class MemberController extends Controller {
 		}
 		// member whoami
 		else if (command.equals("member whoami")) {
-			doWhoami();
+			showWhoami();
 		} else {
 			System.out.println("존재하지 않는 명령어");
 		}
 
 	}
 
-	// doWhoami
-	private void doWhoami() {
+	// showWhoami
+	private void showWhoami() {
 		if (!Container.session.isLogined()) {
 			System.out.println("로그인 후 이용해 주세요.");
 			return;
 		}
-		Member member = new Member();
+		Member member = null;
 		member = memberService.getLoginedMember();
 
 		int id = member.getId();
@@ -90,7 +90,7 @@ public class MemberController extends Controller {
 
 	// doJoin
 	private void doJoin() {
-		Member member = new Member();
+		Member member = null;
 		System.out.printf("아이디 : ");
 		String loginId = sc.nextLine().trim();
 

@@ -1,5 +1,7 @@
 package com.sbs.example.easytextboard.dto;
 
+import java.util.Map;
+
 public class Article {
 	private int id;
 	private String regDate;
@@ -8,20 +10,20 @@ public class Article {
 	private String body;
 	private int writerId;
 	private int hit;
+	private int replyId;
+	private int boardId;
+	
 
-	public Article() {
-
-	}
-
-	public Article(int id, String regDate, String updateDate, String title, String body, int writerId, int hit) {
-		this.id = id;
-		this.regDate = regDate;
-		this.updateDate = updateDate;
-		this.title = title;
-		this.body = body;
-		this.writerId = writerId;
-
-		this.hit = hit;
+	public Article(Map<String, Object> articleMap) {
+		this.id = (int) articleMap.get("id");
+		this.regDate = (String) articleMap.get("regDate");
+		this.updateDate = (String) articleMap.get("updateDate");
+		this.title = (String) articleMap.get("title");
+		this.body = (String) articleMap.get("body");
+		this.writerId = (int) articleMap.get("writerId");
+		this.hit = (int) articleMap.get("hit");
+		this.replyId = (int)articleMap.get("replyId");
+		this.boardId = (int)articleMap.get("boardId");
 	}
 
 	public String getRegDate() {
@@ -47,6 +49,8 @@ public class Article {
 	public String getBody() {
 		return body;
 	}
+	
+	
 
 	public int getWriteMemberId() {
 		return writerId;
@@ -54,6 +58,14 @@ public class Article {
 
 	public int getHit() {
 		return hit;
+	}
+	
+	public int getReplyId() {
+		return replyId;
+	}
+	
+	public int getBoardId() {
+		return boardId;
 	}
 
 	public void setId(int id) {
@@ -82,6 +94,14 @@ public class Article {
 
 	public void setHit(int hit) {
 		this.hit = hit;
+	}
+	
+	public void setReplyId(int replyId) {
+		this.replyId = replyId;
+	}
+	
+	public void setBoardId(int boardId) {
+		this.boardId = boardId;
 	}
 
 }

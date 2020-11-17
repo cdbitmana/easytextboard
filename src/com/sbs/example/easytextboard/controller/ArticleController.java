@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.sbs.example.easytextboard.container.Container;
 import com.sbs.example.easytextboard.dto.Article;
+import com.sbs.example.easytextboard.dto.ArticleReply;
 import com.sbs.example.easytextboard.dto.Board;
 import com.sbs.example.easytextboard.dto.Member;
 import com.sbs.example.easytextboard.service.ArticleService;
@@ -36,6 +37,10 @@ public class ArticleController extends Controller {
 		else if (command.startsWith("article detail")) {
 			showDetail(command);
 		}
+		// article writeReply
+		else if (command.startsWith("article writeReply")) {
+			doWriteReply(command);
+		}
 		// article delete
 		else if (command.startsWith("article delete")) {
 			doDelete(command);
@@ -62,6 +67,38 @@ public class ArticleController extends Controller {
 		} else {
 			System.out.println("존재하지 않는 명령어");
 		}
+
+	}
+
+	// doWriteReply
+	private void doWriteReply(String command) {
+		if (!Container.session.isLogined()) {
+			System.out.println("로그인 후 이용해 주세요.");
+			return;
+		}
+		String[] commands = command.split(" ");
+		int id = 0;
+		try {
+			id = Integer.parseInt(commands[2]);
+		} catch (NumberFormatException e) {
+			System.out.println("게시물 번호는 숫자로 입력해야 합니다.");
+			return;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("게시물 번호를 입력해야 합니다.");
+			return;
+		}
+
+		Article article = articleService.getArticleById(id);
+		if (article == null) {
+			System.out.println("존재하지 않는 게시물입니다.");
+			return;
+		}
+		System.out.printf("내용 : ");
+		String reply = sc.nextLine();
+
+		int id2 = articleService.doWriteReply(reply, id);
+
+		System.out.printf("%d번 글에 %d번 댓글이 추가되었습니다.\n", id, id2);
 
 	}
 
@@ -235,6 +272,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 		member = memberService.getMemberById(article.getWriteMemberId());
+		ArrayList<ArticleReply> replys = articleService.getReplysByArticleId(articleId);
 
 		System.out.println("== 게시물 상세 ==");
 		System.out.printf("번호 : %d\n", article.getId());
@@ -244,6 +282,16 @@ public class ArticleController extends Controller {
 		System.out.printf("제목 : %s\n", article.getTitle());
 		System.out.printf("내용 : %s\n", article.getBody());
 		System.out.printf("조회수 : %d\n", article.getHit());
+		System.out.println("댓글");
+		if (replys == null) {
+			System.out.printf("\n");
+		} else {
+			for (int i = 0; i < replys.size(); i++) {
+				member = memberService.getMemberById(replys.get(i).getmemberId());
+				System.out.printf("  %d. %s - %s\n", replys.get(i).getId(), replys.get(i).getBody(), member.getName());
+			}
+
+		}
 
 	}
 
@@ -314,7 +362,7 @@ public class ArticleController extends Controller {
 
 	// doMakeBoard
 	private void doMakeBoard(Scanner sc) {
-		Board board = new Board();
+		Board board = null;
 
 		System.out.println("== 게시판 생성 ==");
 		System.out.printf("게시판 이름 : ");

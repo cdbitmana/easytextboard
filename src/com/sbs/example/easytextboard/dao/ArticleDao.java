@@ -24,19 +24,13 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM article? WHERE id = ?", Container.session.getSelectBoardId(), id);
+		sql.append("SELECT * FROM article WHERE id = ? AND boardId = ?", id, Container.session.getSelectBoardId());
 
 		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
 
-		if (articleMap.size() > 0) {
-			article = new Article();
-			article.setId((int) articleMap.get("id"));
-			article.setRegDate((String) articleMap.get("regDate"));
-			article.setUpdateDate((String) articleMap.get("updateDate"));
-			article.setTitle((String) articleMap.get("title"));
-			article.setBody((String) articleMap.get("body"));
-			article.setWriterId((int) articleMap.get("writerId"));
-			article.setHit((int) articleMap.get("hit"));
+		if (!articleMap.isEmpty()) {
+			article = new Article(articleMap);
+
 		}
 
 		return article;
@@ -49,19 +43,12 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM article? ORDER BY id DESC", Container.session.getSelectBoardId());
+		sql.append("SELECT * FROM article WHERE boardId = ? ORDER BY id DESC", Container.session.getSelectBoardId());
 
 		List<Map<String, Object>> articlesMapList = MysqlUtil.selectRows(sql);
 
 		for (Map<String, Object> articleMap : articlesMapList) {
-			article = new Article();
-			article.setId((int) articleMap.get("id"));
-			article.setRegDate((String) articleMap.get("regDate"));
-			article.setUpdateDate((String) articleMap.get("updateDate"));
-			article.setTitle((String) articleMap.get("title"));
-			article.setBody((String) articleMap.get("body"));
-			article.setWriterId((int) articleMap.get("writerId"));
-			article.setHit((int) articleMap.get("hit"));
+			article = new Article(articleMap);
 
 			articles.add(article);
 
@@ -80,20 +67,13 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM article? where title like CONCAT ('%' , ? , '%') ORDER BY id DESC",
-				Container.session.getSelectBoardId(), searchKeyword);
+		sql.append("SELECT * FROM article WHERE title LIKE CONCAT ('%' , ? , '%') AND boardId = ? ORDER BY id DESC",
+				searchKeyword, Container.session.getSelectBoardId());
 
 		List<Map<String, Object>> articlesMapList = MysqlUtil.selectRows(sql);
 
 		for (Map<String, Object> articleMap : articlesMapList) {
-			article = new Article();
-			article.setId((int) articleMap.get("id"));
-			article.setRegDate((String) articleMap.get("regDate"));
-			article.setUpdateDate((String) articleMap.get("updateDate"));
-			article.setTitle((String) articleMap.get("title"));
-			article.setBody((String) articleMap.get("body"));
-			article.setWriterId((int) articleMap.get("writerId"));
-			article.setHit((int) articleMap.get("hit"));
+			article = new Article(articleMap);
 
 			articles.add(article);
 
@@ -109,17 +89,9 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("INSERT INTO `board` set `name` = ?", name);
+		sql.append("INSERT INTO `board` SET `name` = ? , articleId = 0", name);
 
 		id = MysqlUtil.insert(sql);
-
-		SecSql sql2 = new SecSql();
-
-		sql2.append(
-				"CREATE TABLE article? ( id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT , regDate DATETIME NOT NULL , updateDate DATETIME NOT NULL , title VARCHAR(200) NOT NULL , `body` TEXT NOT NULL , writerId INT(10) UNSIGNED NOT NULL , hit INT(100) UNSIGNED NOT NULL)",
-				id);
-
-		MysqlUtil.update(sql2);
 
 		return id;
 	}
@@ -131,14 +103,13 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM `board` where `name` = ?", name);
+		sql.append("SELECT * FROM `board` WHERE `name` = ?", name);
 
 		Map<String, Object> boardMap = MysqlUtil.selectRow(sql);
 
 		if (boardMap.size() > 0) {
-			board = new Board();
-			board.setBoardId((int) boardMap.get("id"));
-			board.setBoardName((String) boardMap.get("name"));
+			board = new Board(boardMap);
+
 		}
 
 		return board;
@@ -151,14 +122,13 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM `board` where id = ?", id);
+		sql.append("SELECT * FROM `board` WHERE id = ?", id);
 
 		Map<String, Object> boardMap = MysqlUtil.selectRow(sql);
 
 		if (boardMap.size() > 0) {
-			board = new Board();
-			board.setBoardId((int) boardMap.get("id"));
-			board.setBoardName((String) boardMap.get("name"));
+			board = new Board(boardMap);
+
 		}
 
 		return board;
@@ -169,13 +139,23 @@ public class ArticleDao {
 
 		int id = 0;
 		SecSql sql = new SecSql();
-
+		Board board = getBoardById(Container.session.getSelectBoardId());
 		sql.append(
-				"INSERT INTO article? SET regDate = NOW() , updateDate = NOW() , title = ? , `body` = ? , writerId = ? , hit = 0",
-				Container.session.getSelectBoardId(), title, body, Container.session.getLoginedId());
+				"INSERT INTO article SET id = ? ,regDate = NOW() , updateDate = NOW() , title = ? , `body` = ? , writerId = ? , hit = 0 , replyId = 0, boardId = ?",
+				board.getArticleId() + 1, title, body, Container.session.getLoginedId(),
+				Container.session.getSelectBoardId());
 
-		id = MysqlUtil.insert(sql);
+		MysqlUtil.insert(sql);
 
+		SecSql sql2 = new SecSql();
+
+		Article article = getArticleById(board.getArticleId() + 1);
+
+		sql2.append("UPDATE `board` SET articleID = ?", article.getId());
+		sql2.append("WHERE id = ?", selectBoardId);
+
+		MysqlUtil.update(sql2);
+		id = article.getId();
 		return id;
 
 	}
@@ -185,10 +165,16 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("DELETE FROM article? where id = ?", Container.session.getSelectBoardId(), articleId);
+		sql.append("DELETE FROM article WHERE id = ? AND boardID = ?", articleId, Container.session.getSelectBoardId());
 
 		MysqlUtil.delete(sql);
 
+		SecSql sql2 = new SecSql();
+
+		sql2.append("DELETE FROM articleReply WHERE articleId = ? AND boardId = ?", articleId,
+				Container.session.getSelectBoardId());
+
+		MysqlUtil.delete(sql2);
 	}
 
 	// doModify
@@ -196,10 +182,65 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("UPDATE article? SET updateDate = NOW() , title = ? , `body` = ? WHERE id = ?",
-				Container.session.getSelectBoardId(), title, body, articleId);
+		sql.append("UPDATE article SET updateDate = NOW() , title = ? , `body` = ? WHERE id = ? AND boardId = ?", title,
+				body, articleId, Container.session.getSelectBoardId());
 
 		MysqlUtil.update(sql);
+
+	}
+
+	// doWriteReply
+	public int doWriteReply(String reply, int id) {
+
+		SecSql sql = new SecSql();
+
+		Article article = null;
+
+		article = getArticleById(id);
+
+		sql.append("INSERT INTO articleReply SET id = ?, regDate = NOW() , `body` = ?", article.getReplyId() + 1,
+				reply);
+		sql.append(", articleId = ?", id);
+		sql.append(", boardId = ?", Container.session.getSelectBoardId());
+		sql.append(", memberId = ?", Container.session.getLoginedId());
+
+		MysqlUtil.insert(sql);
+
+		SecSql sql2 = new SecSql();
+
+		sql2.append("UPDATE article SET replyId = ? WHERE id = ? AND boardId = ?", article.getReplyId() + 1, id,
+				Container.session.getSelectBoardId());
+
+		MysqlUtil.update(sql2);
+
+		article = getArticleById(id);
+
+		int id2 = article.getReplyId();
+
+		return id2;
+
+	}
+
+	// getReplysByArticleId
+	public ArrayList<ArticleReply> getReplysByArticleId(int articleId) {
+		ArrayList<ArticleReply> replys = new ArrayList<>();
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT * FROM articleReply");
+		sql.append("WHERE articleId = ?", articleId);
+		sql.append("AND boardId = ?", Container.session.getSelectBoardId());
+
+		List<Map<String, Object>> articleReplyMapList = MysqlUtil.selectRows(sql);
+
+		ArticleReply articleReply = null;
+
+		for (Map<String, Object> articleReplyMap : articleReplyMapList) {
+			articleReply = new ArticleReply(articleReplyMap);
+
+			replys.add(articleReply);
+		}
+
+		return replys;
 
 	}
 

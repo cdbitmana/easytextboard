@@ -28,11 +28,8 @@ public class MemberDao {
 		Map<String, Object> memberMap = MysqlUtil.selectRow(sql);
 
 		if (memberMap.size() > 0) {
-			member = new Member();
-			member.setId((int) memberMap.get("id"));
-			member.setLoginId((String) memberMap.get("loginId"));
-			member.setPw((String) memberMap.get("pw"));
-			member.setName((String) memberMap.get("name"));
+			member = new Member(memberMap);
+
 		}
 
 		return member;
@@ -61,11 +58,8 @@ public class MemberDao {
 		Map<String, Object> memberMap = MysqlUtil.selectRow(sql);
 
 		if (memberMap.size() > 0) {
-			member = new Member();
-			member.setId((int) memberMap.get("id"));
-			member.setLoginId((String) memberMap.get("loginId"));
-			member.setPw((String) memberMap.get("pw"));
-			member.setName((String) memberMap.get("name"));
+			member = new Member(memberMap);
+
 		}
 
 		return member;
@@ -79,14 +73,11 @@ public class MemberDao {
 
 		sql.append("SELECT * FROM `member` WHERE loginId = ?", loginId);
 
-		Map<String, Object> members = MysqlUtil.selectRow(sql);
+		Map<String, Object> memberMap = MysqlUtil.selectRow(sql);
 
-		if (members.size() > 0) {
-			member = new Member();
-			member.setId((int) members.get("id"));
-			member.setLoginId((String) members.get("loginId"));
-			member.setPw((String) members.get("pw"));
-			member.setName((String) members.get("name"));
+		if (memberMap.size() > 0) {
+			member = new Member(memberMap);
+
 		}
 
 		return member;

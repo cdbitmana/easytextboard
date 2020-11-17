@@ -1,10 +1,19 @@
 package com.sbs.example.easytextboard.dto;
 
+import java.util.Map;
+
 public class Member {
 	private int id;
 	private String loginId;
 	private String pw;
 	private String name;
+
+	public Member(Map<String, Object> boardMap) {
+		this.id = (int) boardMap.get("id");
+		this.loginId = (String) boardMap.get("loginId");
+		this.pw = (String) boardMap.get("pw");
+		this.name = (String) boardMap.get("name");
+	}
 
 	public int getId() {
 		return id;
