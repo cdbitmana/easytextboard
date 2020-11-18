@@ -41,6 +41,14 @@ public class ArticleController extends Controller {
 		else if (command.startsWith("article writeReply")) {
 			doWriteReply(command);
 		}
+		// article modifyReply
+		else if (command.startsWith("article modifyReply")) {
+			doModifyReply(command);
+		}
+		// article deleteReply
+		else if (command.startsWith("article deleteReply")) {
+			doDeleteReply(command);
+		}
 		// article delete
 		else if (command.startsWith("article delete")) {
 			doDelete(command);
@@ -67,6 +75,101 @@ public class ArticleController extends Controller {
 		} else {
 			System.out.println("존재하지 않는 명령어");
 		}
+
+	}
+
+	// doDeleteReply
+	private void doDeleteReply(String command) {
+		if (!Container.session.isLogined()) {
+			System.out.println("로그인 후 이용해 주세요.");
+			return;
+		}
+		String[] commands = command.split(" ");
+		int articleId = 0;
+		int replyId = 0;
+		try {
+			articleId = Integer.parseInt(commands[2]);
+		} catch (NumberFormatException e) {
+			System.out.println("게시물 번호는 숫자로 입력해야 합니다.");
+			return;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("게시물 번호를 입력해야 합니다.");
+			return;
+		}
+
+		try {
+			replyId = Integer.parseInt(commands[3]);
+		} catch (NumberFormatException e) {
+			System.out.println("댓글 번호는 숫자로 입력해야 합니다.");
+			return;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("댓글 번호를 입력해야 합니다.");
+			return;
+		}
+		ArticleReply articleReply = articleService.getArticleReplyById(articleId, replyId);
+
+		if (articleReply == null) {
+			System.out.println("해당하는 댓글이 없습니다.");
+			return;
+		}
+
+		if (articleReply.getMemberId() != Container.session.getLoginedId()) {
+			System.out.println("본인이 작성한 댓글만 수정할 수 있습니다.");
+			return;
+
+		}
+
+		articleService.doDeleteReply(articleId, replyId);
+		System.out.printf("%d번 게시물의 %d번 댓글이 삭제되었습니다.\n", articleId, replyId);
+	}
+
+	// doModifyReply
+	private void doModifyReply(String command) {
+		if (!Container.session.isLogined()) {
+			System.out.println("로그인 후 이용해 주세요.");
+			return;
+		}
+		String[] commands = command.split(" ");
+		int articleId = 0;
+		int replyId = 0;
+		try {
+			articleId = Integer.parseInt(commands[2]);
+		} catch (NumberFormatException e) {
+			System.out.println("게시물 번호는 숫자로 입력해야 합니다.");
+			return;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("게시물 번호를 입력해야 합니다.");
+			return;
+		}
+
+		try {
+			replyId = Integer.parseInt(commands[3]);
+		} catch (NumberFormatException e) {
+			System.out.println("댓글 번호는 숫자로 입력해야 합니다.");
+			return;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("댓글 번호를 입력해야 합니다.");
+			return;
+		}
+
+		ArticleReply articleReply = articleService.getArticleReplyById(articleId, replyId);
+
+		if (articleReply == null) {
+			System.out.println("해당하는 댓글이 없습니다.");
+			return;
+		}
+
+		if (articleReply.getMemberId() != Container.session.getLoginedId()) {
+			System.out.println("본인이 작성한 댓글만 수정할 수 있습니다.");
+			return;
+		}
+
+		System.out.printf("새 댓글 내용 : ");
+		String newBody = sc.nextLine();
+
+		articleService.doModifyReply(articleId, replyId, newBody);
+
+		System.out.printf("%d번 게시물의 %d번 댓글이 수정되었습니다.\n", articleId, replyId);
 
 	}
 
@@ -330,11 +433,10 @@ public class ArticleController extends Controller {
 		}
 		System.out.println("번호 / 작성날짜 / 작성자 / 제목 / 내용 / 조회수");
 		for (int i = start; i <= end; i++) {
-			Member member = null;
-			member = memberService.getMemberById(articles.get(i).getWriteMemberId());
+
 			int id = articles.get(i).getId();
 			String regDate = articles.get(i).getRegDate();
-			String name = member.getName();
+			String name = articles.get(i).getExtraWriter();
 			String title = articles.get(i).getTitle();
 			String body = articles.get(i).getBody();
 			int hit = articles.get(i).getHit();

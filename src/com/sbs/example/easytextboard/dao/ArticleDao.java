@@ -1,5 +1,6 @@
 package com.sbs.example.easytextboard.dao;
 
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -44,17 +45,19 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM article ");
-		sql.append("WHERE boardId = ? ", Container.session.getSelectBoardId());
-		sql.append("ORDER BY id DESC");
+		sql.append("SELECT article.* , member.name AS extra__writer FROM article ");
+
+		sql.append("INNER JOIN `member` ");
+
+		sql.append("ON article.writerId = member.id ");
+
+		sql.append("WHERE article.boardId = ?", Container.session.getSelectBoardId());
 
 		List<Map<String, Object>> articlesMapList = MysqlUtil.selectRows(sql);
 
 		for (Map<String, Object> articleMap : articlesMapList) {
 			article = new Article(articleMap);
-
 			articles.add(article);
-
 		}
 
 		return articles;
@@ -70,7 +73,9 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM article ");
+		sql.append("SELECT article.* , member.name AS extra__writer FROM article ");
+		sql.append("INNER JOIN `member`");
+		sql.append("ON article.writerId = member.id");
 		sql.append("WHERE title LIKE CONCAT ('%' , ? , '%')", searchKeyword);
 		sql.append("AND boardId = ? ORDER BY id DESC", Container.session.getSelectBoardId());
 
@@ -214,33 +219,16 @@ public class ArticleDao {
 	public int doWriteReply(String reply, int id) {
 
 		SecSql sql = new SecSql();
-
-		Article article = null;
-
-		article = getArticleById(id);
+		int id2 = 0;
 
 		sql.append("INSERT INTO articleReply ");
-		sql.append("SET id = ?", article.getReplyId() + 1);
-		sql.append(", regDate = NOW()");
+		sql.append("SET regDate = NOW()");
 		sql.append(", `body` = ?", reply);
 		sql.append(", articleId = ?", id);
 		sql.append(", boardId = ?", Container.session.getSelectBoardId());
 		sql.append(", memberId = ?", Container.session.getLoginedId());
 
-		MysqlUtil.insert(sql);
-
-		SecSql sql2 = new SecSql();
-
-		sql2.append("UPDATE article ");
-		sql2.append("SET replyId = ?", article.getReplyId() + 1);
-		sql2.append("WHERE id = ?", id);
-		sql2.append("AND boardId = ?", Container.session.getSelectBoardId());
-
-		MysqlUtil.update(sql2);
-
-		article = getArticleById(id);
-
-		int id2 = article.getReplyId();
+		id2 = MysqlUtil.insert(sql);
 
 		return id2;
 
@@ -266,6 +254,56 @@ public class ArticleDao {
 		}
 
 		return replys;
+
+	}
+
+	// getArticleReplyById
+	public ArticleReply getArticleReplyById(int articleId, int replyId) {
+
+		ArticleReply articleReply = null;
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT * FROM articleReply");
+		sql.append("WHERE id = ?", replyId);
+		sql.append("AND articleId = ?", articleId);
+		sql.append("AND boardId = ?", Container.session.getSelectBoardId());
+
+		Map<String, Object> articleReplyMap = MysqlUtil.selectRow(sql);
+
+		if (!articleReplyMap.isEmpty()) {
+			articleReply = new ArticleReply(articleReplyMap);
+		}
+
+		return articleReply;
+
+	}
+
+	// doModifyReply
+	public void doModifyReply(int articleId, int replyId, String newBody) {
+
+		SecSql sql = new SecSql();
+
+		sql.append("UPDATE articleReply");
+		sql.append("SET `body` = ?", newBody);
+		sql.append("WHERE id = ?", replyId);
+		sql.append("AND articleId = ?", articleId);
+		sql.append("AND boardId = ?", Container.session.getSelectBoardId());
+
+		MysqlUtil.update(sql);
+
+	}
+
+	// doDeleteReply
+	public void doDeleteReply(int articleId, int replyId) {
+
+		SecSql sql = new SecSql();
+
+		sql.append("DELETE FROM articleReply");
+		sql.append("WHERE id = ?", replyId);
+		sql.append("AND articleId = ?", articleId);
+		sql.append("AND boardId = ?", Container.session.getSelectBoardId());
+
+		MysqlUtil.delete(sql);
 
 	}
 

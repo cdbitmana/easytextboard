@@ -10,9 +10,8 @@ public class Article {
 	private String body;
 	private int writerId;
 	private int hit;
-	private int replyId;
 	private int boardId;
-	
+	private String extra__writer;
 
 	public Article(Map<String, Object> articleMap) {
 		this.id = (int) articleMap.get("id");
@@ -22,8 +21,8 @@ public class Article {
 		this.body = (String) articleMap.get("body");
 		this.writerId = (int) articleMap.get("writerId");
 		this.hit = (int) articleMap.get("hit");
-		this.replyId = (int)articleMap.get("replyId");
-		this.boardId = (int)articleMap.get("boardId");
+		this.boardId = (int) articleMap.get("boardId");
+		this.extra__writer = (String) articleMap.get("extra__writer");
 	}
 
 	public String getRegDate() {
@@ -49,8 +48,6 @@ public class Article {
 	public String getBody() {
 		return body;
 	}
-	
-	
 
 	public int getWriteMemberId() {
 		return writerId;
@@ -59,13 +56,13 @@ public class Article {
 	public int getHit() {
 		return hit;
 	}
-	
-	public int getReplyId() {
-		return replyId;
-	}
-	
+
 	public int getBoardId() {
 		return boardId;
+	}
+
+	public String getExtraWriter() {
+		return extra__writer;
 	}
 
 	public void setId(int id) {
@@ -95,13 +92,13 @@ public class Article {
 	public void setHit(int hit) {
 		this.hit = hit;
 	}
-	
-	public void setReplyId(int replyId) {
-		this.replyId = replyId;
-	}
-	
+
 	public void setBoardId(int boardId) {
 		this.boardId = boardId;
+	}
+
+	public void setExtraWriter(String extra__writer) {
+		this.extra__writer = extra__writer;
 	}
 
 }
