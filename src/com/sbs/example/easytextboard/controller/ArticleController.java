@@ -293,7 +293,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 		Article article = articleService.getArticleById(articleId);
-
+  
 		if (article == null) {
 			System.out.println("존재하지 않는 게시물입니다.");
 			return;
