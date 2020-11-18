@@ -49,8 +49,8 @@ public class MemberController extends Controller {
 			System.out.println("로그인 후 이용해 주세요.");
 			return;
 		}
-		Member member = null;
-		member = memberService.getLoginedMember();
+
+		Member member = memberService.getLoginedMember();
 
 		int id = member.getId();
 		String loginId = member.getloginId();
@@ -68,10 +68,10 @@ public class MemberController extends Controller {
 			System.out.println("로그인 후 이용해 주세요.");
 			return;
 		}
-		String newName = "";
+
 		System.out.println("회원이름 수정");
 		System.out.printf("새 이름 : ");
-		newName = sc.nextLine();
+		String newName = sc.nextLine();
 		memberService.doModify(Container.session.getLoginedId(), newName);
 		System.out.println("회원 정보가 수정되었습니다.");
 
@@ -90,11 +90,11 @@ public class MemberController extends Controller {
 
 	// doJoin
 	private void doJoin() {
-		Member member = null;
+
 		System.out.printf("아이디 : ");
 		String loginId = sc.nextLine().trim();
 
-		member = memberService.getMemberByLoginId(loginId);
+		Member member = memberService.getMemberByLoginId(loginId);
 
 		if (member != null) {
 			System.out.println("이미 존재하는 아이디입니다.");
@@ -119,12 +119,11 @@ public class MemberController extends Controller {
 			System.out.println("이미 로그인 상태입니다.");
 			return;
 		}
-		Member member;
 
 		System.out.printf("아이디 : ");
 		String loginId = sc.nextLine().trim();
 
-		member = memberService.getMemberByLoginId(loginId);
+		Member member = memberService.getMemberByLoginId(loginId);
 
 		if (member == null) {
 			System.out.println("일치하는 아이디가 없습니다.");

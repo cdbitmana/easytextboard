@@ -207,8 +207,8 @@ public class ArticleController extends Controller {
 
 	// showCurrentBoard
 	private void showCurrentBoard() {
-		Board board = null;
-		board = articleService.getBoardById(Container.session.getSelectBoardId());
+
+		Board board = articleService.getBoardById(Container.session.getSelectBoardId());
 
 		System.out.printf("현재 %s(%d번) 게시판입니다.\n", board.getBoardName(), board.getBoardId());
 
@@ -217,7 +217,6 @@ public class ArticleController extends Controller {
 	// doSelectBoard
 	private void doSelectBoard(String command) {
 
-		Board board = null;
 		String[] commands = command.split(" ");
 		int id = 0;
 		try {
@@ -230,7 +229,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		board = articleService.getBoardById(id);
+		Board board = articleService.getBoardById(id);
 
 		if (Container.session.getSelectBoardId() == id) {
 			System.out.printf("이미 %s(%d번) 게시판입니다.\n", board.getBoardName(), board.getBoardId());
@@ -353,8 +352,7 @@ public class ArticleController extends Controller {
 
 	// showDetail
 	private void showDetail(String command) {
-		Article article = null;
-		Member member = null;
+
 		String[] commands = command.split(" ");
 		int articleId = 0;
 
@@ -368,13 +366,13 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		article = articleService.getArticleById(articleId);
+		Article article = articleService.getArticleById(articleId);
 
 		if (article == null) {
 			System.out.println("존재하지 않는 게시물입니다.");
 			return;
 		}
-		member = memberService.getMemberById(article.getWriteMemberId());
+		Member member = memberService.getMemberById(article.getWriteMemberId());
 		ArrayList<ArticleReply> replys = articleService.getReplysByArticleId(articleId);
 
 		System.out.println("== 게시물 상세 ==");
@@ -400,8 +398,8 @@ public class ArticleController extends Controller {
 
 	// showList
 	private void showList(String cmd) {
-		ArrayList<Article> articles = null;
-		articles = articleService.getArticles();
+
+		ArrayList<Article> articles = articleService.getArticles();
 
 		String[] commands = cmd.split(" ");
 		int pageNumber = 0;
@@ -433,7 +431,6 @@ public class ArticleController extends Controller {
 		}
 		System.out.println("번호 / 작성날짜 / 작성자 / 제목 / 내용 / 조회수");
 		for (int i = start; i <= end; i++) {
-
 			int id = articles.get(i).getId();
 			String regDate = articles.get(i).getRegDate();
 			String name = articles.get(i).getExtraWriter();
@@ -464,13 +461,12 @@ public class ArticleController extends Controller {
 
 	// doMakeBoard
 	private void doMakeBoard(Scanner sc) {
-		Board board = null;
 
 		System.out.println("== 게시판 생성 ==");
 		System.out.printf("게시판 이름 : ");
 		String name = sc.nextLine();
 
-		board = articleService.getBoardByName(name);
+		Board board = articleService.getBoardByName(name);
 		if (board != null) {
 			System.out.println("이미 존재하는 게시판입니다.");
 			return;
