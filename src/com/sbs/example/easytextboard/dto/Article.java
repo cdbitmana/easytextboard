@@ -8,8 +8,7 @@ public class Article {
 	private String updateDate;
 	private String title;
 	private String body;
-	private int writerId;
-
+	private int memberId;
 	private int hit;
 	private int boardId;
 	private String extra__writer;
@@ -20,8 +19,7 @@ public class Article {
 		this.updateDate = (String) articleMap.get("updateDate");
 		this.title = (String) articleMap.get("title");
 		this.body = (String) articleMap.get("body");
-		this.writerId = (int) articleMap.get("writerId");
-
+		this.memberId = (int) articleMap.get("memberId");
 		this.hit = (int) articleMap.get("hit");
 		this.boardId = (int) articleMap.get("boardId");
 		this.extra__writer = (String) articleMap.get("extra__writer");
@@ -29,10 +27,6 @@ public class Article {
 
 	public String getRegDate() {
 		return regDate;
-	}
-
-	public String getUpdateDate() {
-		return updateDate;
 	}
 
 	public String getupdateDate() {
@@ -51,8 +45,8 @@ public class Article {
 		return body;
 	}
 
-	public int getWriteMemberId() {
-		return writerId;
+	public int getMemberId() {
+		return memberId;
 	}
 
 	public int getHit() {
@@ -87,8 +81,8 @@ public class Article {
 		this.body = body;
 	}
 
-	public void setWriterId(int writerId) {
-		this.writerId = writerId;
+	public void setMemberId(int memberId) {
+		this.memberId = memberId;
 	}
 
 	public void setHit(int hit) {

@@ -4,15 +4,19 @@ import java.util.Map;
 
 public class Member {
 	private int id;
+	private String regDate;
+	private String updateDate;
 	private String loginId;
-	private String pw;
+	private String loginPw;
 	private String name;
 
-	public Member(Map<String, Object> boardMap) {
-		this.id = (int) boardMap.get("id");
-		this.loginId = (String) boardMap.get("loginId");
-		this.pw = (String) boardMap.get("pw");
-		this.name = (String) boardMap.get("name");
+	public Member(Map<String, Object> memberMap) {
+		this.id = (int) memberMap.get("id");
+		this.regDate = (String) memberMap.get("regDate");
+		this.updateDate = (String) memberMap.get("updateDate");
+		this.loginId = (String) memberMap.get("loginId");
+		this.loginPw = (String) memberMap.get("loginPw");
+		this.name = (String) memberMap.get("name");
 	}
 
 	public boolean isAdmin() {
@@ -23,12 +27,20 @@ public class Member {
 		return id;
 	}
 
-	public String getloginId() {
+	public String getRegDate() {
+		return regDate;
+	}
+
+	public String getUpdateDate() {
+		return updateDate;
+	}
+
+	public String getLoginId() {
 		return loginId;
 	}
 
-	public String getPw() {
-		return pw;
+	public String getLoginPw() {
+		return loginPw;
 	}
 
 	public String getName() {
@@ -39,12 +51,20 @@ public class Member {
 		this.id = id;
 	}
 
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
+	}
+
 	public void setLoginId(String loginId) {
 		this.loginId = loginId;
 	}
 
-	public void setPw(String pw) {
-		this.pw = pw;
+	public void setLoginPw(String pw) {
+		this.loginPw = pw;
 	}
 
 	public void setName(String name) {

@@ -163,7 +163,7 @@ public class MysqlUtil {
 		for (String key : row.keySet()) {
 			return (int) row.get(key);
 		}
-
+		
 		return -1;
 	}
 

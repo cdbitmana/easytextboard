@@ -33,7 +33,7 @@ public class App {
 			System.out.printf("명령어) ");
 			String command = scanner.nextLine();
 
-			MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "textboard");
+			MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "textBoard");
 
 			if (command.equals("system exit")) {
 				System.out.println("프로그램을 종료합니다.");

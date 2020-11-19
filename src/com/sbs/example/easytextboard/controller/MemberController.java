@@ -18,24 +18,15 @@ public class MemberController extends Controller {
 
 	public void doCommand(String command) {
 
-		// member join
 		if (command.equals("member join")) {
 			doJoin();
-		}
-		// member login
-		else if (command.equals("member login")) {
+		} else if (command.equals("member login")) {
 			doLogin();
-		}
-		// member logout
-		else if (command.equals("member logout")) {
+		} else if (command.equals("member logout")) {
 			doLogout();
-		}
-		// member modify
-		else if (command.equals("member modify")) {
+		} else if (command.equals("member modify")) {
 			doModify();
-		}
-		// member whoami
-		else if (command.equals("member whoami")) {
+		} else if (command.equals("member whoami")) {
 			showWhoami();
 		} else {
 			System.out.println("존재하지 않는 명령어");
@@ -53,7 +44,7 @@ public class MemberController extends Controller {
 		Member member = memberService.getLoginedMember();
 
 		int id = member.getId();
-		String loginId = member.getloginId();
+		String loginId = member.getLoginId();
 		String name = member.getName();
 
 		System.out.printf("회원번호 : %d\n", id);
@@ -136,9 +127,9 @@ public class MemberController extends Controller {
 		}
 
 		System.out.printf("비밀번호 : ");
-		String pw = sc.nextLine().trim();
+		String loginPw = sc.nextLine().trim();
 
-		if (!member.getPw().equals(pw)) {
+		if (!member.getLoginPw().equals(loginPw)) {
 			System.out.println("비밀번호가 맞지 않습니다.");
 			return;
 		}

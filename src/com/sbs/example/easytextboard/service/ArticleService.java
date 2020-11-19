@@ -15,33 +15,33 @@ public class ArticleService {
 
 	}
 
-	public int doMakeBoard(String name) {
-		return articleDao.doMakeBoard(name);
+	public int doWrite(String title, String body, int memberId, int boardId) {
+		return articleDao.doWrite(title, body, memberId, boardId);
+	}
+
+	public ArrayList<Article> getArticlesForPrint() {
+		return articleDao.getArticlesForPrint();
+	}
+
+	public Board getBoardByCode(String currentBoardCode) {
+		return articleDao.getBoardByCode(currentBoardCode);
+	}
+
+	public int getArticleRecommand(int id) {
+		return articleDao.getArticleRecommand(id);
+	}
+
+	public Article getArticleById(int articleId) {
+		return articleDao.getArticleById(articleId);
+	}
+
+	public void doModify(String title, String body, int articleId) {
+		articleDao.doModify(title, body, articleId);
 
 	}
 
-	public Article getArticleById(int id) {
-		return articleDao.getArticleById(id);
-	}
-
-	public Board getBoardById(int id) {
-		return articleDao.getBoardById(id);
-	}
-
-	public ArrayList<Article> getArticles() {
-		return articleDao.getArticles();
-	}
-
-	public ArrayList<Article> getArticlesByKeyword(String searchKeyword) {
-		return articleDao.getArticlesByKeyword(searchKeyword);
-	}
-
-	public Board getBoardByName(String name) {
-		return articleDao.getBoardByName(name);
-	}
-
-	public int doAdd(String title, String body, int loginedId, int selectBoardId) {
-		return articleDao.doAdd(title, body, loginedId, selectBoardId);
+	public Article getArticleForPrintById(int articleId) {
+		return articleDao.getArticleForPrintById(articleId);
 	}
 
 	public void doDelete(int articleId) {
@@ -49,26 +49,12 @@ public class ArticleService {
 
 	}
 
-	public void doModify(int articleId, String title, String body) {
-		articleDao.doModify(articleId, title, body);
-
+	public ArrayList<Article> getArticlesForPrintByKeyword(String keyword) {
+		return articleDao.getArticlesForPrintByKeyword(keyword);
 	}
 
-	public int doWriteReply(String reply, int id) {
-		return articleDao.doWriteReply(reply, id);
-
-	}
-
-	public ArrayList<ArticleReply> getReplysByArticleId(int articleId) {
-		return articleDao.getReplysByArticleId(articleId);
-	}
-
-	public ArticleReply getArticleReplyById(int articleId, int replyId) {
-		return articleDao.getArticleReplyById(articleId, replyId);
-	}
-
-	public void doModifyReply(int articleId, int replyId, String newBody) {
-		articleDao.doModifyReply(articleId, replyId, newBody);
+	public int doWriteReply(int articleId, String body) {
+		return articleDao.doWriteReply(articleId, body);
 
 	}
 
@@ -77,13 +63,13 @@ public class ArticleService {
 
 	}
 
+	public boolean isRecommanded(int articleId) {
+		return articleDao.isRecommanded(articleId);
+	}
+
 	public void doRecommand(int articleId) {
 		articleDao.doRecommand(articleId);
 
-	}
-
-	public int getMemberIdRecommand(int articleId) {
-		return articleDao.getMemberIdRecommand(articleId);
 	}
 
 	public void doCancelRecommand(int articleId) {
@@ -91,13 +77,23 @@ public class ArticleService {
 
 	}
 
-	public int getRecommand(int articleId) {
-		return articleDao.getRecommand(articleId);
+	public int doMakeBoard(String name, String code) {
+		return articleDao.doMakeBoard(name, code);
+
 	}
 
-	public void doCountHit(int articleId) {
-		articleDao.doCountHit(articleId);
-		
+	public ArrayList<Board> getBoardsForPrint() {
+		return articleDao.getBoardsForPrint();
 	}
+
+	public ArrayList<ArticleReply> getReplysForPrintByArticleId(int articleId) {
+		return articleDao.getReplysForPrintByArticleId(articleId);
+	}
+
+	public void doIncreaseHit(int articleId) {
+		articleDao.doIncreaseHit(articleId);
+	}
+
+	
 
 }

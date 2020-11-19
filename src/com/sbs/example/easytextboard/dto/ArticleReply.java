@@ -8,7 +8,6 @@ public class ArticleReply {
 	private String regDate;
 	private String body;
 	private int articleId;
-	private int boardId;
 	private int memberId;
 	private String extra__name;
 
@@ -17,7 +16,7 @@ public class ArticleReply {
 		this.regDate = (String) articleReplyMap.get("regDate");
 		this.body = (String) articleReplyMap.get("body");
 		this.articleId = (int) articleReplyMap.get("articleId");
-		this.boardId = (int) articleReplyMap.get("boardId");
+
 		this.memberId = (int) articleReplyMap.get("memberId");
 		this.extra__name = (String) articleReplyMap.get("extra__name");
 	}
@@ -38,9 +37,6 @@ public class ArticleReply {
 		return articleId;
 	}
 
-	public int getboardId() {
-		return boardId;
-	}
 
 	public int getMemberId() {
 		return memberId;
@@ -66,9 +62,6 @@ public class ArticleReply {
 		this.articleId = articleId;
 	}
 
-	public void setBoardId(int boardId) {
-		this.boardId = boardId;
-	}
 
 	public void setMemberId(int memberId) {
 		this.memberId = memberId;
