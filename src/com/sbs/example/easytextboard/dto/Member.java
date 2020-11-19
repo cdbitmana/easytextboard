@@ -15,6 +15,10 @@ public class Member {
 		this.name = (String) boardMap.get("name");
 	}
 
+	public boolean isAdmin() {
+		return loginId.equals("aaa");
+	}
+
 	public int getId() {
 		return id;
 	}

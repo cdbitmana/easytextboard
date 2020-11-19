@@ -77,4 +77,27 @@ public class ArticleService {
 
 	}
 
+	public void doRecommand(int articleId) {
+		articleDao.doRecommand(articleId);
+
+	}
+
+	public int getMemberIdRecommand(int articleId) {
+		return articleDao.getMemberIdRecommand(articleId);
+	}
+
+	public void doCancelRecommand(int articleId) {
+		articleDao.doCancelRecommand(articleId);
+
+	}
+
+	public int getRecommand(int articleId) {
+		return articleDao.getRecommand(articleId);
+	}
+
+	public void doCountHit(int articleId) {
+		articleDao.doCountHit(articleId);
+		
+	}
+
 }

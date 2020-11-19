@@ -91,6 +91,11 @@ public class MemberController extends Controller {
 	// doJoin
 	private void doJoin() {
 
+		if (Container.session.isLogined()) {
+			System.out.println("로그아웃 후 이용해 주세요.");
+			return;
+		}
+
 		System.out.printf("아이디 : ");
 		String loginId = sc.nextLine().trim();
 

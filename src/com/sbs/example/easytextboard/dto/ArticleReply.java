@@ -10,6 +10,7 @@ public class ArticleReply {
 	private int articleId;
 	private int boardId;
 	private int memberId;
+	private String extra__name;
 
 	public ArticleReply(Map<String, Object> articleReplyMap) {
 		this.id = (int) articleReplyMap.get("id");
@@ -18,6 +19,7 @@ public class ArticleReply {
 		this.articleId = (int) articleReplyMap.get("articleId");
 		this.boardId = (int) articleReplyMap.get("boardId");
 		this.memberId = (int) articleReplyMap.get("memberId");
+		this.extra__name = (String) articleReplyMap.get("extra__name");
 	}
 
 	public int getId() {
@@ -44,6 +46,10 @@ public class ArticleReply {
 		return memberId;
 	}
 
+	public String getExtraName() {
+		return extra__name;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -66,6 +72,10 @@ public class ArticleReply {
 
 	public void setMemberId(int memberId) {
 		this.memberId = memberId;
+	}
+
+	public void setExtraName(String extra__name) {
+		this.extra__name = extra__name;
 	}
 
 }
