@@ -47,7 +47,19 @@ public class ArticleController extends Controller {
 			doMakeBoard();
 		} else if (command.equals("article selectBoard")) {
 			doSelectBoard();
+		} else if (command.equals("article currentBoard")) {
+			showCurrentBoard();
+		} else {
+			System.out.println("존재하지 않는 명령어");
 		}
+	}
+
+	// showCurrentBoard
+	private void showCurrentBoard() {
+		Board board = articleService.getBoardByCode(Container.session.getCurrentBoardCode());
+
+		System.out.printf("현재 게시판 : %s\n", board.getName());
+
 	}
 
 	// doSelectBoard
@@ -59,9 +71,9 @@ public class ArticleController extends Controller {
 		for (Board board : boards) {
 			System.out.printf("%d.%s (%s)", board.getId(), board.getName(), board.getCode());
 			if (board.getId() == Container.session.getCurrentBoardId()) {
-				System.out.printf("\t<- %s\n", "현재");
+				System.out.printf("  <---\n");
 			} else {
-				System.out.printf("\n");
+				System.out.println("");
 			}
 		}
 
@@ -335,7 +347,7 @@ public class ArticleController extends Controller {
 			System.out.println("존재하지 않는 게시물입니다.");
 			return;
 		}
-		
+
 		articleService.doIncreaseHit(articleId);
 
 		int recommand = articleService.getArticleRecommand(articleId);
@@ -345,13 +357,12 @@ public class ArticleController extends Controller {
 		System.out.printf("작성자 : %s\n", article.getExtraWriter());
 		System.out.printf("제목 : %s\n", article.getTitle());
 		System.out.printf("내용 : %s\n", article.getBody());
-		System.out.printf("조회수 : %d , 추천수 : %d\n", article.getHit()+1, recommand);
+		System.out.printf("조회수 : %d , 추천수 : %d\n", article.getHit() + 1, recommand);
 		System.out.println("댓글");
 		ArrayList<ArticleReply> replys = articleService.getReplysForPrintByArticleId(articleId);
 		for (ArticleReply reply : replys) {
 			System.out.printf("%d. %s - %s\n", reply.getId(), reply.getExtraName(), reply.getBody());
 		}
-		
 
 	}
 

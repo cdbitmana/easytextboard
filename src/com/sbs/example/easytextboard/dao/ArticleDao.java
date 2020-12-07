@@ -22,8 +22,7 @@ public class ArticleDao {
 		sql.append(", `body` = ?", body);
 		sql.append(", memberId = ?", memberId);
 		sql.append(", boardId = ?", boardId);
-		sql.append(",hit = 0");
-		sql.append(",recommand = 0");
+		sql.append(",hit = 0");		
 		return MysqlUtil.insert(sql);
 	}
 

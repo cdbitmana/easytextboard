@@ -7,8 +7,8 @@ public class Session {
 
 	public Session() {
 		loginedId = 0;
-		currentBoardId = 2;
-		currentBoardCode = "free";
+		currentBoardId = 1;
+		currentBoardCode = "notice";
 	}
 
 	public boolean isLogined() {

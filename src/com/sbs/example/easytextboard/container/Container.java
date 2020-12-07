@@ -17,6 +17,9 @@ public class Container {
 	public static ArticleService articleService;
 	public static MemberController memberController;
 	public static ArticleController articleController;
+	public static ExportService exportService;
+	public static ExportController exportController;
+	
 
 	static {
 		session = new Session();
@@ -27,5 +30,7 @@ public class Container {
 		articleService = new ArticleService();
 		memberController = new MemberController();
 		articleController = new ArticleController();
+		exportService = new ExportService();
+		exportController = new ExportController();
 	}
 }

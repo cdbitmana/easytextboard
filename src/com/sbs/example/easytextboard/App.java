@@ -13,6 +13,7 @@ public class App {
 	MemberController memberController;
 	ArticleService articleService;
 	MemberService memberService;
+	ExportController exportController;
 
 	public App() {
 
@@ -20,6 +21,7 @@ public class App {
 		memberController = Container.memberController;
 		articleService = Container.articleService;
 		memberService = Container.memberService;
+		exportController = Container.exportController;
 
 	}
 
@@ -60,6 +62,8 @@ public class App {
 			return articleController;
 		} else if (command.startsWith("member")) {
 			return memberController;
+		} else if (command.startsWith("export")) {
+			return exportController;
 		}
 		return null;
 	}
