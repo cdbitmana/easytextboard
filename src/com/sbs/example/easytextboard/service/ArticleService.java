@@ -1,6 +1,7 @@
 package com.sbs.example.easytextboard.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dao.*;
@@ -94,6 +95,8 @@ public class ArticleService {
 		articleDao.doIncreaseHit(articleId);
 	}
 
-	
+	public List<Article> getArticlesByBoardCode(String boardCode) {
+		return articleDao.getArticlesByBoardCode(boardCode);
+	}
 
 }

@@ -22,7 +22,7 @@ public class ArticleDao {
 		sql.append(", `body` = ?", body);
 		sql.append(", memberId = ?", memberId);
 		sql.append(", boardId = ?", boardId);
-		sql.append(",hit = 0");		
+		sql.append(",hit = 0");
 		return MysqlUtil.insert(sql);
 	}
 
@@ -290,6 +290,27 @@ public class ArticleDao {
 
 		MysqlUtil.update(sql);
 
+	}
+
+	// getArticlesByBoardCode
+	public List<Article> getArticlesByBoardCode(String boardCode) {
+		List<Article> articles = new ArrayList<>();
+		SecSql sql = new SecSql();
+
+		Board board = null;
+		board = getBoardByCode(boardCode);
+		sql.append("SELECT A.* , M.name AS extra__writer FROM article AS A");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON A.memberId = M.id");
+		sql.append("WHERE A.boardId = ?", board.getId());
+
+		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> articleMap : articleMapList) {
+			articles.add(new Article(articleMap));
+		}
+
+		return articles;
 	}
 
 }

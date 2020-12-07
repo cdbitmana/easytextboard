@@ -13,7 +13,7 @@ public class App {
 	MemberController memberController;
 	ArticleService articleService;
 	MemberService memberService;
-	ExportController exportController;
+	BuildController exportController;
 
 	public App() {
 
