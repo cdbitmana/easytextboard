@@ -29,7 +29,7 @@ public class BuildService {
 		for (Board board : boards) {
 			String fileName = board.getCode() + "-list-1.html";
 
-			String html = "<table border =\"1\">";
+			String html = "<table>";
 
 			List<Article> articles = articleService.getArticlesByBoardCode(board.getCode());
 
