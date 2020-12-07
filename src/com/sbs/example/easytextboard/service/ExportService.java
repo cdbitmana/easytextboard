@@ -1,5 +1,6 @@
 package com.sbs.example.easytextboard.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,12 +32,17 @@ public class ExportService {
 			html += "<div>작성자 : " + writer + "</div>";
 			html += "<div>제목 : " + article.getTitle() + "</div>";
 			html += "<div>내용 : " + article.getBody() + "</div>";
+			
 			if(article.getId()>1) {
 				html+="<div><a href=\"" + (article.getId()-1) + ".html\">이전글</a></div>";
 			}
 			
 			html += "<div><a href=\"" + (article.getId()+1) + ".html\">다음글</a></div>";
-			Util.writeFileContents("exportHtml/" + fileName, html);
+			File file = new File("site/");
+			if(file.exists() == false) {
+				file.mkdir();
+			}
+			Util.writeFileContents("site/" + fileName, html);
 		}
 		
 	}

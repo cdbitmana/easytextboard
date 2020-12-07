@@ -62,7 +62,7 @@ public class App {
 			return articleController;
 		} else if (command.startsWith("member")) {
 			return memberController;
-		} else if (command.startsWith("export")) {
+		} else if (command.startsWith("build")) {
 			return exportController;
 		}
 		return null;

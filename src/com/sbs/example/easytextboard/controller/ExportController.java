@@ -15,7 +15,7 @@ public class ExportController extends Controller{
 	}
 	
 	public void doCommand(String command) {
-		if(command.equals("export html")) {
+		if(command.equals("build site")) {
 			doHtml();
 		}
 	}
