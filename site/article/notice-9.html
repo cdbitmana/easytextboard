@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       /* 폰트 */
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 400;
+  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
+}
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 700;
+  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
+}
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 300;
+  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
+}
+html {
+  font-family: 'LotteMartDream', sans-serif;
+}
+
+/* 노말라이즈 */
+body, ul, li {
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+a {
+  color:inherit;
+  text-decoration:none;
+}
+
+/* 라이브러리 */
+.con {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.bg-black {
+  background-color:black;
+}
+
+.color-white {
+  color:white;
+}
+
+/* 커스텀 */
+.con-min-width {
+  min-width:1200px;
+}
+
+.font-bold{
+    font-weight: bold;
+}
+
+.con {
+  width:1200px;
+  margin:0 auto;
+}
+
+.logo-bar > .logo-box{
+    background-color:#afafaf;
+    margin:0 auto;
+    text-align: center;
+    font-size:2rem;
+}
+
+.logo-bar > .logo-box > i{
+    margin:0 20px;
+}
+.menu-box ul{
+    background-color:#afafaf;
+    text-align:center;
+}
+.menu-box > ul {
+    border-radius:0 0 10px 10px;
+}
+.menu-box > ul > li{
+    float:left;
+    width:calc(100% / 4);    
+    margin-top:10px;
+    display:block;
+    position:relative;
+}
+.menu-box > ul > li > a{
+    display:block;
+    padding:10px;
+    border-radius:10px 10px 0 0;
+}
+.menu-box ul > li > a > i{
+    margin-right:10px;
+}
+.menu-box > ul::after{
+    content:"";
+    display:block;
+    clear:both;
+}
+.menu-box  ul > li:hover > a{
+    color:black;
+    background-color:rgba(0, 0, 0, 0.3);    
+}
+
+.menu-box ul ul {
+    display:none;    
+    border-radius: 0 0 10px 10px;
+    position:absolute;
+    top:100%;
+    left:0;
+    text-align: center;
+    width:100%;   
+}
+
+.menu-box ul ul >li>a{
+    padding:5px;
+}
+.menu-box > ul > li:hover >  ul {
+    display:block;    
+}
+.menu-box ul ul > li > a{
+    display:block;
+}
+.menu-box ul ul >li:last-child > a{
+    border-radius:0 0 10px 10px;
+}
+.menu-box > ul ul > li > a{
+    display:block;
+}
+
+.board-list {
+    margin-top:40px;
+    text-align: center;
+}
+.board-list > table > tbody > tr > td {
+    padding-top:10px;
+    padding-bottom: 10px;
+
+}
+
+.board-list tbody tr td a:hover{
+    text-decoration: underline;
+ 
+}
+
+.board-list tbody tr .line-separate{
+    background-color:black;    
+    width:1200px;
+    padding:0;
+    height:1px;
+}
+
+:root{
+--cell-id__width:100px;
+--cell-writer__width:100px;
+--cell-regDate__width:160px;
+--cell-hit__width:100px;
+--cell-recommand__width:100px;
+--cell-title__width:calc(100% - var(--cell-id__width) - var(--cell-writer__width) - var(--cell-regDate__width) - var(--cell-hit__width) - var(--cell-recommand__width))
+}
+
+.board-list .cell-id{
+    width:var(--cell-id__width);
+}
+.board-list .cell-writer{
+    width:var(--cell-writer__width);
+}
+.board-list .cell-regDate{
+    width:var(--cell-regDate__width);
+}
+.board-list .cell-hit{
+    width:var(--cell-id__width);
+}
+.board-list .cell-recommand{
+    width:var(--cell-recommand__width);
+}
+.board-list .cell-title{
+    width:var(--cell-title__width);
+}
+.page-button {
+    text-align: center;
+    margin-top:15px;
+}
+.page-button ul li{
+    display:inline-block;
+    margin:0 20px;
+}
+
+.article {
+    margin:30px auto;
+}
+
+
+    </style>
+</head>
+
+<body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <header class="logo-bar con-min-width">
+        <div class="logo-box con">
+            <i class="fab fa-jenkins"></i>
+            DEVELOPERS
+        </div>
+    </header>
+
+    <div class="menu-box con">
+        <ul>
+            <li><a href="../home/index.html"><i class="fas fa-home"></i>HOME</a></li>
+            <li><a href=""><i class="fas fa-list"></i>BOARD</a>
+                <ul>
+                    <li><a href="notice-list-1.html"><i class="fas fa-clipboard"></i>공지사항</a></li>
+                    <li><a href="free-list-1.html"><i class="fas fa-clipboard"></i>자유게시판</a></li>
+                </ul>
+            </li>
+            <li><a href=""><i class="fas fa-link"></i>SNS</a>
+                <ul>
+                    <li><a href="https://cdbitmana.tistory.com/" target="_blank"><i class="fab fa-blogger-b"></i></i>블로그</a></li>
+                    <li><a href="https://github.com/cdbitmana/" target="_blank"><i class="fab fa-github"></i></i>GITHUB</a></li>
+                </ul>
+            </li>
+            <li><a href="../stat/index.html"><i class="fas fa-chart-pie"></i>STATISTICS</a>
+            </li>
+        </ul>
+    </div><section class="article con-min-width"><div class="con"><div>번호 : 9</div><div>날짜 : 2020-12-08 11:25:51</div><div>작성자 : 테스터1</div><div>제목 : 제목9</div><div>내용 : 내용9</div></div><div class="con next-article"><a href="10.html">다음글</a></div><div class="con prev-article"><a href="8.html">이전글</a></div></section><footer class="con-min-width"></footer>
+
+
+</body>
+    </html>

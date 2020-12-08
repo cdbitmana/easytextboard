@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -79,19 +79,22 @@ a {
 }
 .menu-box ul{
     background-color:#afafaf;
-    
-}
-.menu-box ul {
     text-align:center;
-    
+}
+.menu-box > ul {
+    border-radius:0 0 10px 10px;
 }
 .menu-box > ul > li{
     float:left;
-    width:calc(100% / 4);
-    font-size:1.5rem;
+    width:calc(100% / 4);    
     margin-top:10px;
     display:block;
     position:relative;
+}
+.menu-box > ul > li > a{
+    display:block;
+    padding:10px;
+    border-radius:10px 10px 0 0;
 }
 .menu-box ul > li > a > i{
     margin-right:10px;
@@ -101,28 +104,19 @@ a {
     display:block;
     clear:both;
 }
-.menu-box ul > li > a{
-    padding:0 10px;
-    
-}
-.menu-box  ul > li > a:hover{
+.menu-box  ul > li:hover > a{
     color:black;
     background-color:rgba(0, 0, 0, 0.3);    
-}
-.menu-box > ul > li > a{
-    border-radius:10px;
 }
 
 .menu-box ul ul {
     display:none;    
     border-radius: 0 0 10px 10px;
-}
-.menu-box ul ul {
     position:absolute;
     top:100%;
     left:0;
     text-align: center;
-    width:100%;    
+    width:100%;   
 }
 
 .menu-box ul ul >li>a{
@@ -140,41 +134,55 @@ a {
 .menu-box > ul ul > li > a{
     display:block;
 }
+
 .board-list {
     margin-top:40px;
+    text-align: center;
 }
-.board-list tbody tr td a{
-    display:block;
+.board-list > table > tbody > tr > td {
+    padding-top:10px;
+    padding-bottom: 10px;
+
 }
+
 .board-list tbody tr td a:hover{
     text-decoration: underline;
  
 }
-.board-list tbody tr:first-child.tag{
-    text-align: center;
+
+.board-list tbody tr .line-separate{
+    background-color:black;    
+    width:1200px;
+    padding:0;
+    height:1px;
 }
-.board-list tbody tr td {
-    text-align: center;
+
+:root{
+--cell-id__width:100px;
+--cell-writer__width:100px;
+--cell-regDate__width:160px;
+--cell-hit__width:100px;
+--cell-recommand__width:100px;
+--cell-title__width:calc(100% - var(--cell-id__width) - var(--cell-writer__width) - var(--cell-regDate__width) - var(--cell-hit__width) - var(--cell-recommand__width))
 }
-.board-list  tbody tr  td:first-child{  
-    text-align:center;  
-    width: 100px;
+
+.board-list .cell-id{
+    width:var(--cell-id__width);
 }
-.board-list  tbody  tr:not(.tag)  td:nth-child(2){
-    width:600px;
-    text-align:left;
-    padding-left:20px;
+.board-list .cell-writer{
+    width:var(--cell-writer__width);
 }
-.board-list tbody tr:not(.tag) td:nth-child(3){
-    width:100px;
+.board-list .cell-regDate{
+    width:var(--cell-regDate__width);
 }
-.board-list tbody tr:not(.tag) td:nth-child(4){
-    width:200px;
-}.board-list tbody tr:not(.tag) td:nth-child(5){
-    width:100px;
+.board-list .cell-hit{
+    width:var(--cell-id__width);
 }
-.board-list tbody tr:not(.tag) td:nth-child(6){
-    width:100px;
+.board-list .cell-recommand{
+    width:var(--cell-recommand__width);
+}
+.board-list .cell-title{
+    width:var(--cell-title__width);
 }
 .page-button {
     text-align: center;
