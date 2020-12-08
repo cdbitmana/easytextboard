@@ -18,7 +18,7 @@ public class Container {
 	public static MemberController memberController;
 	public static ArticleController articleController;
 	public static BuildService buildService;
-	public static BuildController exportController;
+	public static BuildController buildController;
 	
 
 	static {
@@ -31,6 +31,6 @@ public class Container {
 		memberController = new MemberController();
 		articleController = new ArticleController();
 		buildService = new BuildService();
-		exportController = new BuildController();
+		buildController = new BuildController();
 	}
 }

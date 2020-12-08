@@ -13,7 +13,7 @@ public class App {
 	MemberController memberController;
 	ArticleService articleService;
 	MemberService memberService;
-	BuildController exportController;
+	BuildController buildController;
 
 	public App() {
 
@@ -21,15 +21,19 @@ public class App {
 		memberController = Container.memberController;
 		articleService = Container.articleService;
 		memberService = Container.memberService;
-		exportController = Container.exportController;
+		buildController = Container.buildController;
 
 	}
 
 	// run 메소드
 	public void run() {
 
+		
+		
 		Scanner scanner = new Scanner(System.in);
 		Controller controller;
+		
+		
 
 		while (true) {
 			System.out.printf("명령어) ");
@@ -63,7 +67,7 @@ public class App {
 		} else if (command.startsWith("member")) {
 			return memberController;
 		} else if (command.startsWith("build")) {
-			return exportController;
+			return buildController;
 		}
 		return null;
 	}

@@ -31,7 +31,7 @@ public class BuildService {
 
 			File file = new File("site/article/");
 			if (file.exists() == false) {
-				file.mkdir();
+				file.mkdirs();
 			}
 
 			List<Article> articles = articleService.getArticlesByBoardCode(board.getCode());
@@ -52,8 +52,8 @@ public class BuildService {
 					end = 0;
 				}
 
-				String html = "<section class=\"con-min-width\">";
-				html += "<table class =\"con board-list\">";
+				String html = "<section class=\"board-list con-min-width\">";
+				html += "<table class =\"con\">";
 				html += "<tr class =\"tag\">";
 				html += "<td class =\"font-bold\">번호</td>";
 				html += "<td class =\"font-bold\">제목</td>";
@@ -64,21 +64,24 @@ public class BuildService {
 				html += "</tr>";
 				for (int j = start; j >= end; j--) {
 					html += "<tr>";
-					html += "<td>" + articles.get(j).getId() + "</td>";
-					html += "<td><a href=\"" + board.getCode() + "-" + articles.get(j).getId() + ".html\">"
+					html += "<td colspan=\"6\" class =\"line-separate\"></td>";
+					html += "</tr>";
+					html += "<tr>";
+					html += "<td class=\"cell-id\">" + articles.get(j).getId() + "</td>";
+					html += "<td class=\"cell-title\"><a href=\"" + board.getCode() + "-" + articles.get(j).getId() + ".html\">"
 							+ articles.get(j).getTitle() + "</td>";
-					html += "<td>" + articles.get(j).getExtraWriter() + "</td>";
-					html += "<td>" + articles.get(j).getRegDate() + "</td>";
-					html += "<td>" + articles.get(j).getHit() + "</td>";
-					html += "<td>" + articleService.getArticleRecommand(articles.get(j).getId()) + "</td>";
+					html += "<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>";
+					html += "<td class=\"cell-regDate\">" + articles.get(j).getRegDate() + "</td>";
+					html += "<td class=\"cell-hit\">" + articles.get(j).getHit() + "</td>";
+					html += "<td class=\"cell-recommand\">" + articleService.getArticleRecommand(articles.get(j).getId()) + "</td>";
 					html += "</tr>";
 
 				}
 				html += "</table>";
 				html += "</section>";
 
-				html += "<section class=\"con-min-width\">";
-				html += "<div class=\"con page-button\">";
+				html += "<section class=\"page-button con-min-width\">";
+				html += "<div class=\"con\">";
 				html += "<ul>";
 
 				if (i != 1) {
@@ -113,8 +116,8 @@ public class BuildService {
 
 				String fileName = board.getCode() + "-" + article.getId() + ".html";
 				String html = "";
-				html += "<section class=\"con-min-width\">";
-				html += "<div class=\"con article\">";
+				html += "<section class=\"article con-min-width\">";
+				html += "<div class=\"con\">";
 				html += "<div>번호 : " + article.getId() + "</div>";
 				html += "<div>날짜 : " + article.getRegDate() + "</div>";
 				html += "<div>작성자 : " + writer + "</div>";
@@ -150,8 +153,8 @@ public class BuildService {
 
 		String html = "";
 
-		html += "<section class=\"con-min-width\">";
-		html += "<div class = \"con stat-box\">";
+		html += "<section class=\"stat-box con-min-width\">";
+		html += "<div class = \"con\">";
 		html += "<ul>";
 		html += "<li>회원 수 : " + members.size() + "</li>";
 		html += "<li>전체 게시물 수 : " + articles.size() + "</li>";
@@ -186,8 +189,8 @@ public class BuildService {
 
 		html += "</ul>";
 		html += "</section>";
-		head.replace("notice-list-1.html", "../article/notice-list-1.html");
-		head.replace("free-list-1.html", "../article/free-list-1.html");
+		head = head.replace("<a href=\"notice-list-1.html\">", "<a href=\"../article/notice-list-1.html\">");
+		head = head.replace("<a href=\"free-list-1.html\">", "<a href=\"../article/free-list-1.html\">");
 		html = head + html + foot;
 		Util.writeFileContents("site/stat/" + fileName, html);
 	}
