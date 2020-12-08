@@ -1,5 +1,7 @@
 package com.sbs.example.easytextboard.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.sbs.example.easytextboard.container.*;
@@ -97,6 +99,23 @@ public class MemberDao {
 
 		return MysqlUtil.insert(sql);
 
+	}
+
+	// getMembers
+	public List<Member> getMembers() {
+		List<Member> members = new ArrayList<>();
+		
+		SecSql sql= new SecSql();
+		
+		sql.append("SELECT * FROM `member`");
+		
+		List<Map<String,Object>> memberMapList = MysqlUtil.selectRows(sql);
+		
+		for(Map<String,Object> memberMap : memberMapList) {
+			members.add(new Member(memberMap));
+		}
+		
+		return members;
 	}
 
 }

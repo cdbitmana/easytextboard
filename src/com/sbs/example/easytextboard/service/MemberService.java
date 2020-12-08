@@ -1,5 +1,7 @@
 package com.sbs.example.easytextboard.service;
 
+import java.util.List;
+
 import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dao.*;
 import com.sbs.example.easytextboard.dto.*;
@@ -31,6 +33,10 @@ public class MemberService {
 
 	public int doJoin(String loginId, String pw, String name) {
 		return memberDao.doJoin(loginId, pw, name);
+	}
+
+	public List<Member> getMembers() {
+		return memberDao.getMembers();
 	}
 
 }

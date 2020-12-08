@@ -58,6 +58,10 @@ a {
   min-width:1200px;
 }
 
+.font-bold{
+    font-weight: bold;
+}
+
 .con {
   width:1200px;
   margin:0 auto;
@@ -133,6 +137,58 @@ a {
 .menu-box ul ul >li:last-child > a{
     border-radius:0 0 10px 10px;
 }
+.menu-box > ul ul > li > a{
+    display:block;
+}
+.board-list {
+    margin-top:40px;
+}
+.board-list tbody tr td a{
+    display:block;
+}
+.board-list tbody tr td a:hover{
+    text-decoration: underline;
+ 
+}
+.board-list tbody tr:first-child.tag{
+    text-align: center;
+}
+.board-list tbody tr td {
+    text-align: center;
+}
+.board-list  tbody tr  td:first-child{  
+    text-align:center;  
+    width: 100px;
+}
+.board-list  tbody  tr:not(.tag)  td:nth-child(2){
+    width:600px;
+    text-align:left;
+    padding-left:20px;
+}
+.board-list tbody tr:not(.tag) td:nth-child(3){
+    width:100px;
+}
+.board-list tbody tr:not(.tag) td:nth-child(4){
+    width:200px;
+}.board-list tbody tr:not(.tag) td:nth-child(5){
+    width:100px;
+}
+.board-list tbody tr:not(.tag) td:nth-child(6){
+    width:100px;
+}
+.page-button {
+    text-align: center;
+    margin-top:15px;
+}
+.page-button ul li{
+    display:inline-block;
+    margin:0 20px;
+}
+
+.article {
+    margin:30px auto;
+}
+
 
     </style>
 </head>
@@ -149,14 +205,20 @@ a {
 
     <div class="menu-box con">
         <ul>
-            <li><a href="file:///C:/work/sts-4.8.0.RELEASE-workspace/easytextboard/site_template/part/home.html"><i class="fas fa-home"></i>HOME</a></li>
+            <li><a href="../home/index.html"><i class="fas fa-home"></i>HOME</a></li>
             <li><a href=""><i class="fas fa-list"></i>BOARD</a>
                 <ul>
-                    <li><a href="file:///C:/work/sts-4.8.0.RELEASE-workspace/easytextboard/site/notice-list-1.html"><i class="fas fa-clipboard"></i>공지사항</a></li>
-                    <li><a href="file:///C:/work/sts-4.8.0.RELEASE-workspace/easytextboard/site/free-list-1.html"><i class="fas fa-clipboard"></i>자유게시판</a></li>
+                    <li><a href="notice-list-1.html"><i class="fas fa-clipboard"></i>공지사항</a></li>
+                    <li><a href="free-list-1.html"><i class="fas fa-clipboard"></i>자유게시판</a></li>
                 </ul>
             </li>
-            <li><a href=""><i class="fas fa-link"></i>LINK</a></li>
-            <li><a href=""><i class="fas fa-chart-pie"></i>STATISTICS</a></li>
+            <li><a href=""><i class="fas fa-link"></i>SNS</a>
+                <ul>
+                    <li><a href="https://cdbitmana.tistory.com/" target="_blank"><i class="fab fa-blogger-b"></i></i>블로그</a></li>
+                    <li><a href="https://github.com/cdbitmana/" target="_blank"><i class="fab fa-github"></i></i>GITHUB</a></li>
+                </ul>
+            </li>
+            <li><a href="../stat/index.html"><i class="fas fa-chart-pie"></i>STATISTICS</a>
+            </li>
         </ul>
     </div>

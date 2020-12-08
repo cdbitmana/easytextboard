@@ -99,4 +99,8 @@ public class ArticleService {
 		return articleDao.getArticlesByBoardCode(boardCode);
 	}
 
+	public List<Article> getArticles() {
+		return articleDao.getArticles();
+	}
+
 }
