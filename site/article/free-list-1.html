@@ -10,19 +10,19 @@
   font-family: 'LotteMartDream';
   font-style: normal;
   font-weight: 400;
-  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
+  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
 }
 @font-face {
   font-family: 'LotteMartDream';
   font-style: normal;
   font-weight: 700;
-  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
+  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
 }
 @font-face {
   font-family: 'LotteMartDream';
   font-style: normal;
   font-weight: 300;
-  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
+  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
 }
 html {
   font-family: 'LotteMartDream', sans-serif;
@@ -192,12 +192,27 @@ a {
     left:0;
     transform:translateY(-50%);
 }
-
+.board-list table tr.tag td:last-child::after{
+    content:"";
+    display:block;
+    clear:both;
+    background-color:black;
+    width:1px;
+    height:15px;
+    position:absolute;
+    top:50%;
+    left:100%;
+    transform:translateY(-50%);
+}
 .board-list tbody tr .line-separate{
     background-color:black;    
     width:1200px;
     padding:0;
     height:1px;
+}
+.cell-title{
+    text-align: left;
+    padding-left:55px;
 }
 
 :root{
@@ -275,7 +290,7 @@ a {
 
     <header class="logo-bar con-min-width">
         <div class="logo-box con">
-            <a href="" class="logo"><i class="fab fa-jenkins"></i>
+            <a href="../home/index.html" class="logo"><i class="fab fa-jenkins"></i>
                 DEVELOPERS</a>            
         </div>
     </header>
@@ -303,7 +318,7 @@ a {
 </header><section class="board-list con-min-width"><table class ="con"><tr class ="tag"><td class ="font-bold">번호</td><td class ="font-bold">제목</td><td class ="font-bold">작성자</td><td class ="font-bold">작성일</td><td class ="font-bold">조회 수</td><td class ="font-bold">추천 수</td></tr><tr><td colspan="6" class ="line-separate"></td></tr><tr><td class="cell-id">4</td><td class="cell-title"><a href="free-4.html">제목1</td><td class="cell-writer">테스터1</td><td class="cell-regDate">2020-12-08 11:24:38</td><td class="cell-hit">0</td><td class="cell-recommand">0</td></tr></table></section><section class="page-button con-min-width"><div class="con"><ul><li><a href="free-list-1.html"> 1</a></li></ul></div></section>
     <footer class="bottom-logo-bar con-min-width">
         <div class="con float-grid">
-            <a href="./" class="logo">
+            <a href="" class="logo">
             <i class="fab fa-jenkins"></i>
             <span>DEVELOPERS</span>            
         </a>
