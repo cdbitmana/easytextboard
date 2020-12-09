@@ -46,7 +46,9 @@
        .color-white {
          color:white;
        }
-       
+       i{
+           margin:0 5px;
+       }
        /* 커스텀 */
        .con-min-width {
          min-width:1200px;

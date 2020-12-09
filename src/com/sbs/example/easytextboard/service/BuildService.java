@@ -79,6 +79,7 @@ public class BuildService {
 				sb.append("<td class =\"font-bold\">조회 수</td>");
 				sb.append("<td class =\"font-bold\">추천 수</td>");
 				sb.append("</tr>");
+				
 				for (int j = start; j >= end; j--) {
 					sb.append("<tr>");
 					sb.append("<td colspan=\"6\" class =\"line-separate\"></td>");
@@ -93,8 +94,8 @@ public class BuildService {
 					sb.append("<td class=\"cell-recommand\">"
 							+ articleService.getArticleRecommand(articles.get(j).getId()) + "</td>");
 					sb.append("</tr>");
-
 				}
+				
 				sb.append("</table>");
 				sb.append("</section>");
 

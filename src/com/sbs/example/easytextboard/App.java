@@ -27,19 +27,35 @@ public class App {
 
 	// run 메소드
 	public void run() {
-
-		
-		
+		MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "textBoard");
 		Scanner scanner = new Scanner(System.in);
 		Controller controller;
 		
-		
+		// 스레드 생성하고 1초마다 build site 실행시키기
+		Thread thr = new Thread(new Runnable() {
+			public void run() {
+				while(true) {
+					buildController.doCommand("build site");
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			}
+		});
+		thr.start();
 
+		
+		
 		while (true) {
 			System.out.printf("명령어) ");
+			
 			String command = scanner.nextLine();
 
-			MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "textBoard");
+			
 
 			if (command.equals("system exit")) {
 				System.out.println("프로그램을 종료합니다.");
@@ -55,6 +71,8 @@ public class App {
 			}
 
 			controller.doCommand(command);
+			
+			
 
 		}
 		scanner.close();

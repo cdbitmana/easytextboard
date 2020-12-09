@@ -46,7 +46,9 @@
        .color-white {
          color:white;
        }
-       
+       i{
+           margin:0 5px;
+       }
        /* 커스텀 */
        .con-min-width {
          min-width:1200px;
@@ -147,8 +149,7 @@
            margin-top:40px;
        }
        .title-bar__title-box{
-           font-size:2rem;
-           padding:10px;
+           font-size:2rem;           
        }
        
        .board-list {
