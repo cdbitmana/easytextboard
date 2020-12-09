@@ -1,0 +1,274 @@
+
+       /* 폰트 */
+       @font-face {
+         font-family: 'LotteMartDream';
+         font-style: normal;
+         font-weight: 400;
+         src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
+       }
+       @font-face {
+         font-family: 'LotteMartDream';
+         font-style: normal;
+         font-weight: 700;
+         src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
+       }
+       @font-face {
+         font-family: 'LotteMartDream';
+         font-style: normal;
+         font-weight: 300;
+         src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
+       }
+       html {
+         font-family: 'LotteMartDream', sans-serif;
+       }
+       
+       /* 노말라이즈 */
+       body, ul, li {
+         margin:0;
+         padding:0;
+         list-style:none;
+       }
+       a {
+         color:inherit;
+         text-decoration:none;
+       }
+       
+       /* 라이브러리 */
+       .con {
+         margin-left:auto;
+         margin-right:auto;
+       }
+       
+       .bg-black {
+         background-color:black;
+       }
+       
+       .color-white {
+         color:white;
+       }
+       
+       /* 커스텀 */
+       .con-min-width {
+         min-width:1200px;
+       }
+       
+       .font-bold{
+           font-weight: bold;
+       }
+       .float-right{
+           float:right;
+       }
+       
+        .width-100p-except-300px{
+            width:calc(100% - 300px);
+        }
+       
+        .logo{
+            font-size:2rem;
+            padding:30px 0;
+            display:inline-block;
+        }
+       
+       .con {
+         width:1200px;
+         margin:0 auto;
+       }
+       .float-grid > *{
+           float:left;
+       }
+       .float-grid::after{
+           content:"";
+           display:block;
+           clear:both;
+       }
+       .flex{
+           display:flex;
+       }
+       .flex-jc-c {
+           justify-content: center;
+       }
+       .flex-dir-r {
+           flex-direction: row;
+       }
+       .flex-jc-s-ar{
+           justify-content: space-around;
+       }
+       .flex-grow-1{
+           flex-grow: 1;
+       }
+
+       /* 로고바 시작 */
+       .logo-bar{           
+           background-color:#afafaf;
+       }
+       .logo-bar > .logo-box{           
+           font-size:2rem;
+       }              
+       /* 로고바 끝 */
+
+       /* 메뉴바 시작 */
+       .menu-bar {
+           background-color:#afafaf;
+       }
+       .menu-bar ul li {
+           background-color:#afafaf;
+           text-align: center;
+           z-index:1;
+       }       
+       .menu-box ul > li {
+        position:relative;
+        }
+       .menu-bar ul ul {
+           display:none;
+           position: absolute;
+           top:100%;
+           left:0;
+           width:100%;
+       }       
+       .menu-box ul > li > a {
+        display:block;
+        padding:10px;
+       }       
+       .menu-box ul > li:hover ul{
+        display:block;
+       }
+       .menu-box ul > li:hover > a {
+        color:white;
+        background-color:black;
+       }
+       .menu-box > ul > li:hover > a {        
+        border-radius:10px 10px 0 0;
+        z-index:1;
+       }
+       /* 메뉴바 끝 */
+       
+       /* 게시판 페이징 시작 */
+       .title-bar{
+           margin-top:40px;
+       }
+       .title-bar__title-box{
+           font-size:2rem;
+           padding:10px;
+       }
+       
+       .board-list {
+           margin-top:40px;
+           text-align: center;
+       }
+       .board-list > table > tbody > tr > td {
+           padding-top:10px;
+           padding-bottom: 10px;       
+       }       
+       .board-list > table > tbody > tr > td > a:hover{
+           text-decoration: underline;        
+       }
+       .board-list > table > tbody > tr.tag > td{
+           position:relative;
+       }
+       .board-list > table > tbody > tr.tag > td::before{
+           content:"";
+           display:block;
+           clear:both;
+           background-color:black;
+           width:1px;
+           height:15px;
+           position:absolute;
+           top:50%;
+           left:0;
+           transform:translateY(-50%);
+       }
+       .board-list > table > tbody > tr.tag > td:last-child::after{
+           content:"";
+           display:block;
+           clear:both;
+           background-color:black;
+           width:1px;
+           height:15px;
+           position:absolute;
+           top:50%;
+           left:100%;
+           transform:translateY(-50%);
+       }
+       .board-list > table >  tbody > tr > td.line-separate{
+           background-color:black;    
+           width:1200px;
+           padding:0;
+           height:1px;
+       }
+       .cell-title{
+           text-align: left;
+           padding-left:55px;
+       }
+       
+       :root{
+       --cell-id__width:100px;
+       --cell-writer__width:100px;
+       --cell-regDate__width:160px;
+       --cell-hit__width:100px;
+       --cell-recommand__width:100px;
+       --cell-title__width:calc(100% - var(--cell-id__width) - var(--cell-writer__width) - var(--cell-regDate__width) - var(--cell-hit__width) - var(--cell-recommand__width))
+       }
+       
+       .board-list .cell-id{
+           width:var(--cell-id__width);
+       }
+       .board-list .cell-writer{
+           width:var(--cell-writer__width);
+       }
+       .board-list .cell-regDate{
+           width:var(--cell-regDate__width);
+       }
+       .board-list .cell-hit{
+           width:var(--cell-id__width);
+       }
+       .board-list .cell-recommand{
+           width:var(--cell-recommand__width);
+       }
+       .board-list .cell-title{
+           width:var(--cell-title__width);
+       }
+       .page-button {
+           margin:35px 0;
+       }
+       .page-button > ul > li > a:hover {
+           text-decoration: underline;
+       }
+       /* 게시판 페이징 끝 */
+       
+       /* 게시물 상세보기 시작 */
+       .article {
+           margin:30px auto;
+       } 
+       .article-move-button{
+           margin:15px 0;
+       }
+       .article-move-button > div {
+           margin-top:5px;
+           margin-bottom: 5px;
+       }
+       .article-move-button > div > a:hover{
+           text-decoration: underline;
+       }
+       /* 게시물 상세보기 끝 */
+
+       /* 통계 상세보기 시작 */
+       .stat-box li{
+           margin:5px 35px;
+           
+       }
+       .stat-box > div > ul > li {
+           list-style:disc;
+       }
+       .stat-box > div > ul > li > ul > li{
+           list-style:circle;
+       }       
+        /* 통계 상세보기 끝 */    
+
+       
+       .bottom-logo-bar{
+        background-color:#afafaf;
+    }
+    .copyright-box{
+        padding-left:30px;
+        padding-top:30px;
+    }

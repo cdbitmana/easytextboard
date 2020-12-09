@@ -3,6 +3,7 @@ package com.sbs.example.easytextboard.util;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -78,4 +79,36 @@ public class Util {
 			}
 		}
 	}
+
+	// 파일 복사하기
+	public static void copy(String sourceFile, String copyFile) {		
+        
+        //파일객체생성
+        File source = new File(sourceFile);
+        //복사파일객체생성
+        File copy= new File(copyFile);
+        
+        try {
+            
+            FileInputStream fis = new FileInputStream(source); //읽을파일
+            FileOutputStream fos = new FileOutputStream(copy); //복사할파일
+            
+            int fileByte = 0; 
+            // fis.read()가 -1 이면 파일을 다 읽은것
+            while((fileByte = fis.read()) != -1) {
+                fos.write(fileByte);
+            }
+            //자원사용종료
+            fis.close();
+            fos.close();
+            
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
+	}
+	
+	
 }
