@@ -317,9 +317,9 @@ public class ArticleDao {
 	public List<Article> getArticles() {
 		List<Article> articles = new ArrayList<>();
 		SecSql sql = new SecSql();
-		
+
 		sql.append("SELECT * FROM article");
-		
+
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
 
 		for (Map<String, Object> articleMap : articleMapList) {

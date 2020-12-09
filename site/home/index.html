@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,14 +61,38 @@ a {
 .font-bold{
     font-weight: bold;
 }
+.float-right{
+    float:right;
+}
+
+ .width-100p-except-300px{
+     width:calc(100% - 300px);
+ }
+
+ .logo{
+     font-size:2rem;
+     padding:30px 0;
+     display:inline-block;
+ }
 
 .con {
   width:1200px;
   margin:0 auto;
 }
-
-.logo-bar > .logo-box{
+.float-grid > *{
+    float:left;
+}
+.float-grid::after{
+    content:"";
+    display:block;
+    clear:both;
+}
+.logo-bar{
+    
     background-color:#afafaf;
+}
+.logo-bar > .logo-box{
+    
     margin:0 auto;
     text-align: center;
     font-size:2rem;
@@ -77,21 +101,28 @@ a {
 .logo-bar > .logo-box > i{
     margin:0 20px;
 }
+.menu-bar{
+    background-color:#afafaf;
+}
 .menu-box ul{
     background-color:#afafaf;
-    
-}
-.menu-box ul {
     text-align:center;
-    
+    z-index:1;
+}
+.menu-box > ul {
+    border-radius:0 0 10px 10px;
 }
 .menu-box > ul > li{
     float:left;
-    width:calc(100% / 4);
-    font-size:1.5rem;
+    width:calc(100% / 4);    
     margin-top:10px;
     display:block;
     position:relative;
+}
+.menu-box > ul > li > a{
+    display:block;
+    padding:10px;
+    border-radius:10px 10px 0 0;
 }
 .menu-box ul > li > a > i{
     margin-right:10px;
@@ -101,28 +132,19 @@ a {
     display:block;
     clear:both;
 }
-.menu-box ul > li > a{
-    padding:0 10px;
-    
-}
-.menu-box  ul > li > a:hover{
+.menu-box  ul > li:hover > a{
     color:black;
     background-color:rgba(0, 0, 0, 0.3);    
-}
-.menu-box > ul > li > a{
-    border-radius:10px;
 }
 
 .menu-box ul ul {
     display:none;    
     border-radius: 0 0 10px 10px;
-}
-.menu-box ul ul {
     position:absolute;
     top:100%;
     left:0;
     text-align: center;
-    width:100%;    
+    width:100%;   
 }
 
 .menu-box ul ul >li>a{
@@ -140,45 +162,74 @@ a {
 .menu-box > ul ul > li > a{
     display:block;
 }
+
 .board-list {
     margin-top:40px;
+    text-align: center;
 }
-.board-list tbody tr td a{
-    display:block;
+.board-list > table > tbody > tr > td {
+    padding-top:10px;
+    padding-bottom: 10px;
+
 }
+
 .board-list tbody tr td a:hover{
     text-decoration: underline;
  
 }
-.board-list tbody tr:first-child.tag{
-    text-align: center;
+.board-list table tr.tag td{
+    position:relative;
 }
-.board-list tbody tr td {
-    text-align: center;
+.board-list table tr.tag td::before{
+    content:"";
+    display:block;
+    clear:both;
+    background-color:black;
+    width:1px;
+    height:15px;
+    position:absolute;
+    top:50%;
+    left:0;
+    transform:translateY(-50%);
 }
-.board-list  tbody tr  td:first-child{  
-    text-align:center;  
-    width: 100px;
+
+.board-list tbody tr .line-separate{
+    background-color:black;    
+    width:1200px;
+    padding:0;
+    height:1px;
 }
-.board-list  tbody  tr:not(.tag)  td:nth-child(2){
-    width:600px;
-    text-align:left;
-    padding-left:20px;
+
+:root{
+--cell-id__width:100px;
+--cell-writer__width:100px;
+--cell-regDate__width:160px;
+--cell-hit__width:100px;
+--cell-recommand__width:100px;
+--cell-title__width:calc(100% - var(--cell-id__width) - var(--cell-writer__width) - var(--cell-regDate__width) - var(--cell-hit__width) - var(--cell-recommand__width))
 }
-.board-list tbody tr:not(.tag) td:nth-child(3){
-    width:100px;
+
+.board-list .cell-id{
+    width:var(--cell-id__width);
 }
-.board-list tbody tr:not(.tag) td:nth-child(4){
-    width:200px;
-}.board-list tbody tr:not(.tag) td:nth-child(5){
-    width:100px;
+.board-list .cell-writer{
+    width:var(--cell-writer__width);
 }
-.board-list tbody tr:not(.tag) td:nth-child(6){
-    width:100px;
+.board-list .cell-regDate{
+    width:var(--cell-regDate__width);
+}
+.board-list .cell-hit{
+    width:var(--cell-id__width);
+}
+.board-list .cell-recommand{
+    width:var(--cell-recommand__width);
+}
+.board-list .cell-title{
+    width:var(--cell-title__width);
 }
 .page-button {
     text-align: center;
-    margin-top:15px;
+    margin-top:25px;
 }
 .page-button ul li{
     display:inline-block;
@@ -189,6 +240,13 @@ a {
     margin:30px auto;
 }
 
+.bottom-logo-bar{
+    background-color:#afafaf;
+}
+.copyright-box{
+    padding-left:30px;
+    padding-top:30px;
+}
 
     </style>
 </head>
@@ -198,11 +256,12 @@ a {
 
     <header class="logo-bar con-min-width">
         <div class="logo-box con">
-            <i class="fab fa-jenkins"></i>
-            DEVELOPERS
+            <a href="" class="logo"><i class="fab fa-jenkins"></i>
+                DEVELOPERS</a>            
         </div>
     </header>
 
+    <header class="con-min-width menu-bar">
     <div class="menu-box con">
         <ul>
             <li><a href="index.html"><i class="fas fa-home"></i>HOME</a></li>
@@ -222,9 +281,43 @@ a {
             </li>
         </ul>
     </div>
+</header>
+    <main>
+        <div class="con">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, necessitatibus! Consequuntur fuga porro rem id voluptatum. Placeat delectus reiciendis deserunt, adipisci esse ducimus temporibus, saepe perferendis maiores nobis quasi nostrum.
+            Cumque commodi nostrum perspiciatis nulla quis ab, dolores quisquam odit distinctio ipsum. Voluptas eius, autem qui, dignissimos officia nesciunt quae fugit aspernatur rerum ipsam sunt doloribus obcaecati voluptatum necessitatibus! Quibusdam.
+            Et aspernatur iusto cupiditate architecto, magnam excepturi perferendis error omnis porro delectus quibusdam beatae ipsa veniam, ea nobis voluptas quas deleniti placeat tempora. Optio, itaque reiciendis esse non placeat laudantium!
+            Voluptas quaerat animi est. Porro, totam asperiores consequatur sapiente rem numquam eveniet! Ea voluptatem rerum harum repellat quas fuga, vel earum recusandae voluptates, sapiente, unde beatae error ullam inventore magnam!
+            Aut, dolores. Rerum a reiciendis quod tempore quisquam laboriosam maxime incidunt! Eius velit omnis laborum nobis! Ex magni sed, asperiores quas quam modi saepe aliquid corporis in accusantium corrupti numquam.
+            Cum aperiam eos ab! Consectetur vel beatae animi. Blanditiis reprehenderit asperiores enim adipisci, maiores libero iusto accusantium dolorem eveniet exercitationem assumenda vitae explicabo natus eaque ducimus omnis hic ipsam fugiat!
+            Neque dolorum similique doloribus enim voluptatem, dicta porro quae harum, error officiis corporis amet aperiam recusandae alias placeat eos eum unde praesentium odit, culpa impedit perferendis iure commodi. Vero, consectetur.
+            Totam, porro officia! Nostrum, itaque consequatur possimus earum ea corrupti quae, hic ex ut dolores mollitia repellendus culpa ducimus ab neque! Corrupti numquam illo voluptas, nostrum ab minus beatae eveniet!
+            Natus nam non excepturi. Obcaecati laudantium voluptate voluptatem atque ducimus aut corporis amet nesciunt neque, minima libero deleniti harum et ex labore! Fugit, ipsam repudiandae. Illo doloribus veritatis ipsa qui.
+            Dolore, tempora aliquid? Placeat ab nulla ut commodi, autem magni quaerat repudiandae eligendi minus optio, ratione sed. Non quasi quibusdam sit deserunt suscipit? Vel sint reiciendis aut animi neque eius!
+            Voluptas adipisci illum porro cum placeat et corporis totam. Eligendi vitae perferendis veniam quo voluptates voluptatum laborum ipsa pariatur, qui nihil cum debitis atque dolores similique tempora assumenda nostrum! Ex.
+            Reprehenderit sapiente amet quaerat repellendus excepturi corrupti, molestias nobis deleniti autem rem fuga dolor, et aliquid voluptatum quisquam quos officia dolore nihil provident nemo incidunt facilis. Sequi nostrum incidunt mollitia?
+            Incidunt blanditiis aliquam iusto dolore. Harum temporibus ipsam vero suscipit culpa! Reprehenderit pariatur eveniet dolorum a nesciunt eius, fuga quis qui repellendus illum eligendi, esse, quam porro veritatis reiciendis assumenda.
+            Nobis, molestiae asperiores recusandae eligendi pariatur perspiciatis modi id nihil ullam facilis ratione ad voluptatem, nesciunt illo omnis nemo debitis autem mollitia ab officia, magni natus. Assumenda, nobis? Quaerat, voluptatem!
+            Veniam sint dolore facere, officiis ab voluptates beatae excepturi aliquid mollitia! Ipsa eaque minima voluptatum labore, enim perspiciatis, facilis necessitatibus itaque minus laboriosam mollitia ad consequuntur, quia eius fuga dolorem.
+            Quas nemo natus voluptatem consectetur quibusdam illo blanditiis aspernatur sequi. Maxime, numquam aliquid esse enim officiis a obcaecati mollitia eos maiores ipsam, nulla pariatur quibusdam, temporibus hic voluptatem! Nobis, eos!
+            Ullam nesciunt impedit, soluta, molestiae ab, earum nisi quaerat perspiciatis natus quae unde ad quas exercitationem dignissimos! Ipsam sed natus rem officiis ut pariatur aliquid reiciendis, odit, architecto consequatur non!
+            Illum maiores, excepturi libero in voluptatum praesentium voluptate! Voluptas est laboriosam natus. Harum, provident? Officia commodi praesentium soluta tempore vitae adipisci repudiandae sapiente deleniti. Adipisci est minima molestiae eaque numquam!
+            Accusamus soluta illo corrupti deleniti, veniam nam placeat quisquam facilis repellat, unde, voluptatem ipsam! Commodi, deleniti totam possimus quia voluptatem saepe corrupti iusto cumque veritatis quas, distinctio dolore hic obcaecati.
+            Molestiae eos expedita autem ullam vero velit mollitia aliquam atque, tempora quos reiciendis quibusdam molestias alias ut quidem asperiores quae sapiente doloribus quia error libero? Minus voluptate sit blanditiis consectetur.
+        </div>
+    </main>
 
-    <footer class="con-min-width"></footer>
-
-
+    <footer class="bottom-logo-bar con-min-width">
+        <div class="con float-grid">
+            <a href="./" class="logo">
+            <i class="fab fa-jenkins"></i>
+            <span>DEVELOPERS</span>            
+        </a>
+        <div class="copyright-box float-right width-100p-except-300px">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos est et sequi sint exercitationem quibusdam ratione. Architecto facere est eius labore autem, fugiat rem dolor, perferendis, cum sapiente veritatis libero.
+        </div>
+        </div>
+      
+    </footer>
 </body>
     </html>

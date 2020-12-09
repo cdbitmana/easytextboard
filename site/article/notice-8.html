@@ -61,14 +61,38 @@ a {
 .font-bold{
     font-weight: bold;
 }
+.float-right{
+    float:right;
+}
+
+ .width-100p-except-300px{
+     width:calc(100% - 300px);
+ }
+
+ .logo{
+     font-size:2rem;
+     padding:30px 0;
+     display:inline-block;
+ }
 
 .con {
   width:1200px;
   margin:0 auto;
 }
-
-.logo-bar > .logo-box{
+.float-grid > *{
+    float:left;
+}
+.float-grid::after{
+    content:"";
+    display:block;
+    clear:both;
+}
+.logo-bar{
+    
     background-color:#afafaf;
+}
+.logo-bar > .logo-box{
+    
     margin:0 auto;
     text-align: center;
     font-size:2rem;
@@ -77,9 +101,13 @@ a {
 .logo-bar > .logo-box > i{
     margin:0 20px;
 }
+.menu-bar{
+    background-color:#afafaf;
+}
 .menu-box ul{
     background-color:#afafaf;
     text-align:center;
+    z-index:1;
 }
 .menu-box > ul {
     border-radius:0 0 10px 10px;
@@ -149,6 +177,21 @@ a {
     text-decoration: underline;
  
 }
+.board-list table tr.tag td{
+    position:relative;
+}
+.board-list table tr.tag td::before{
+    content:"";
+    display:block;
+    clear:both;
+    background-color:black;
+    width:1px;
+    height:15px;
+    position:absolute;
+    top:50%;
+    left:0;
+    transform:translateY(-50%);
+}
 
 .board-list tbody tr .line-separate{
     background-color:black;    
@@ -186,18 +229,44 @@ a {
 }
 .page-button {
     text-align: center;
-    margin-top:15px;
+    margin:25px 0;
 }
 .page-button ul li{
     display:inline-block;
     margin:0 20px;
+}
+.page-button ul li:hover{
+    text-decoration: underline;
 }
 
 .article {
     margin:30px auto;
 }
 
-
+.bottom-logo-bar{
+    background-color:#afafaf;
+}
+.copyright-box{
+    padding-left:30px;
+    padding-top:30px;
+}
+.article-move-button{
+    margin:15px 0;
+}
+.article-move-button > div:hover{
+    text-decoration: underline;
+}
+.stat-box ul,
+.stat-box li{
+    margin:5px 10px;
+    
+}
+.stat-box > ul > li{
+    list-style:initial;
+}
+.stat-box li{
+    list-style:circle;
+}
     </style>
 </head>
 
@@ -206,11 +275,12 @@ a {
 
     <header class="logo-bar con-min-width">
         <div class="logo-box con">
-            <i class="fab fa-jenkins"></i>
-            DEVELOPERS
+            <a href="" class="logo"><i class="fab fa-jenkins"></i>
+                DEVELOPERS</a>            
         </div>
     </header>
 
+    <header class="con-min-width menu-bar">
     <div class="menu-box con">
         <ul>
             <li><a href="../home/index.html"><i class="fas fa-home"></i>HOME</a></li>
@@ -229,8 +299,19 @@ a {
             <li><a href="../stat/index.html"><i class="fas fa-chart-pie"></i>STATISTICS</a>
             </li>
         </ul>
-    </div><section class="article con-min-width"><div class="con"><div>번호 : 8</div><div>날짜 : 2020-12-08 11:25:45</div><div>작성자 : 테스터1</div><div>제목 : 제목8</div><div>내용 : 내용8</div></div><div class="con next-article"><a href="9.html">다음글</a></div><div class="con prev-article"><a href="7.html">이전글</a></div></section><footer class="con-min-width"></footer>
-
-
+    </div>
+</header><section class="article con-min-width"><div class="con"><div>번호 : 8</div><div>날짜 : 2020-12-08 11:25:45</div><div>작성자 : 테스터1</div><div>제목 : 제목8</div><div>내용 : 내용8</div></div><div class="con-min-width article-move-button"><div class="con next-article"><a href="notice-9.html">다음글</a></div><div class="con next-article"><a href="notice-7.html">이전글</a></div></div></section>
+    <footer class="bottom-logo-bar con-min-width">
+        <div class="con float-grid">
+            <a href="./" class="logo">
+            <i class="fab fa-jenkins"></i>
+            <span>DEVELOPERS</span>            
+        </a>
+        <div class="copyright-box float-right width-100p-except-300px">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos est et sequi sint exercitationem quibusdam ratione. Architecto facere est eius labore autem, fugiat rem dolor, perferendis, cum sapiente veritatis libero.
+        </div>
+        </div>
+      
+    </footer>
 </body>
     </html>

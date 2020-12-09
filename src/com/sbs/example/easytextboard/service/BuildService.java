@@ -68,12 +68,13 @@ public class BuildService {
 					html += "</tr>";
 					html += "<tr>";
 					html += "<td class=\"cell-id\">" + articles.get(j).getId() + "</td>";
-					html += "<td class=\"cell-title\"><a href=\"" + board.getCode() + "-" + articles.get(j).getId() + ".html\">"
-							+ articles.get(j).getTitle() + "</td>";
+					html += "<td class=\"cell-title\"><a href=\"" + board.getCode() + "-" + articles.get(j).getId()
+							+ ".html\">" + articles.get(j).getTitle() + "</td>";
 					html += "<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>";
 					html += "<td class=\"cell-regDate\">" + articles.get(j).getRegDate() + "</td>";
 					html += "<td class=\"cell-hit\">" + articles.get(j).getHit() + "</td>";
-					html += "<td class=\"cell-recommand\">" + articleService.getArticleRecommand(articles.get(j).getId()) + "</td>";
+					html += "<td class=\"cell-recommand\">"
+							+ articleService.getArticleRecommand(articles.get(j).getId()) + "</td>";
 					html += "</tr>";
 
 				}
@@ -111,27 +112,50 @@ public class BuildService {
 				Util.writeFileContents("site/article/" + fileName, html);
 			}
 
-			for (Article article : articles) {
-				String writer = memberService.getMemberById(article.getMemberId()).getName();
+			for (int i = 0; i < articles.size(); i++) {
+				String writer = memberService.getMemberById(articles.get(i).getMemberId()).getName();
 
-				String fileName = board.getCode() + "-" + article.getId() + ".html";
+				String fileName = board.getCode() + "-" + articles.get(i).getId() + ".html";
 				String html = "";
 				html += "<section class=\"article con-min-width\">";
 				html += "<div class=\"con\">";
-				html += "<div>번호 : " + article.getId() + "</div>";
-				html += "<div>날짜 : " + article.getRegDate() + "</div>";
+				html += "<div>번호 : " + articles.get(i).getId() + "</div>";
+				html += "<div>날짜 : " + articles.get(i).getRegDate() + "</div>";
 				html += "<div>작성자 : " + writer + "</div>";
-				html += "<div>제목 : " + article.getTitle() + "</div>";
-				html += "<div>내용 : " + article.getBody() + "</div>";
+				html += "<div>제목 : " + articles.get(i).getTitle() + "</div>";
+				html += "<div>내용 : " + articles.get(i).getBody() + "</div>";
 				html += "</div>";
 
-				if (article.getId() != articles.size() - 1) {
-					html += "<div class=\"con next-article\"><a href=\"" + (article.getId() + 1) + ".html\">다음글</a></div>";
+				html += "<div class=\"con-min-width article-move-button\">";
+				if (i != articles.size() - 1) {
+					int articleId = articles.get(i).getId() + 1;
+					while (true) {
+						String fileCheck = "";
+						fileCheck += board.getCode() + "-" + articleId + ".html";
+						if (Util.isFileExists("site/article/" + fileCheck)) {
+							html += "<div class=\"con next-article\"><a href=\"" + board.getCode() + "-" + articleId
+									+ ".html\">다음글</a></div>";
+							break;
+						} else if (Util.isFileExists(fileCheck) == false) {
+							articleId++;
+						}
+					}
 				}
-
-				if (article.getId() != 1) {
-					html += "<div class=\"con prev-article\"><a href=\"" + (article.getId() - 1) + ".html\">이전글</a></div>";
+				if (i != 0) {
+					int articleId = articles.get(i).getId() - 1;
+					while (true) {
+						String fileCheck = "";
+						fileCheck += board.getCode() + "-" + articleId + ".html";
+						if (Util.isFileExists("site/article/" + fileCheck)) {
+							html += "<div class=\"con next-article\"><a href=\"" + board.getCode() + "-" + articleId
+									+ ".html\">이전글</a></div>";
+							break;
+						} else if (Util.isFileExists(fileCheck) == false) {
+							articleId--;
+						}
+					}
 				}
+				html += "</div>";
 				html += "</section>";
 				html = head + html + foot;
 
