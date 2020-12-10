@@ -98,6 +98,24 @@
        .flex-grow-1{
            flex-grow: 1;
        }
+       .flex-ai-c{
+           align-items: center;
+       }
+       .flex-dir-col{
+           flex-direction: column;
+       }
+       .height-100p{
+           height:100%;
+       }
+
+       /* 컨테이너 시작 */
+       .container{
+           min-height: 100vh;
+           display:flex;
+           flex-direction:column;
+           min-height:100vh;
+       }
+       /* 컨테이너 끝 */
 
        /* 로고바 시작 */
        .logo-bar{           
@@ -219,7 +237,9 @@
        --cell-recommand__width:100px;
        --cell-title__width:calc(100% - var(--cell-id__width) - var(--cell-writer__width) - var(--cell-regDate__width) - var(--cell-hit__width) - var(--cell-recommand__width))
        }
-       
+       .board-list table > tbody > tr.tag > td.cell-title{
+           text-align: center;
+       }
        .board-list .cell-id{
            width:var(--cell-id__width);
        }
@@ -275,11 +295,12 @@
        }       
         /* 통계 상세보기 끝 */    
 
-       
+       /* 하단 로고 바 시작 */
        .bottom-logo-bar{
+           margin-top:30px;
         background-color:#afafaf;
     }
     .copyright-box{
         padding-left:30px;
-        padding-top:30px;
     }
+    /* 하단 로고 바 끝 */

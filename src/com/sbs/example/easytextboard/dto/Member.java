@@ -20,7 +20,7 @@ public class Member {
 	}
 
 	public boolean isAdmin() {
-		return loginId.equals("aaa");
+		return loginId.equals("test1");
 	}
 
 	public int getId() {
