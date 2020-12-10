@@ -16,7 +16,6 @@ public class BuildController extends Controller {
 
 	public void doCommand(String command) {
 		if (command.equals("build site")) {
-
 			Thread thr = new Thread(new Runnable() {
 				public void run() {
 					while (true) {
@@ -35,7 +34,7 @@ public class BuildController extends Controller {
 	}
 
 	private void doHtml() {
-		System.out.println("실행");
+		
 		buildService.makeHtml();
 	}
 

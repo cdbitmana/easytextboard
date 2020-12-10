@@ -64,7 +64,7 @@ public class BuildService {
 		
 		StringBuilder homeSb = new StringBuilder();
 		homeSb.append(head);
-		homeSb.append("<main>");
+		homeSb.append("<main class=\"flex-grow-1\">");
 		homeSb.append("<section class=\"con-min-width\">");
 		homeSb.append("<div class=\"con home-title-box\">");
 		homeSb.append(" <i class=\"fas fa-home\"></i>");
@@ -107,7 +107,7 @@ public class BuildService {
 				String fileName = "";
 				fileName = board.getCode() + "-list-1.html";
 				sb.append(head);
-				sb.append("<main>");
+				sb.append("<main class=\"flex-grow-1\">");
 				sb.append("<section class=\"title-bar con-min-width\">");
 				sb.append("<h1 class=\"title-bar__title-box con flex flex-jc-c\">");
 				switch(board.getCode()) {
@@ -158,7 +158,7 @@ public class BuildService {
 					fileName = board.getCode() + "-list-" + i + ".html";
 
 					sb.append(head);
-					sb.append("<main>");
+					sb.append("<main class=\"flex-grow-1\">");
 					sb.append("<section class=\"title-bar con-min-width\">");
 					sb.append("<h1 class=\"title-bar__title-box con flex flex-jc-c\">");
 					switch(board.getCode()) {
@@ -256,7 +256,7 @@ public class BuildService {
 				String fileName = board.getCode() + "-" + articles.get(i).getId() + ".html";
 				StringBuilder sb = new StringBuilder();
 				sb.append(head);
-				sb.append("<main>");
+				sb.append("<main class=\"flex-grow-1\">");
 				sb.append("<section class=\"article con-min-width\">");
 				sb.append("<div class=\"con\">");
 				sb.append("<div>번호 : " + articles.get(i).getId() + "</div>");
@@ -303,6 +303,7 @@ public class BuildService {
 		head = head.replace("<a href=\"notice-list-1.html\">", "<a href=\"../article/notice-list-1.html\">");
 		head = head.replace("<a href=\"free-list-1.html\">", "<a href=\"../article/free-list-1.html\">");
 		sb.append(head);
+		sb.append("<main class=\"flex-grow-1\">");
 		sb.append("<section class=\"stat-box con-min-width\">");
 		sb.append("<div class = \"con\">");
 		sb.append("<ul>");
@@ -339,6 +340,7 @@ public class BuildService {
 
 		sb.append("</ul>");
 		sb.append("</section>");
+		sb.append("</main>");
 
 		sb.append(foot);
 		Util.writeFileContents("site/stat/" + fileName, sb.toString());
