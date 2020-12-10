@@ -21,17 +21,18 @@ public class BuildService {
 	}
 
 	public void makeHtml() {
-		String sourceFile ="site_template/part/app.css";		
-		
-		Util.copy(sourceFile,"site/article/app.css");
+		String sourceFile = "site_template/part/app.css";
+
+		Util.copy(sourceFile, "site/article/app.css");
 		Util.copy(sourceFile, "site/stat/app.css");
 		Util.copy(sourceFile, "site/home/app.css");
-		
+
 		String head = Util.getFileContents("site_template/part/head.html");
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
 		// 게시물 페이지와 게시물
-		List<Board> boards = articleService.getBoardsForPrint();
+		ArrayList<Board> boards = articleService.getBoardsForPrint();
+
 		for (Board board : boards) {
 
 			File file = new File("site/article/");
@@ -41,23 +42,21 @@ public class BuildService {
 
 			List<Article> articles = articleService.getArticlesByBoardCode(board.getCode());
 
+			// 게시판 페이징 시작
 			int pages = articles.size() / 10;
 			if (articles.size() % 10 != 0) {
 				pages++;
 			}
 			int itemsInAPage = 10;
+			if (pages == 0 && articles.size() > 0) {
+				pages = 1;
+			}
 
 			for (int i = 1; i <= pages; i++) {
 				StringBuilder sb = new StringBuilder();
 				String fileName = "";
 				fileName = board.getCode() + "-list-" + i + ".html";
 
-				int start = articles.size() - ((i - 1) * itemsInAPage) - 1;
-				int end = (start - itemsInAPage + 1);
-				if (end < 0) {
-					end = 0;
-				}
-				
 				sb.append(head);
 				sb.append("<main>");
 				sb.append("<section class=\"title-bar con-min-width\">");
@@ -68,8 +67,8 @@ public class BuildService {
 				sb.append("</span>");
 				sb.append("</h1>");
 				sb.append("</section>");
-				
-				sb.append("<section class=\"board-list con-min-width\">"); 
+
+				sb.append("<section class=\"board-list con-min-width\">");
 				sb.append("<table class =\"con\">");
 				sb.append("<tr class =\"tag\">");
 				sb.append("<td class =\"font-bold\">번호</td>");
@@ -79,7 +78,13 @@ public class BuildService {
 				sb.append("<td class =\"font-bold\">조회 수</td>");
 				sb.append("<td class =\"font-bold\">추천 수</td>");
 				sb.append("</tr>");
-				
+
+				int start = articles.size() - ((i - 1) * itemsInAPage) - 1;
+				int end = (start - itemsInAPage + 1);
+				if (end < 0) {
+					end = 0;
+				}
+
 				for (int j = start; j >= end; j--) {
 					sb.append("<tr>");
 					sb.append("<td colspan=\"6\" class =\"line-separate\"></td>");
@@ -95,48 +100,51 @@ public class BuildService {
 							+ articleService.getArticleRecommand(articles.get(j).getId()) + "</td>");
 					sb.append("</tr>");
 				}
-				
+
 				sb.append("</table>");
 				sb.append("</section>");
 
 				sb.append("<section class=\"page-button con-min-width\">");
 				sb.append("<div class=\"con\">");
 				sb.append("<ul class=\"flex flex-jc-s-ar\">");
-				
+
 				sb.append("<li class=\"flex flex-jc-c flex-grow-1\">");
-				if (i != 1) {					
-					sb.append("<a href=\"" + board.getCode() + "-list-" + (i - 1) + ".html\"> < </a>");					
+				if (i != 1) {
+					sb.append("<a href=\"" + board.getCode() + "-list-" + (i - 1) + ".html\"> < </a>");
 				}
 				sb.append("</li>");
-				
+
 				for (int k = 1; k <= pages; k++) {
 					String page = board.getCode() + "-list-" + k + ".html";
 					sb.append("<li class=\"flex flex-jc-c flex-grow-1\">");
 					sb.append("<a href=\"" + page + "\"> " + k + "</a>");
 					sb.append("</li>");
 				}
-				
+
 				sb.append("<li class=\"flex flex-jc-c flex-grow-1\">");
-				if (i < pages) {					
-					sb.append("<a href=\"" + board.getCode() + "-list-" + (i + 1) + ".html\"> > </a>");					
+				if (i < pages) {
+					sb.append("<a href=\"" + board.getCode() + "-list-" + (i + 1) + ".html\"> > </a>");
 				}
 				sb.append("</li>");
-				
+
 				sb.append("</ul>");
 				sb.append("</div>");
 				sb.append("</section>");
+				sb.append("</main>");
 				sb.append(foot);
-				
+
 				Util.writeFileContents("site/article/" + fileName, sb.toString());
 			}
+			// 게시판 페이징 끝
 
+			// 게시물 상세보기 시작
 			for (int i = 0; i < articles.size(); i++) {
 				String writer = memberService.getMemberById(articles.get(i).getMemberId()).getName();
 
 				String fileName = board.getCode() + "-" + articles.get(i).getId() + ".html";
 				StringBuilder sb = new StringBuilder();
 				sb.append(head);
-				
+				sb.append("<main>");
 				sb.append("<section class=\"article con-min-width\">");
 				sb.append("<div class=\"con\">");
 				sb.append("<div>번호 : " + articles.get(i).getId() + "</div>");
@@ -147,33 +155,15 @@ public class BuildService {
 				sb.append("</div>");
 
 				sb.append("<div class=\"con-min-width article-move-button\">");
+
 				if (i != articles.size() - 1) {
-					int articleId = articles.get(i).getId() + 1;
-					while (true) {
-						String fileCheck = "";
-						fileCheck += board.getCode() + "-" + articleId + ".html";
-						if (Util.isFileExists("site/article/" + fileCheck)) {
-							sb.append("<div class=\"con next-article\"><a href=\"" + board.getCode() + "-" + articleId
-									+ ".html\">다음글</a></div>");
-							break;
-						} else if (Util.isFileExists(fileCheck) == false) {
-							articleId++;
-						}
-					}
+					sb.append("<div class=\"con next-article\"><a href=\"" + board.getCode() + "-"
+							+ articles.get(i + 1).getId() + ".html\">다음글</a></div>");
 				}
+
 				if (i != 0) {
-					int articleId = articles.get(i).getId() - 1;
-					while (true) {
-						String fileCheck = "";
-						fileCheck += board.getCode() + "-" + articleId + ".html";
-						if (Util.isFileExists("site/article/" + fileCheck)) {
-							sb.append("<div class=\"con next-article\"><a href=\"" + board.getCode() + "-" + articleId
-									+ ".html\">이전글</a></div>");
-							break;
-						} else if (Util.isFileExists(fileCheck) == false) {
-							articleId--;
-						}
-					}
+					sb.append("<div class=\"con next-article\"><a href=\"" + board.getCode() + "-"
+							+ articles.get(i - 1).getId() + ".html\">이전글</a></div>");
 				}
 				sb.append("</div>");
 				sb.append("</section>");
@@ -182,6 +172,7 @@ public class BuildService {
 
 				Util.writeFileContents("site/article/" + fileName, sb.toString());
 			}
+			// 게시물 상세보기 끝
 
 		}
 
@@ -236,7 +227,7 @@ public class BuildService {
 
 		sb.append("</ul>");
 		sb.append("</section>");
-		
+
 		sb.append(foot);
 		Util.writeFileContents("site/stat/" + fileName, sb.toString());
 	}

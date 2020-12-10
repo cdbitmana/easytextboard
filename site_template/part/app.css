@@ -143,6 +143,16 @@
         z-index:1;
        }
        /* 메뉴바 끝 */
+
+       /* 홈 화면 시작 */
+       .home-title-box {
+        margin:30px auto;
+        font-size:3rem;
+       }
+       .home-body-box {
+           margin:30px auto;
+       }
+       /* 홈 화면 끝 */
        
        /* 게시판 페이징 시작 */
        .title-bar{
