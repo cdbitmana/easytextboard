@@ -306,10 +306,11 @@
        
        /* 게시물 상세보기 시작 */
        .article {
-           margin:30px auto;
+           margin-top:30px;
        } 
        .article__title-bar{
         margin:20px 0;
+        padding:0 10px;
        }
        .article__title-bar > div:not(.article_title) {
            text-align: center;
@@ -338,7 +339,7 @@
            content:"";
            display:block;
            background-color:black;
-           height:1px;
+           height:2px;
            width:100%;
            position: absolute;
            top:125%;
@@ -347,16 +348,7 @@
            font-size:2rem;
        }
        .article_body{
-           position: relative;           
-       }
-       .article_body::after{
-        content:"";
-        display:block;
-        background-color:black;
-        height:1px;
-        width:100%;
-        position: absolute;
-        top:100%;        
+           border-bottom:2px solid black;
        }
        .article_body > span{
            display:block;
@@ -364,7 +356,10 @@
            font-size:1.1rem;
        }
        .article-move-button{
-           margin:15px 0;
+           border-top:2px solid black;
+           box-sizing: border-box;
+           padding:15px 0;
+           
        }
        .article-move-button > div {
            margin-top:5px;
@@ -373,6 +368,34 @@
        .article-move-button > div > a:hover{
            text-decoration: underline;
        }
+       .reply{
+           
+       }
+       .reply-box {
+           
+           
+       }
+       .reply__section{
+           padding:15px 0;
+       }
+       .reply-box__replys{
+           margin:10px 0;
+       }
+       .reply-list {
+           padding: 15px 0;
+           border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+       }
+       .reply-list > .reply_writer {
+           text-align: center;
+           border-right: 1px solid rgba(0, 0, 0, 0.6);
+       }
+       .reply-list > .reply_body {
+           padding-left:20px;
+       }
+       .reply-list > .reply_regDate {
+           padding-right:15px;
+       }
+       
        /* 게시물 상세보기 끝 */
 
        /* 통계 상세보기 시작 */

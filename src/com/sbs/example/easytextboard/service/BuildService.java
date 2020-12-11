@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dto.Article;
+import com.sbs.example.easytextboard.dto.ArticleReply;
 import com.sbs.example.easytextboard.dto.Board;
 import com.sbs.example.easytextboard.dto.Member;
 import com.sbs.example.easytextboard.util.Util;
@@ -21,14 +22,15 @@ public class BuildService {
 	}
 
 	public void makeHtml() {
-		String sourceFile = "site_template/part/app.css";
-		File file = new File("site/stat/");
-		if (file.exists() == false) {
-			file.mkdir();
+		String cssSource = "site_template/part/app.css";
+		
+		File statDir = new File("site/stat/");
+		if (statDir.exists() == false) {
+			statDir.mkdir();
 		}
-		File file2 = new File("site/article/");
-		if (file.exists() == false) {
-			file.mkdirs();
+		File articleDir = new File("site/article/");
+		if (articleDir.exists() == false) {
+			articleDir.mkdirs();
 		}
 
 		File homeDir = new File("site/home/");
@@ -37,9 +39,9 @@ public class BuildService {
 		}
 
 
-		Util.copy(sourceFile, "site/article/app.css");
-		Util.copy(sourceFile, "site/stat/app.css");
-		Util.copy(sourceFile, "site/home/app.css");
+		Util.copy(cssSource, "site/article/app.css");
+		Util.copy(cssSource, "site/stat/app.css");
+		Util.copy(cssSource, "site/home/app.css");
 
 		String head = Util.getFileContents("site_template/part/head.html");
 		String foot = Util.getFileContents("site_template/part/foot.html");
@@ -66,51 +68,51 @@ public class BuildService {
 		List<Member> members = memberService.getMembers();
 		List<Article> articles = articleService.getArticles();
 
-		StringBuilder sb = new StringBuilder();
+		StringBuilder statHtml = new StringBuilder();
 		head = head.replace("<a href=\"notice-list-1.html\">", "<a href=\"../article/notice-list-1.html\">");
 		head = head.replace("<a href=\"free-list-1.html\">", "<a href=\"../article/free-list-1.html\">");
-		sb.append(head);
-		sb.append("<main class=\"flex flex-jc-c flex-grow-1\">");
-		sb.append("<section class=\"stat-box con-min-width\">");
-		sb.append("<div class = \"con\">");
-		sb.append("<ul>");
-		sb.append("<li>회원 수 : " + members.size() + "</li>");
-		sb.append("<li>전체 게시물 수 : " + articles.size() + "</li>");
-		sb.append("<li>각 게시판 별 게시물 수");
-		sb.append("<ul>");
+		statHtml.append(head);
+		statHtml.append("<main class=\"flex flex-jc-c flex-grow-1\">");
+		statHtml.append("<section class=\"stat-box con-min-width\">");
+		statHtml.append("<div class = \"con\">");
+		statHtml.append("<ul>");
+		statHtml.append("<li>회원 수 : " + members.size() + "</li>");
+		statHtml.append("<li>전체 게시물 수 : " + articles.size() + "</li>");
+		statHtml.append("<li>각 게시판 별 게시물 수");
+		statHtml.append("<ul>");
 		for (Board board : boards) {
 			List<Article> articlesByBoard = articleService.getArticlesByBoardCode(board.getCode());
-			sb.append("<li>" + board.getName() + " : " + articlesByBoard.size() + "</li>");
+			statHtml.append("<li>" + board.getName() + " : " + articlesByBoard.size() + "</li>");
 		}
-		sb.append("</ul>");
-		sb.append("</li>");
+		statHtml.append("</ul>");
+		statHtml.append("</li>");
 		int hitSum = 0;
 		for (Article article : articles) {
 			hitSum += article.getHit();
 		}
 
-		sb.append("<li>전체 게시물 조회 수 : " + hitSum + "</li>");
+		statHtml.append("<li>전체 게시물 조회 수 : " + hitSum + "</li>");
 
-		sb.append("<li>각 게시판 별 조회 수");
-		sb.append("<ul>");
+		statHtml.append("<li>각 게시판 별 조회 수");
+		statHtml.append("<ul>");
 		for (Board board : boards) {
 			List<Article> articlesByBoard = articleService.getArticlesByBoardCode(board.getCode());
 			int hitSumByBoard = 0;
 			for (Article article : articlesByBoard) {
 				hitSumByBoard += article.getHit();
 			}
-			sb.append("<li>" + board.getName() + " : " + hitSumByBoard + "</li>");
+			statHtml.append("<li>" + board.getName() + " : " + hitSumByBoard + "</li>");
 
 		}
-		sb.append("</li>");
-		sb.append("</ul>");
+		statHtml.append("</li>");
+		statHtml.append("</ul>");
 
-		sb.append("</ul>");
-		sb.append("</section>");
-		sb.append("</main>");
+		statHtml.append("</ul>");
+		statHtml.append("</section>");
+		statHtml.append("</main>");
 
-		sb.append(foot);
-		Util.writeFileContents("site/stat/" + fileName, sb.toString());
+		statHtml.append(foot);
+		Util.writeFileContents("site/stat/" + fileName, statHtml.toString());
 
 	}
 
@@ -124,63 +126,105 @@ public class BuildService {
 				String writer = memberService.getMemberById(articles.get(i).getMemberId()).getName();
 
 				String fileName = board.getCode() + "-" + articles.get(i).getId() + ".html";
-				StringBuilder sb = new StringBuilder();
-				sb.append(head);
-				sb.append("<main class=\"flex flex-grow-1 con-min-width\">");
-				sb.append("<section class=\"article con flex flex-dir-col\">");
+				StringBuilder articleDetailHtml = new StringBuilder();
+				articleDetailHtml.append(head);
+				articleDetailHtml.append("<main class=\"flex flex-grow-1 con-min-width\">");
+				articleDetailHtml.append("<section class=\"article con flex flex-dir-col\">");
 				
 				
-				sb.append("<div class=\"article__title-bar flex flex-jc-s-bet flex-ai-c\">");
-				sb.append("<div class=\"article_id flex-basis-50px\">");
-				sb.append(articles.get(i).getId());
-				sb.append("</div>");				
-				sb.append("<div class=\"article_title flex-grow-1\">");
-				sb.append(articles.get(i).getTitle());
-				sb.append("</div>");				
-				sb.append("<div class=\"article_writer flex-basis-100px\">");
-				sb.append("<i class=\"fas fa-user\"></i>");
-				sb.append(writer);
-				sb.append("</div>");				
-				sb.append("<div class=\"article_regDate flex-basis-200px\">");
-				sb.append("<i class=\"fas fa-clock\"></i>");
-				sb.append(articles.get(i).getRegDate());
-				sb.append("</div>");				
-				sb.append("<div class=\"article_hit flex-basis-50px\">");
-				sb.append("<i class=\"fas fa-eye\"></i>");
-				sb.append(articles.get(i).getHit());
-				sb.append("</div>");				
-				sb.append("<div class=\"article_recommand flex-basis-50px\">");
-				sb.append("<i class=\"fas fa-thumbs-up\"></i>");
-				sb.append(articleService.getArticleRecommand(articles.get(i).getId()));
-				sb.append("</div>");
-				sb.append("</div>");
+				articleDetailHtml.append("<div class=\"article__title-bar flex flex-jc-s-bet flex-ai-c\">");
+				articleDetailHtml.append("<div class=\"article_id flex-basis-50px\">");
+				articleDetailHtml.append(articles.get(i).getId());
+				articleDetailHtml.append("</div>");				
+				articleDetailHtml.append("<div class=\"article_title flex-grow-1\">");
+				articleDetailHtml.append(articles.get(i).getTitle());
+				articleDetailHtml.append("</div>");				
+				articleDetailHtml.append("<div class=\"article_writer flex-basis-100px\">");
+				articleDetailHtml.append("<i class=\"fas fa-user\"></i>");
+				articleDetailHtml.append(writer);
+				articleDetailHtml.append("</div>");				
+				articleDetailHtml.append("<div class=\"article_regDate flex-basis-200px\">");
+				articleDetailHtml.append("<i class=\"fas fa-clock\"></i>");
+				articleDetailHtml.append(articles.get(i).getRegDate());
+				articleDetailHtml.append("</div>");				
+				articleDetailHtml.append("<div class=\"article_hit flex-basis-50px\">");
+				articleDetailHtml.append("<i class=\"fas fa-eye\"></i>");
+				articleDetailHtml.append(articles.get(i).getHit());
+				articleDetailHtml.append("</div>");				
+				articleDetailHtml.append("<div class=\"article_recommand flex-basis-50px\">");
+				articleDetailHtml.append("<i class=\"fas fa-thumbs-up\"></i>");
+				articleDetailHtml.append(articleService.getArticleRecommand(articles.get(i).getId()));
+				articleDetailHtml.append("</div>");
+				articleDetailHtml.append("</div>");
 				
-				sb.append("<div class=\"article_body flex-grow-1\">");
-				sb.append("<span>");
-				sb.append(articles.get(i).getBody());
-				sb.append("</span>");
-				sb.append("</div>");
+				articleDetailHtml.append("<div class=\"article_body flex-grow-1\">");
+				articleDetailHtml.append("<span>");
+				articleDetailHtml.append(articles.get(i).getBody());
+				articleDetailHtml.append("</span>");
+				articleDetailHtml.append("</div>");
 
 				
+				ArrayList<ArticleReply> articleReplys = articleService.getReplysForPrintByArticleId(articles.get(i).getId());
 				
 				
-				sb.append("<div class=\"con-min-width article-move-button\">");
+				articleDetailHtml.append("<section class=\"con-min-width reply\">");
+				articleDetailHtml.append("<div class=\"reply__section\">");
+				articleDetailHtml.append("<div class=\"con reply-box\">");	
+				articleDetailHtml.append("<i class=\"fas fa-comment-alt\"></i>");
+				articleDetailHtml.append("댓글 "+articleReplys.size()+"개");				
+				articleDetailHtml.append("</div>");
+				if(articleReplys.size()>0) {
+					articleDetailHtml.append("<div class=\"reply-box__replys\">");
+					for(ArticleReply articleReply : articleReplys) {
+						articleDetailHtml.append("<div class=\"con reply-list flex\">");
+						articleDetailHtml.append("<div class=\"reply_writer flex-basis-100px\">");
+						articleDetailHtml.append("<span>");
+						articleDetailHtml.append(articleReply.getExtraName());
+						articleDetailHtml.append("</span>");
+						articleDetailHtml.append("</div>");
+						articleDetailHtml.append("<div class=\"reply_body flex-grow-1\">");
+						articleDetailHtml.append("<span>");
+						articleDetailHtml.append(articleReply.getBody());
+						articleDetailHtml.append("</span>");
+						articleDetailHtml.append("</div>");
+						articleDetailHtml.append("<div class=\"reply_regDate\">");
+						articleDetailHtml.append("<span>");
+						articleDetailHtml.append(articleReply.getRegDate());
+						articleDetailHtml.append("</span>");
+						articleDetailHtml.append("</div>");
+						articleDetailHtml.append("</div>");
+					}
+					articleDetailHtml.append("</div>");
+				}
+				
+				
+				articleDetailHtml.append("</div>");
+				articleDetailHtml.append("</section>");
+				
+				
+				
+				
+				articleDetailHtml.append("<div class=\"con-min-width article-move-button\">");
 
 				if (i != articles.size() - 1) {
-					sb.append("<div class=\"con next-article\"><a href=\"" + board.getCode() + "-"
+					articleDetailHtml.append("<div class=\"con next-article\"><a href=\"" + board.getCode() + "-"
 							+ articles.get(i + 1).getId() + ".html\">다음글</a></div>");
 				}
 
 				if (i != 0) {
-					sb.append("<div class=\"con next-article\"><a href=\"" + board.getCode() + "-"
+					articleDetailHtml.append("<div class=\"con next-article\"><a href=\"" + board.getCode() + "-"
 							+ articles.get(i - 1).getId() + ".html\">이전글</a></div>");
 				}
-				sb.append("</div>");
-				sb.append("</section>");
-				sb.append("</main>");
-				sb.append(foot);
+				articleDetailHtml.append("</div>");
+				
+				
+				
+							
+				articleDetailHtml.append("</section>");
+				articleDetailHtml.append("</main>");
+				articleDetailHtml.append(foot);
 
-				Util.writeFileContents("site/article/" + fileName, sb.toString());
+				Util.writeFileContents("site/article/" + fileName, articleDetailHtml.toString());
 			}
 		}
 	}
@@ -201,89 +245,89 @@ public class BuildService {
 				pages = 1;
 			}
 			if (articles.size() == 0) {
-				StringBuilder sb = new StringBuilder();
+				StringBuilder boardPageHtml = new StringBuilder();
 				String fileName = "";
 				fileName = board.getCode() + "-list-1.html";
-				sb.append(head);
-				sb.append("<main class=\"flex flex-dir-col flex-grow-1\">");
-				sb.append("<section class=\"title-bar con-min-width\">");
-				sb.append("<h1 class=\"title-bar__title-box con flex flex-jc-c\">");
+				boardPageHtml.append(head);
+				boardPageHtml.append("<main class=\"flex flex-dir-col flex-grow-1\">");
+				boardPageHtml.append("<section class=\"title-bar con-min-width\">");
+				boardPageHtml.append("<h1 class=\"title-bar__title-box con flex flex-jc-c\">");
 				switch (board.getCode()) {
 				case "notice":
-					sb.append("<i class=\"fas fa-flag\"></i>");
+					boardPageHtml.append("<i class=\"fas fa-flag\"></i>");
 					break;
 				case "free":
-					sb.append("<i class=\"fas fa-clipboard\"></i>");
+					boardPageHtml.append("<i class=\"fas fa-clipboard\"></i>");
 					break;
 				default:
-					sb.append("<i class=\"far fa-clipboard\"></i>");
+					boardPageHtml.append("<i class=\"far fa-clipboard\"></i>");
 					break;
 				}
-				sb.append("<span>");
-				sb.append(board.getName());
-				sb.append("</span>");
-				sb.append("</h1>");
-				sb.append("</section>");
+				boardPageHtml.append("<span>");
+				boardPageHtml.append(board.getName());
+				boardPageHtml.append("</span>");
+				boardPageHtml.append("</h1>");
+				boardPageHtml.append("</section>");
 
-				sb.append("<section class=\"board-list con-min-width\">");
-				sb.append("<table class =\"con\">");
-				sb.append("<tr class =\"tag\">");
-				sb.append("<td class =\"font-bold cell-id\">번호</td>");
-				sb.append("<td class =\"font-bold cell-title\">제목</td>");
-				sb.append("<td class =\"font-bold cell-writer\">작성자</td>");
-				sb.append("<td class =\"font-bold cell-regDate\">작성일</td>");
-				sb.append("<td class =\"font-bold cell-hit\">조회 수</td>");
-				sb.append("<td class =\"font-bold cell-recommand\">추천 수</td>");
-				sb.append("</tr>");
-				sb.append("<tr>");
-				sb.append("<td colspan=\"6\" class =\"line-separate\"></td>");
-				sb.append("</tr>");
-				sb.append("<tr>");
-				sb.append("<td colspan=\"6\" class=\"font-bold \">작성된 게시물이 없습니다.</td>");
-				sb.append("</tr>");
-				sb.append("</table>");
-				sb.append("</section>");
-				sb.append("</section>");
-				sb.append("</main>");
-				sb.append(foot);
-				Util.writeFileContents("site/article/" + fileName, sb.toString());
+				boardPageHtml.append("<section class=\"board-list con-min-width\">");
+				boardPageHtml.append("<table class =\"con\">");
+				boardPageHtml.append("<tr class =\"tag\">");
+				boardPageHtml.append("<td class =\"font-bold cell-id\">번호</td>");
+				boardPageHtml.append("<td class =\"font-bold cell-title\">제목</td>");
+				boardPageHtml.append("<td class =\"font-bold cell-writer\">작성자</td>");
+				boardPageHtml.append("<td class =\"font-bold cell-regDate\">작성일</td>");
+				boardPageHtml.append("<td class =\"font-bold cell-hit\">조회 수</td>");
+				boardPageHtml.append("<td class =\"font-bold cell-recommand\">추천 수</td>");
+				boardPageHtml.append("</tr>");
+				boardPageHtml.append("<tr>");
+				boardPageHtml.append("<td colspan=\"6\" class =\"line-separate\"></td>");
+				boardPageHtml.append("</tr>");
+				boardPageHtml.append("<tr>");
+				boardPageHtml.append("<td colspan=\"6\" class=\"font-bold \">작성된 게시물이 없습니다.</td>");
+				boardPageHtml.append("</tr>");
+				boardPageHtml.append("</table>");
+				boardPageHtml.append("</section>");
+				boardPageHtml.append("</section>");
+				boardPageHtml.append("</main>");
+				boardPageHtml.append(foot);
+				Util.writeFileContents("site/article/" + fileName, boardPageHtml.toString());
 			} else if (articles.size() != 0) {
 				for (int i = 1; i <= pages; i++) {
-					StringBuilder sb = new StringBuilder();
+					StringBuilder boardPageListHtml = new StringBuilder();
 					String fileName = "";
 					fileName = board.getCode() + "-list-" + i + ".html";
 
-					sb.append(head);
-					sb.append("<main class=\"flex flex-dir-col flex-grow-1\">");
-					sb.append("<section class=\"title-bar con-min-width\">");
-					sb.append("<h1 class=\"title-bar__title-box con flex flex-jc-c\">");
+					boardPageListHtml.append(head);
+					boardPageListHtml.append("<main class=\"flex flex-dir-col flex-grow-1\">");
+					boardPageListHtml.append("<section class=\"title-bar con-min-width\">");
+					boardPageListHtml.append("<h1 class=\"title-bar__title-box con flex flex-jc-c\">");
 					switch (board.getCode()) {
 					case "notice":
-						sb.append("<i class=\"fas fa-flag\"></i>");
+						boardPageListHtml.append("<i class=\"fas fa-flag\"></i>");
 						break;
 					case "free":
-						sb.append("<i class=\"fas fa-clipboard\"></i>");
+						boardPageListHtml.append("<i class=\"fas fa-clipboard\"></i>");
 						break;
 					default:
-						sb.append("<i class=\"far fa-clipboard\"></i>");
+						boardPageListHtml.append("<i class=\"far fa-clipboard\"></i>");
 						break;
 					}
-					sb.append("<span>");
-					sb.append(board.getName());
-					sb.append("</span>");
-					sb.append("</h1>");
-					sb.append("</section>");
+					boardPageListHtml.append("<span>");
+					boardPageListHtml.append(board.getName());
+					boardPageListHtml.append("</span>");
+					boardPageListHtml.append("</h1>");
+					boardPageListHtml.append("</section>");
 
-					sb.append("<section class=\"board-list con-min-width\">");
-					sb.append("<table class =\"con\">");
-					sb.append("<tr class =\"tag\">");
-					sb.append("<td class =\"font-bold cell-id\">번호</td>");
-					sb.append("<td class =\"font-bold cell-title\">제목</td>");
-					sb.append("<td class =\"font-bold cell-writer\">작성자</td>");
-					sb.append("<td class =\"font-bold cell-regDate\">작성일</td>");
-					sb.append("<td class =\"font-bold cell-hit\">조회 수</td>");
-					sb.append("<td class =\"font-bold cell-recommand\">추천 수</td>");
-					sb.append("</tr>");
+					boardPageListHtml.append("<section class=\"board-list con-min-width\">");
+					boardPageListHtml.append("<table class =\"con\">");
+					boardPageListHtml.append("<tr class =\"tag\">");
+					boardPageListHtml.append("<td class =\"font-bold cell-id\">번호</td>");
+					boardPageListHtml.append("<td class =\"font-bold cell-title\">제목</td>");
+					boardPageListHtml.append("<td class =\"font-bold cell-writer\">작성자</td>");
+					boardPageListHtml.append("<td class =\"font-bold cell-regDate\">작성일</td>");
+					boardPageListHtml.append("<td class =\"font-bold cell-hit\">조회 수</td>");
+					boardPageListHtml.append("<td class =\"font-bold cell-recommand\">추천 수</td>");
+					boardPageListHtml.append("</tr>");
 
 					int start = articles.size() - ((i - 1) * itemsInAPage) - 1;
 					int end = (start - itemsInAPage + 1);
@@ -292,77 +336,77 @@ public class BuildService {
 					}
 
 					for (int j = start; j >= end; j--) {
-						sb.append("<tr>");
-						sb.append("<td colspan=\"6\" class =\"line-separate\"></td>");
-						sb.append("</tr>");
-						sb.append("<tr>");
-						sb.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
-						sb.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-"
+						boardPageListHtml.append("<tr>");
+						boardPageListHtml.append("<td colspan=\"6\" class =\"line-separate\"></td>");
+						boardPageListHtml.append("</tr>");
+						boardPageListHtml.append("<tr>");
+						boardPageListHtml.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
+						boardPageListHtml.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-"
 								+ articles.get(j).getId() + ".html\">" + articles.get(j).getTitle() + "</td>");
-						sb.append("<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>");
-						sb.append("<td class=\"cell-regDate\">" + articles.get(j).getRegDate() + "</td>");
-						sb.append("<td class=\"cell-hit\">" + articles.get(j).getHit() + "</td>");
-						sb.append("<td class=\"cell-recommand\">"
+						boardPageListHtml.append("<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>");
+						boardPageListHtml.append("<td class=\"cell-regDate\">" + articles.get(j).getRegDate() + "</td>");
+						boardPageListHtml.append("<td class=\"cell-hit\">" + articles.get(j).getHit() + "</td>");
+						boardPageListHtml.append("<td class=\"cell-recommand\">"
 								+ articleService.getArticleRecommand(articles.get(j).getId()) + "</td>");
-						sb.append("</tr>");
+						boardPageListHtml.append("</tr>");
 					}
 
-					sb.append("</table>");
-					sb.append("</section>");
+					boardPageListHtml.append("</table>");
+					boardPageListHtml.append("</section>");
 					
-					sb.append("<div class=\"flex-grow-1\"></div>");
+					boardPageListHtml.append("<div class=\"flex-grow-1\"></div>");
 
-					sb.append("<section class=\"page-button con-min-width\">");
-					sb.append("<div class=\"con flex flex-ai-c flex-jc-s-bet\">");
-					sb.append("<div class=\"flex flex-basis-100px\">");
+					boardPageListHtml.append("<section class=\"page-button con-min-width\">");
+					boardPageListHtml.append("<div class=\"con flex flex-ai-c flex-jc-s-bet\">");
+					boardPageListHtml.append("<div class=\"flex flex-basis-100px\">");
 					if (pages >= 2) {
-						sb.append("<div class=\"flex flex-basis-50px\">");
-						sb.append("<a href=\"" + board.getCode() + "-list-1.html\"> << </a>");
-						sb.append("</div>");
+						boardPageListHtml.append("<div class=\"flex flex-basis-50px\">");
+						boardPageListHtml.append("<a href=\"" + board.getCode() + "-list-1.html\"> << </a>");
+						boardPageListHtml.append("</div>");
 					}
 					if (i != 1) {
-						sb.append("<div class=\"flex flex-basis-50px\">");
-						sb.append("<a href=\"" + board.getCode() + "-list-" + (i - 1) + ".html\"> < </a>");
-						sb.append("</div>");
+						boardPageListHtml.append("<div class=\"flex flex-basis-50px\">");
+						boardPageListHtml.append("<a href=\"" + board.getCode() + "-list-" + (i - 1) + ".html\"> < </a>");
+						boardPageListHtml.append("</div>");
 					}
-					sb.append("</div>");
+					boardPageListHtml.append("</div>");
 
-					sb.append("<ul class=\"flex flex-jc-c flex-ai-e flex-grow-1\">");
+					boardPageListHtml.append("<ul class=\"flex flex-jc-c flex-ai-e flex-grow-1\">");
 
 					for (int k = 1; k <= pages; k++) {
 						String page = board.getCode() + "-list-" + k + ".html";
 						if(k==i) {
-							sb.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
-							sb.append("<span>"+k+"</span>");
-							sb.append("</li>");
+							boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+							boardPageListHtml.append("<span>"+k+"</span>");
+							boardPageListHtml.append("</li>");
 						}else {
-							sb.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
-							sb.append("<a href=\"" + page + "\"> " + k + "</a>");
-							sb.append("</li>");
+							boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+							boardPageListHtml.append("<a href=\"" + page + "\"> " + k + "</a>");
+							boardPageListHtml.append("</li>");
 						}
 						
 					}
 
-					sb.append("</ul>");
-					sb.append("<div class=\"flex flex-basis-100px\">");
+					boardPageListHtml.append("</ul>");
+					boardPageListHtml.append("<div class=\"flex flex-basis-100px\">");
 					if (i < pages) {
-						sb.append("<div class=\"flex flex-basis-50px\">");
-						sb.append("<a href=\"" + board.getCode() + "-list-" + (i + 1) + ".html\"> > </a>");
-						sb.append("</div>");
+						boardPageListHtml.append("<div class=\"flex flex-basis-50px\">");
+						boardPageListHtml.append("<a href=\"" + board.getCode() + "-list-" + (i + 1) + ".html\"> > </a>");
+						boardPageListHtml.append("</div>");
 					}
 
 					if (pages >= 2) {
-						sb.append("<div class=\"flex flex-basis-50px\">");
-						sb.append("<a href=\"" + board.getCode() + "-list-" + pages + ".html\"> >> </a>");
-						sb.append("</div>");
+						boardPageListHtml.append("<div class=\"flex flex-basis-50px\">");
+						boardPageListHtml.append("<a href=\"" + board.getCode() + "-list-" + pages + ".html\"> >> </a>");
+						boardPageListHtml.append("</div>");
 					}
-					sb.append("</div>");
-					sb.append("</div>");
-					sb.append("</section>");
-					sb.append("</main>");
-					sb.append(foot);
+					boardPageListHtml.append("</div>");
+					boardPageListHtml.append("</div>");
+					boardPageListHtml.append("</section>");
+					boardPageListHtml.append("</main>");
+					boardPageListHtml.append(foot);
 
-					Util.writeFileContents("site/article/" + fileName, sb.toString());
+					Util.writeFileContents("site/article/" + fileName, boardPageListHtml.toString());
 				}
 			}
 		}
@@ -372,53 +416,54 @@ public class BuildService {
 	// 메인화면 생성 함수
 	private void createMainPage(String head, String foot) {
 
-		StringBuilder homeSb = new StringBuilder();
-		homeSb.append(head);
-		homeSb.append("<main class=\"flex-grow-1\">");
-		homeSb.append("<section class=\"con-min-width\">");
-		homeSb.append("<div class=\"con home-title-box\">");
-		homeSb.append(" <i class=\"fas fa-home\"></i>");
-		homeSb.append("<span>HOME</span>");
-		homeSb.append("</div>");
-		homeSb.append("</section>");
+		StringBuilder mainPageHtml = new StringBuilder();
+		mainPageHtml.append(head);
+		mainPageHtml.append("<main class=\"flex-grow-1\">");
+		mainPageHtml.append("<section class=\"con-min-width\">");
+		mainPageHtml.append("<div class=\"con home-title-box\">");
+		mainPageHtml.append(" <i class=\"fas fa-home\"></i>");
+		mainPageHtml.append("<span>HOME</span>");
+		mainPageHtml.append("</div>");
+		mainPageHtml.append("</section>");
 
-		homeSb.append("<section class=\"home-body-box con-min-width\">");
-		homeSb.append("<div class=\"con\">");
+		mainPageHtml.append("<section class=\"home-body-box con-min-width\">");
+		mainPageHtml.append("<div class=\"con\">");
 		String homeBody = Util.getFileContents("site/home/homeBody.txt");
-		homeSb.append(homeBody);
-		homeSb.append("</div>");
-		homeSb.append("</section>");
-		homeSb.append("</main>");
-		homeSb.append(foot);
-		Util.writeFileContents("site/home/" + "index.html", homeSb.toString());
+		mainPageHtml.append(homeBody);
+		mainPageHtml.append("</div>");
+		mainPageHtml.append("</section>");
+		mainPageHtml.append("</main>");
+		mainPageHtml.append(foot);
+		Util.writeFileContents("site/home/" + "index.html", mainPageHtml.toString());
 
 	}
 
 	// 상단 메뉴 생성 함수
 	private String createBoardMenu(String head, ArrayList<Board> boards) {
-		StringBuilder changeMenu = new StringBuilder();
+		StringBuilder changeMenuHtml = new StringBuilder();
 		for (Board board : boards) {
-			changeMenu.append("<li>");
-			changeMenu.append("<a href=\"../article/" + board.getCode() + "-list-1.html" + "\">");
+			changeMenuHtml.append("<li>");
+			changeMenuHtml.append("<a href=\"../article/" + board.getCode() + "-list-1.html" + "\">");
+			
 			switch (board.getCode()) {
 			case "notice":
-				changeMenu.append("<i class=\"fas fa-flag\"></i>");
+				changeMenuHtml.append("<i class=\"fas fa-flag\"></i>");
 				break;
 			case "free":
-				changeMenu.append("<i class=\"fas fa-clipboard\"></i>");
+				changeMenuHtml.append("<i class=\"fas fa-clipboard\"></i>");
 				break;
 			default:
-				changeMenu.append("<i class=\"far fa-clipboard\"></i>");
+				changeMenuHtml.append("<i class=\"far fa-clipboard\"></i>");
 				break;
 			}
 
-			changeMenu.append("<span>");
-			changeMenu.append(board.getName() + "게시판");
-			changeMenu.append("</span>");
-			changeMenu.append("</a>");
-			changeMenu.append("</li>");
+			changeMenuHtml.append("<span>");
+			changeMenuHtml.append(board.getName() + "게시판");
+			changeMenuHtml.append("</span>");
+			changeMenuHtml.append("</a>");
+			changeMenuHtml.append("</li>");
 		}
-		return head = head.replace("${boardListHead}", changeMenu.toString());
+		return head = head.replace("${boardListHead}", changeMenuHtml.toString());
 
 	}
 

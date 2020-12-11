@@ -16,7 +16,6 @@ public class ArticleReply {
 		this.regDate = (String) articleReplyMap.get("regDate");
 		this.body = (String) articleReplyMap.get("body");
 		this.articleId = (int) articleReplyMap.get("articleId");
-
 		this.memberId = (int) articleReplyMap.get("memberId");
 		this.extra__name = (String) articleReplyMap.get("extra__name");
 	}

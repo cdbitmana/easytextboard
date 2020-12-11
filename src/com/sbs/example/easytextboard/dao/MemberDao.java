@@ -93,7 +93,9 @@ public class MemberDao {
 		SecSql sql = new SecSql();
 
 		sql.append("INSERT INTO `member`");
-		sql.append("SET loginId = ?", loginId);
+		sql.append("SET regDate = NOW()");
+		sql.append(", updateDate = NOW()");
+		sql.append(", loginId = ?", loginId);
 		sql.append(", loginpw = ? ", pw);
 		sql.append(", `name` = ?", name);
 
