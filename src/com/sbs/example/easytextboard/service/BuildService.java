@@ -22,6 +22,20 @@ public class BuildService {
 
 	public void makeHtml() {
 		String sourceFile = "site_template/part/app.css";
+		File file = new File("site/stat/");
+		if (file.exists() == false) {
+			file.mkdir();
+		}
+		File file2 = new File("site/article/");
+		if (file.exists() == false) {
+			file.mkdirs();
+		}
+
+		File homeDir = new File("site/home/");
+		if (homeDir.exists() == false) {
+			homeDir.mkdirs();
+		}
+
 
 		Util.copy(sourceFile, "site/article/app.css");
 		Util.copy(sourceFile, "site/stat/app.css");
@@ -46,11 +60,7 @@ public class BuildService {
 
 	// 통계페이지 생성 함수
 	private void createStatDetail(String head, String foot, ArrayList<Board> boards) {
-		File file = new File("site/stat/");
-		if (file.exists() == false) {
-			file.mkdir();
-		}
-
+	
 		String fileName = "index.html";
 
 		List<Member> members = memberService.getMembers();
@@ -179,11 +189,7 @@ public class BuildService {
 	private void createBoardPage(String head, String foot, ArrayList<Board> boards) {
 		for (Board board : boards) {
 
-			File file = new File("site/article/");
-			if (file.exists() == false) {
-				file.mkdirs();
-			}
-
+			
 			List<Article> articles = articleService.getArticlesByBoardCode(board.getCode());
 
 			int pages = articles.size() / 10;
@@ -357,11 +363,6 @@ public class BuildService {
 
 	// 메인화면 생성 함수
 	private void createMainPage(String head, String foot) {
-
-		File homeDir = new File("site/home/");
-		if (homeDir.exists() == false) {
-			homeDir.mkdirs();
-		}
 
 		StringBuilder homeSb = new StringBuilder();
 		homeSb.append(head);
