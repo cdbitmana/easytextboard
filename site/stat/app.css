@@ -95,6 +95,12 @@
        .flex-jc-s-ar{
            justify-content: space-around;
        }
+       .flex-jc-s-bet{
+           justify-content: space-between;
+       }
+       .flex-basis-50px{
+           flex-basis: 50px;
+       }
        .flex-grow-1{
            flex-grow: 1;
        }
@@ -117,6 +123,7 @@
        /* 로고바 시작 */
        .logo-bar{           
            background-color:#afafaf;
+           z-index:10;
        }
        .logo-bar > .logo-box{           
            font-size:2rem;
@@ -126,11 +133,12 @@
        /* 메뉴바 시작 */
        .menu-bar {
            background-color:#afafaf;
+           z-index:5;
        }
-       .menu-bar ul li {
+       
+       .menu-bar ul {
            background-color:#afafaf;
            text-align: center;
-           z-index:1;
        }       
        .menu-box ul > li {
         position:relative;
@@ -140,15 +148,29 @@
            position: absolute;
            top:100%;
            left:0;
-           width:100%;
-       }       
+           width:100%;  
+           
+          }   
+      
+       .menu-box ul > li:hover ul{
+           display:block; 
+           animation:drop_down .4s;           
+       }
+       @keyframes drop_down{
+        0%{
+            transform:translateY(-100%);
+        }
+        100%{
+            transform:translateY(0%);
+        }
+    }
+        
        .menu-box ul > li > a {
         display:block;
         padding:10px;
+        
        }       
-       .menu-box ul > li:hover ul{
-        display:block;
-       }
+       
        .menu-box ul > li:hover > a {
         color:white;
         background-color:black;
@@ -258,7 +280,7 @@
        .page-button {
            margin:35px 0;
        }
-       .page-button > ul > li > a:hover {
+       .page-button > div > ul > li > a:hover {
            text-decoration: underline;
        }
        /* 게시판 페이징 끝 */

@@ -48,7 +48,6 @@ public class App {
 			}
 			
 			
-
 			controller = getControllerByCmd(command);
 
 			if (controller == null) {

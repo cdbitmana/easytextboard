@@ -215,29 +215,43 @@ public class BuildService {
 					sb.append("</section>");
 
 					sb.append("<section class=\"page-button con-min-width\">");
-					sb.append("<div class=\"con\">");
-					sb.append("<ul class=\"flex flex-jc-s-ar\">");
-
-					sb.append("<li class=\"flex flex-jc-c flex-grow-1\">");
-					if (i != 1) {
-						sb.append("<a href=\"" + board.getCode() + "-list-" + (i - 1) + ".html\"> < </a>");
+					sb.append("<div class=\"con flex flex-jc-s-bet\">");
+					
+					if(pages >= 2) {
+						sb.append("<div class=\"flex flex-basis-50px\">");
+						sb.append("<a href=\"" +board.getCode() +"-list-1.html\"> << </a>");
+						sb.append("</div>");
 					}
-					sb.append("</li>");
+					if (i != 1) {
+						sb.append("<div class=\"flex flex-basis-50px\">");
+						sb.append("<a href=\"" + board.getCode() + "-list-" + (i - 1) + ".html\"> < </a>");
+						sb.append("</div>");
+					}					
 
+					sb.append("<ul class=\"flex flex-jc-s-bet flex-grow-1\">");	
+					
 					for (int k = 1; k <= pages; k++) {
 						String page = board.getCode() + "-list-" + k + ".html";
 						sb.append("<li class=\"flex flex-jc-c flex-grow-1\">");
 						sb.append("<a href=\"" + page + "\"> " + k + "</a>");
 						sb.append("</li>");
 					}
-
-					sb.append("<li class=\"flex flex-jc-c flex-grow-1\">");
-					if (i < pages) {
-						sb.append("<a href=\"" + board.getCode() + "-list-" + (i + 1) + ".html\"> > </a>");
-					}
-					sb.append("</li>");
-
+					
 					sb.append("</ul>");
+					
+					if (i < pages) {
+						sb.append("<div class=\"flex flex-basis-50px\">");
+						sb.append("<a href=\"" + board.getCode() + "-list-" + (i + 1) + ".html\"> > </a>");
+						sb.append("</div>");
+					}
+
+					
+					if(pages >= 2) {
+						sb.append("<div class=\"flex flex-basis-50px\">");
+						sb.append("<a href=\"" +board.getCode() +"-list-"+ pages+".html\"> >> </a>");
+						sb.append("</div>");
+					}
+					
 					sb.append("</div>");
 					sb.append("</section>");
 					sb.append("</main>");

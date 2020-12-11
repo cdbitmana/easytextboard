@@ -15,6 +15,7 @@ public class BuildController extends Controller {
 	}
 
 	public void doCommand(String command) {
+		
 		if (command.equals("build site")) {
 			Thread thr = new Thread(new Runnable() {
 				public void run() {
@@ -28,8 +29,10 @@ public class BuildController extends Controller {
 					}
 				}
 			});
-			thr.run();
+			thr.start();			
+			
 		}
+		
 
 	}
 
