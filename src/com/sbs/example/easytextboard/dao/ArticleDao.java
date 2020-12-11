@@ -11,6 +11,8 @@ import com.sbs.example.easytextboard.mysqlutil.MysqlUtil;
 import com.sbs.example.easytextboard.mysqlutil.SecSql;
 
 public class ArticleDao {
+	
+	
 
 	// doWrite
 	public int doWrite(String title, String body, int memberId, int boardId) {
@@ -329,5 +331,7 @@ public class ArticleDao {
 		return articles;
 
 	}
+
+	
 
 }

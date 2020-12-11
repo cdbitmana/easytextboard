@@ -298,6 +298,10 @@
        .page-button > div > ul > li > a:hover {
            text-decoration: underline;
        }
+       .page-button > div > ul > li > span {
+           font-weight: bold;
+           font-size:1.4rem;
+       }
        /* 게시판 페이징 끝 */
        
        /* 게시물 상세보기 시작 */
@@ -373,12 +377,17 @@
 
        /* 통계 상세보기 시작 */
        .stat-box li{
-           margin:5px 35px;
-           
+           margin:5px 35px;           
        }
-       .stat-box > div > ul > li {
+       .stat-box > div {
+           padding-top:20px;
+       }
+       .stat-box > div > ul > li {           
+            padding:10px 0;
            list-style:disc;
+          border-bottom: 2px solid black;
        }
+     
        .stat-box > div > ul > li > ul > li{
            list-style:circle;
        }       

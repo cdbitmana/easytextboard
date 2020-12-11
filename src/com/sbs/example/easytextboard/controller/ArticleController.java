@@ -49,7 +49,8 @@ public class ArticleController extends Controller {
 			doSelectBoard();
 		} else if (command.equals("article currentBoard")) {
 			showCurrentBoard();
-		} else {
+		} 
+		else {
 			System.out.println("존재하지 않는 명령어");
 		}
 	}
@@ -448,7 +449,7 @@ public class ArticleController extends Controller {
 
 	}
 
-	// doAdd
+	// doWrite
 	private void doWrite() {
 		if (!Container.session.isLogined()) {
 			System.out.println("로그인 후 이용해주세요.");

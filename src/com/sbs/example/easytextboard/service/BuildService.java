@@ -70,7 +70,7 @@ public class BuildService {
 		head = head.replace("<a href=\"notice-list-1.html\">", "<a href=\"../article/notice-list-1.html\">");
 		head = head.replace("<a href=\"free-list-1.html\">", "<a href=\"../article/free-list-1.html\">");
 		sb.append(head);
-		sb.append("<main class=\"flex-grow-1\">");
+		sb.append("<main class=\"flex flex-jc-c flex-grow-1\">");
 		sb.append("<section class=\"stat-box con-min-width\">");
 		sb.append("<div class = \"con\">");
 		sb.append("<ul>");
@@ -313,8 +313,8 @@ public class BuildService {
 					sb.append("<div class=\"flex-grow-1\"></div>");
 
 					sb.append("<section class=\"page-button con-min-width\">");
-					sb.append("<div class=\"con flex flex-jc-s-bet\">");
-
+					sb.append("<div class=\"con flex flex-ai-c flex-jc-s-bet\">");
+					sb.append("<div class=\"flex flex-basis-100px\">");
 					if (pages >= 2) {
 						sb.append("<div class=\"flex flex-basis-50px\">");
 						sb.append("<a href=\"" + board.getCode() + "-list-1.html\"> << </a>");
@@ -325,18 +325,26 @@ public class BuildService {
 						sb.append("<a href=\"" + board.getCode() + "-list-" + (i - 1) + ".html\"> < </a>");
 						sb.append("</div>");
 					}
+					sb.append("</div>");
 
-					sb.append("<ul class=\"flex flex-jc-c flex-grow-1\">");
+					sb.append("<ul class=\"flex flex-jc-c flex-ai-e flex-grow-1\">");
 
 					for (int k = 1; k <= pages; k++) {
 						String page = board.getCode() + "-list-" + k + ".html";
-						sb.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
-						sb.append("<a href=\"" + page + "\"> " + k + "</a>");
-						sb.append("</li>");
+						if(k==i) {
+							sb.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+							sb.append("<span>"+k+"</span>");
+							sb.append("</li>");
+						}else {
+							sb.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+							sb.append("<a href=\"" + page + "\"> " + k + "</a>");
+							sb.append("</li>");
+						}
+						
 					}
 
 					sb.append("</ul>");
-
+					sb.append("<div class=\"flex flex-basis-100px\">");
 					if (i < pages) {
 						sb.append("<div class=\"flex flex-basis-50px\">");
 						sb.append("<a href=\"" + board.getCode() + "-list-" + (i + 1) + ".html\"> > </a>");
@@ -348,7 +356,7 @@ public class BuildService {
 						sb.append("<a href=\"" + board.getCode() + "-list-" + pages + ".html\"> >> </a>");
 						sb.append("</div>");
 					}
-
+					sb.append("</div>");
 					sb.append("</div>");
 					sb.append("</section>");
 					sb.append("</main>");
