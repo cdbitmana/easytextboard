@@ -101,11 +101,26 @@
        .flex-basis-50px{
            flex-basis: 50px;
        }
+       .flex-basis-100px{
+           flex-basis:100px;
+       }
+       .flex-basis-150px{
+           flex-basis:150px;
+       }
+       .flex-basis-200px{
+           flex-basis: 200px;
+       }
        .flex-grow-1{
            flex-grow: 1;
        }
        .flex-ai-c{
            align-items: center;
+       }
+       .flex-ai-e{
+           align-items: flex-end;
+       }
+       .flex-al-s-end{
+           align-self: flex-end;
        }
        .flex-dir-col{
            flex-direction: column;
@@ -114,212 +129,4 @@
            height:100%;
        }
 
-       /* 컨테이너 시작 */
-       .container{           
-           min-height:100vh;
-       }
-       /* 컨테이너 끝 */
-
-       /* 로고바 시작 */
-       .logo-bar{           
-           background-color:#afafaf;
-           z-index:10;
-       }
-       .logo-bar > .logo-box{           
-           font-size:2rem;
-       }              
-       /* 로고바 끝 */
-
-       /* 메뉴바 시작 */
-       .menu-bar {
-           background-color:#afafaf;
-           z-index:5;
-       }
-       
-       .menu-bar ul {
-           background-color:#afafaf;
-           text-align: center;
-       }       
-       .menu-box ul > li {
-        position:relative;
-        }
-       .menu-bar ul ul {
-           display:none;
-           position: absolute;
-           top:100%;
-           left:0;
-           width:100%;  
-           
-          }   
-      
-       .menu-box ul > li:hover ul{
-           display:block; 
-           animation:drop_down .4s;           
-       }
-       @keyframes drop_down{
-        0%{
-            transform:translateY(-100%);
-        }
-        100%{
-            transform:translateY(0%);
-        }
-    }
-        
-       .menu-box ul > li > a {
-        display:block;
-        padding:10px;
-        
-       }       
-       
-       .menu-box ul > li:hover > a {
-        color:white;
-        background-color:black;
-       }
-       .menu-box > ul > li:hover > a {        
-        border-radius:10px 10px 0 0;
-        z-index:1;
-       }
-       /* 메뉴바 끝 */
-
-       /* 홈 화면 시작 */
-       .home-title-box {
-        margin:30px auto;
-        font-size:3rem;
-       }
-       .home-body-box {
-           margin:30px auto;
-       }
-       /* 홈 화면 끝 */
-       
-       /* 게시판 페이징 시작 */
-       .title-bar{
-           margin-top:40px;
-       }
-       .title-bar__title-box{
-           font-size:2rem;           
-       }
-       
-       .board-list {
-           margin-top:40px;
-           text-align: center;
-       }
-       .board-list > table > tbody > tr > td {
-           padding-top:10px;
-           padding-bottom: 10px;       
-       }       
-       .board-list > table > tbody > tr > td > a:hover{
-           text-decoration: underline;        
-       }
-       .board-list > table > tbody > tr.tag > td{
-           position:relative;
-       }
-       .board-list > table > tbody > tr.tag > td::before{
-           content:"";
-           display:block;
-           clear:both;
-           background-color:black;
-           width:1px;
-           height:15px;
-           position:absolute;
-           top:50%;
-           left:0;
-           transform:translateY(-50%);
-       }
-       .board-list > table > tbody > tr.tag > td:last-child::after{
-           content:"";
-           display:block;
-           clear:both;
-           background-color:black;
-           width:1px;
-           height:15px;
-           position:absolute;
-           top:50%;
-           left:100%;
-           transform:translateY(-50%);
-       }
-       .board-list > table >  tbody > tr > td.line-separate{
-           background-color:black;    
-           width:1200px;
-           padding:0;
-           height:1px;
-       }
-       .cell-title{
-           text-align: left;
-           padding-left:55px;
-       }
-       
-       :root{
-       --cell-id__width:100px;
-       --cell-writer__width:100px;
-       --cell-regDate__width:160px;
-       --cell-hit__width:100px;
-       --cell-recommand__width:100px;
-       --cell-title__width:calc(100% - var(--cell-id__width) - var(--cell-writer__width) - var(--cell-regDate__width) - var(--cell-hit__width) - var(--cell-recommand__width))
-       }
-       .board-list table > tbody > tr.tag > td.cell-title{
-           text-align: center;
-       }
-       .board-list .cell-id{
-           width:var(--cell-id__width);
-       }
-       .board-list .cell-writer{
-           width:var(--cell-writer__width);
-       }
-       .board-list .cell-regDate{
-           width:var(--cell-regDate__width);
-       }
-       .board-list .cell-hit{
-           width:var(--cell-id__width);
-       }
-       .board-list .cell-recommand{
-           width:var(--cell-recommand__width);
-       }
-       .board-list .cell-title{
-           width:var(--cell-title__width);
-       }
-       .page-button {
-           margin:35px 0;
-       }
-       .page-button > div > ul > li > a:hover {
-           text-decoration: underline;
-       }
-       /* 게시판 페이징 끝 */
-       
-       /* 게시물 상세보기 시작 */
-       .article {
-           margin:30px auto;
-       } 
-       .article-move-button{
-           margin:15px 0;
-       }
-       .article-move-button > div {
-           margin-top:5px;
-           margin-bottom: 5px;
-       }
-       .article-move-button > div > a:hover{
-           text-decoration: underline;
-       }
-       /* 게시물 상세보기 끝 */
-
-       /* 통계 상세보기 시작 */
-       .stat-box li{
-           margin:5px 35px;
-           
-       }
-       .stat-box > div > ul > li {
-           list-style:disc;
-       }
-       .stat-box > div > ul > li > ul > li{
-           list-style:circle;
-       }       
-        /* 통계 상세보기 끝 */    
-
-       /* 하단 로고 바 시작 */
-       .bottom-logo-bar{
-           margin-top:30px;
-        background-color:#afafaf;
-    }
-    .copyright-box{
-        padding-left:30px;
-    }
-    /* 하단 로고 바 끝 */
+       /* 컨테�

@@ -101,11 +101,26 @@
        .flex-basis-50px{
            flex-basis: 50px;
        }
+       .flex-basis-100px{
+           flex-basis:100px;
+       }
+       .flex-basis-150px{
+           flex-basis:150px;
+       }
+       .flex-basis-200px{
+           flex-basis: 200px;
+       }
        .flex-grow-1{
            flex-grow: 1;
        }
        .flex-ai-c{
            align-items: center;
+       }
+       .flex-ai-e{
+           align-items: flex-end;
+       }
+       .flex-al-s-end{
+           align-self: flex-end;
        }
        .flex-dir-col{
            flex-direction: column;
@@ -154,7 +169,7 @@
       
        .menu-box ul > li:hover ul{
            display:block; 
-           animation:drop_down .4s;           
+           animation:drop_down .2s;           
        }
        @keyframes drop_down{
         0%{
@@ -289,6 +304,61 @@
        .article {
            margin:30px auto;
        } 
+       .article__title-bar{
+        margin:20px 0;
+       }
+       .article__title-bar > div:not(.article_title) {
+           text-align: center;
+       }
+       .article__title-bar .article_id{
+           position: relative;
+       }
+       .article__title-bar .article_id::after{
+        content:"";
+        display:block;
+        background-color:black;
+        width:1px;
+        height:15px;
+        position: absolute;
+        top:0%;
+        right:0%;
+        
+       }
+       .article__title-bar{
+           position: relative;
+       }
+       .article_title{
+           padding-left:30px;
+       }
+       .article__title-bar::after{
+           content:"";
+           display:block;
+           background-color:black;
+           height:1px;
+           width:100%;
+           position: absolute;
+           top:125%;
+       }
+       .article .article_title{
+           font-size:2rem;
+       }
+       .article_body{
+           position: relative;           
+       }
+       .article_body::after{
+        content:"";
+        display:block;
+        background-color:black;
+        height:1px;
+        width:100%;
+        position: absolute;
+        top:100%;        
+       }
+       .article_body > span{
+           display:block;
+           padding:20px;
+           font-size:1.1rem;
+       }
        .article-move-button{
            margin:15px 0;
        }
