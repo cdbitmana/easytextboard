@@ -268,13 +268,13 @@ public class BuildService {
 					articleDetailHtml.append("<tr>");
 					articleDetailHtml.append("<td colspan=\"6\" class =\"line-separate\"></td>");
 					articleDetailHtml.append("</tr>");
-					if(articles.get(i).getId()== articles.get(j).getId()) {
-						articleDetailHtml.append("<tr class=\"article-list__board-list__current-article\">");
-					}else {
-						articleDetailHtml.append("<tr>");
+					articleDetailHtml.append("<tr>");
+					if (articles.get(i).getId() == articles.get(j).getId()) {
+						articleDetailHtml.append("<td class=\"cell-id\"> &gt; </td>");
+					} else {
+						articleDetailHtml.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
 					}
-					
-					articleDetailHtml.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
+
 					articleDetailHtml.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-"
 							+ articles.get(j).getId() + ".html\">" + articles.get(j).getTitle() + "</td>");
 					articleDetailHtml.append("<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>");
@@ -293,7 +293,7 @@ public class BuildService {
 				articleDetailHtml.append("<div class=\"flex flex-basis-100px\">");
 				if (pageSum >= 2) {
 					articleDetailHtml.append("<div class=\"flex flex-basis-50px\">");
-					articleDetailHtml.append("<a href=\"" + board.getCode() + "-list-1.html\"> << </a>");
+					articleDetailHtml.append("<a href=\"" + board.getCode() + "-list-1.html\"> &lt;&lt; </a>");
 					articleDetailHtml.append("</div>");
 				}
 				if (currentPage != 1) {
@@ -378,7 +378,8 @@ public class BuildService {
 
 				if (pageSum >= 2) {
 					articleDetailHtml.append("<div class=\"flex flex-basis-50px\">");
-					articleDetailHtml.append("<a href=\"" + board.getCode() + "-list-" + pageSum + ".html\"> >> </a>");
+					articleDetailHtml
+							.append("<a href=\"" + board.getCode() + "-list-" + pageSum + ".html\"> &gt&gt; </a>");
 					articleDetailHtml.append("</div>");
 				}
 				articleDetailHtml.append("</div>");

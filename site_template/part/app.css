@@ -222,6 +222,10 @@
            margin-top:40px;
            text-align: center;
        }
+       .board-list > table > tbody > tr:not(.tag):hover {
+           background-color:#afafaf49;
+        
+       }
        .board-list > table > tbody > tr > td {
            padding-top:10px;
            padding-bottom: 10px;       
@@ -404,10 +408,6 @@
            font-size:1.4rem;
        }
 
-       .article-list__board-list__current-article{
-           background-color:#e7f70b75;
-           
-       }
        /* 게시물 상세보기 끝 */
 
        /* 통계 상세보기 시작 */
