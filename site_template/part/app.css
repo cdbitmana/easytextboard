@@ -46,6 +46,7 @@
        .color-white {
          color:white;
        }
+
        i{
            margin:0 5px;
        }
@@ -169,7 +170,7 @@
       
        .menu-box ul > li:hover ul{
            display:block; 
-           animation:drop_down .2s;           
+           animation:drop_down .4s;           
        }
        @keyframes drop_down{
         0%{
@@ -310,7 +311,7 @@
        } 
        .article__title-bar{
         margin:20px 0;
-        padding:0 10px;
+        
        }
        .article__title-bar > div:not(.article_title) {
            text-align: center;
@@ -349,6 +350,7 @@
        }
        .article_body{
            border-bottom:2px solid black;
+           min-height:200px;
        }
        .article_body > span{
            display:block;
@@ -368,13 +370,7 @@
        .article-move-button > div > a:hover{
            text-decoration: underline;
        }
-       .reply{
-           
-       }
-       .reply-box {
-           
-           
-       }
+      
        .reply__section{
            padding:15px 0;
        }
