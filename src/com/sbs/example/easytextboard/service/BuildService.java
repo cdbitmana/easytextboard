@@ -224,11 +224,11 @@ public class BuildService {
 					pageSum = 1;
 				}
 
-				int y = ((int) (articles.size() - i) / 10) + 1;
+				int currentPage = ((int) (articles.size() - i) / 10) + 1;
 				if ((articles.size() - i) % 10 == 0) {
-					y--;
+					currentPage--;
 				}
-				int start = articles.size() - ((y - 1) * itemsInAPage) - 1;
+				int start = articles.size() - ((currentPage - 1) * itemsInAPage) - 1;
 				int end = (start - itemsInAPage + 1);
 				if (end < 0) {
 					end = 0;
@@ -291,34 +291,83 @@ public class BuildService {
 					articleDetailHtml.append("<a href=\"" + board.getCode() + "-list-1.html\"> << </a>");
 					articleDetailHtml.append("</div>");
 				}
-				if (y != 1) {
+				if (currentPage != 1) {
 					articleDetailHtml.append("<div class=\"flex flex-basis-50px\">");
-					articleDetailHtml.append("<a href=\"" + board.getCode() + "-list-" + (y - 1) + ".html\"> 이전 </a>");
+					articleDetailHtml
+							.append("<a href=\"" + board.getCode() + "-list-" + (currentPage - 1) + ".html\"> 이전 </a>");
 					articleDetailHtml.append("</div>");
 				}
 				articleDetailHtml.append("</div>");
 
 				articleDetailHtml.append("<ul class=\"flex flex-jc-c flex-ai-e flex-grow-1\">");
 
-				for (int l = 1; l <= pageSum; l++) {
-					String page2 = board.getCode() + "-list-" + l + ".html";
-					if (l == y) {
-						articleDetailHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
-						articleDetailHtml.append("<span>" + l + "</span>");
-						articleDetailHtml.append("</li>");
-					} else {
-						articleDetailHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
-						articleDetailHtml.append("<a href=\"" + page2 + "\"> " + l + "</a>");
-						articleDetailHtml.append("</li>");
+				if (pageSum > 9) {
+					if (currentPage < 6) {
+						for (int k = 1; k <= 9; k++) {
+							String page = board.getCode() + "-list-" + k + ".html";
+							if (k == currentPage) {
+								articleDetailHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+								articleDetailHtml.append("<span>" + k + "</span>");
+								articleDetailHtml.append("</li>");
+							} else {
+								articleDetailHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+								articleDetailHtml.append("<a href=\"" + page + "\"> " + k + "</a>");
+								articleDetailHtml.append("</li>");
+							}
+						}
+					} else if (currentPage >= 6) {
+						if (currentPage < pageSum - 4) {
+							for (int k = currentPage - 4; k <= currentPage + 4; k++) {
+								String page = board.getCode() + "-list-" + k + ".html";
+								if (k == currentPage) {
+									articleDetailHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+									articleDetailHtml.append("<span>" + k + "</span>");
+									articleDetailHtml.append("</li>");
+								} else {
+									articleDetailHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+									articleDetailHtml.append("<a href=\"" + page + "\"> " + k + "</a>");
+									articleDetailHtml.append("</li>");
+								}
+							}
+						} else if (currentPage >= pageSum - 4) {
+							for (int k = pageSum - 8; k <= pageSum; k++) {
+								String page = board.getCode() + "-list-" + k + ".html";
+								if (k == currentPage) {
+									articleDetailHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+									articleDetailHtml.append("<span>" + k + "</span>");
+									articleDetailHtml.append("</li>");
+								} else {
+									articleDetailHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+									articleDetailHtml.append("<a href=\"" + page + "\"> " + k + "</a>");
+									articleDetailHtml.append("</li>");
+								}
+							}
+						}
 					}
 
+				} else if (pageSum <= 9) {
+					for (int k = 1; k <= pageSum; k++) {
+						String page = board.getCode() + "-list-" + k + ".html";
+						if (k == currentPage) {
+							articleDetailHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+							articleDetailHtml.append("<span>" + k + "</span>");
+							articleDetailHtml.append("</li>");
+						} else {
+							articleDetailHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+							articleDetailHtml.append("<a href=\"" + page + "\"> " + k + "</a>");
+							articleDetailHtml.append("</li>");
+						}
+
+					}
 				}
+
 				articleDetailHtml.append("</ul>");
 
 				articleDetailHtml.append("<div class=\"flex flex-basis-100px\">");
-				if (y < pageSum) {
+				if (currentPage < pageSum) {
 					articleDetailHtml.append("<div class=\"flex flex-basis-50px\">");
-					articleDetailHtml.append("<a href=\"" + board.getCode() + "-list-" + (y + 1) + ".html\"> 다음 </a>");
+					articleDetailHtml
+							.append("<a href=\"" + board.getCode() + "-list-" + (currentPage + 1) + ".html\"> 다음 </a>");
 					articleDetailHtml.append("</div>");
 				}
 
@@ -503,8 +552,8 @@ public class BuildService {
 								}
 							}
 						} else if (i >= 6) {
-							if( i < pages - 4) {
-								for (int k = i-4; k <= i+4; k++) {
+							if (i < pages - 4) {
+								for (int k = i - 4; k <= i + 4; k++) {
 									String page = board.getCode() + "-list-" + k + ".html";
 									if (k == i) {
 										boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
@@ -516,8 +565,8 @@ public class BuildService {
 										boardPageListHtml.append("</li>");
 									}
 								}
-							} else if( i >= pages-4) {
-								for (int k = pages-8; k <= pages; k++) {
+							} else if (i >= pages - 4) {
+								for (int k = pages - 8; k <= pages; k++) {
 									String page = board.getCode() + "-list-" + k + ".html";
 									if (k == i) {
 										boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
@@ -532,7 +581,6 @@ public class BuildService {
 							}
 						}
 
-						
 					} else if (pages <= 9) {
 						for (int k = 1; k <= pages; k++) {
 							String page = board.getCode() + "-list-" + k + ".html";
