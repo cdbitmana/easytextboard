@@ -22,6 +22,8 @@ public class App {
 		articleService = Container.articleService;
 		memberService = Container.memberService;
 		buildController = Container.buildController;
+		
+		
 
 	}
 

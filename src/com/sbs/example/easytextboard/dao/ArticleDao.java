@@ -14,6 +14,7 @@ public class ArticleDao {
 	
 	
 
+
 	// doWrite
 	public int doWrite(String title, String body, int memberId, int boardId) {
 		SecSql sql = new SecSql();
@@ -332,6 +333,7 @@ public class ArticleDao {
 
 	}
 
+	
 	
 
 }

@@ -19,6 +19,7 @@ public class ArticleController extends Controller {
 		articleService = Container.articleService;
 		memberService = Container.memberService;
 		sc = Container.scanner;
+
 	}
 
 	public void doCommand(String command) {
@@ -49,8 +50,7 @@ public class ArticleController extends Controller {
 			doSelectBoard();
 		} else if (command.equals("article currentBoard")) {
 			showCurrentBoard();
-		} 
-		else {
+		} else {
 			System.out.println("존재하지 않는 명령어");
 		}
 	}

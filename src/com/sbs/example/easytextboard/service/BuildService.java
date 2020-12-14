@@ -326,7 +326,7 @@ public class BuildService {
 
 				if (pageSum >= 2) {
 					articleDetailHtml.append("<div class=\"flex flex-basis-50px\">");
-					articleDetailHtml.append("<a href=\"" + board.getCode() + "-" + pageSum + ".html\"> >> </a>");
+					articleDetailHtml.append("<a href=\"" + board.getCode() + "-list-" + pageSum + ".html\"> >> </a>");
 					articleDetailHtml.append("</div>");
 				}
 				articleDetailHtml.append("</div>");
