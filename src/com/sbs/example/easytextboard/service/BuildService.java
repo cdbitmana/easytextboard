@@ -26,7 +26,7 @@ public class BuildService {
 
 		File statDir = new File("site/stat/");
 		if (statDir.exists() == false) {
-			statDir.mkdir();
+			statDir.mkdirs();
 		}
 		File articleDir = new File("site/article/");
 		if (articleDir.exists() == false) {
@@ -129,7 +129,7 @@ public class BuildService {
 				StringBuilder articleDetailHtml = new StringBuilder();
 				articleDetailHtml.append(head);
 				articleDetailHtml.append("<main class=\"flex flex-grow-1 flex-dir-col con-min-width\">");
-				articleDetailHtml.append("<section class=\"article con flex flex-dir-col flex-grow-1\">");
+				articleDetailHtml.append("<section class=\"article con flex flex-dir-col\">");
 
 				articleDetailHtml.append("<div class=\"article__title-bar flex flex-jc-s-bet flex-ai-c\">");
 				articleDetailHtml.append("<div class=\"article_id flex-basis-50px\">");
@@ -268,7 +268,12 @@ public class BuildService {
 					articleDetailHtml.append("<tr>");
 					articleDetailHtml.append("<td colspan=\"6\" class =\"line-separate\"></td>");
 					articleDetailHtml.append("</tr>");
-					articleDetailHtml.append("<tr>");
+					if(articles.get(i).getId()== articles.get(j).getId()) {
+						articleDetailHtml.append("<tr class=\"article-list__board-list__current-article\">");
+					}else {
+						articleDetailHtml.append("<tr>");
+					}
+					
 					articleDetailHtml.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
 					articleDetailHtml.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-"
 							+ articles.get(j).getId() + ".html\">" + articles.get(j).getTitle() + "</td>");
@@ -641,7 +646,7 @@ public class BuildService {
 
 		mainPageHtml.append("<section class=\"home-body-box con-min-width\">");
 		mainPageHtml.append("<div class=\"con\">");
-		String homeBody = Util.getFileContents("site/home/homeBody.txt");
+		String homeBody = Util.getFileContents("site_template/part/homeMainText.txt");
 		mainPageHtml.append(homeBody);
 		mainPageHtml.append("</div>");
 		mainPageHtml.append("</section>");

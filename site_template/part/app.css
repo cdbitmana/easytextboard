@@ -129,6 +129,9 @@
        .height-100p{
            height:100%;
        }
+       table,td{
+           border-collapse: collapse;
+       }
 
        /* 컨테이너 시작 */
        .container{           
@@ -259,9 +262,10 @@
            padding:0;
            height:1px;
        }
-       .cell-title{
+      tr:not(.tag) > .cell-title{
            text-align: left;
-           padding-left:55px;
+           padding-left:50px;
+           margin-left:55px;
        }
        
        :root{
@@ -308,6 +312,7 @@
        /* 게시물 상세보기 시작 */
        .article {
            margin-top:30px;
+           min-height: 50vh;
        } 
        .article__title-bar{
         margin:20px 0;
@@ -350,12 +355,13 @@
        }
        .article_body{
            border-bottom:2px solid black;
-           min-height:200px;
+           
        }
        .article_body > span{
            display:block;
            padding:20px;
            font-size:1.1rem;
+
        }
        .article-move-button{
            border-top:2px solid black;
@@ -396,6 +402,11 @@
         .page-button > div > ul > li > span {
            font-weight: bold;
            font-size:1.4rem;
+       }
+
+       .article-list__board-list__current-article{
+           background-color:#e7f70b75;
+           
        }
        /* 게시물 상세보기 끝 */
 

@@ -103,10 +103,6 @@ public class ArticleService {
 		return articleDao.getArticles();
 	}
 
-	public void makedata() {
-		articleDao.makedate();
-	}
-
 	
 
 }
