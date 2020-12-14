@@ -223,12 +223,12 @@ public class BuildService {
 				if (pageSum == 0 && articles.size() > 0) {
 					pageSum = 1;
 				}
-				
-				int y = ((int)(articles.size() - i) / 10) +1;
-				if((articles.size()-i)%10 == 0) {
+
+				int y = ((int) (articles.size() - i) / 10) + 1;
+				if ((articles.size() - i) % 10 == 0) {
 					y--;
 				}
-				int start = articles.size() - ((y - 1) * itemsInAPage ) -1 ;
+				int start = articles.size() - ((y - 1) * itemsInAPage) - 1;
 				int end = (start - itemsInAPage + 1);
 				if (end < 0) {
 					end = 0;
@@ -248,7 +248,7 @@ public class BuildService {
 					break;
 				}
 				articleDetailHtml.append("<span>");
-				articleDetailHtml.append(board.getName());
+				articleDetailHtml.append(board.getName() + " 게시판");
 				articleDetailHtml.append("</span>");
 				articleDetailHtml.append("</h1>");
 				articleDetailHtml.append("</section>");
@@ -283,8 +283,6 @@ public class BuildService {
 				articleDetailHtml.append("</table>");
 				articleDetailHtml.append("</section>");
 
-				
-
 				articleDetailHtml.append("<section class=\"page-button con-min-width\">");
 				articleDetailHtml.append("<div class=\"con flex flex-ai-c flex-jc-s-bet\">");
 				articleDetailHtml.append("<div class=\"flex flex-basis-100px\">");
@@ -295,7 +293,7 @@ public class BuildService {
 				}
 				if (y != 1) {
 					articleDetailHtml.append("<div class=\"flex flex-basis-50px\">");
-					articleDetailHtml.append("<a href=\"" + board.getCode() + "-list-" + (y-1) + ".html\"> < </a>");
+					articleDetailHtml.append("<a href=\"" + board.getCode() + "-list-" + (y - 1) + ".html\"> 이전 </a>");
 					articleDetailHtml.append("</div>");
 				}
 				articleDetailHtml.append("</div>");
@@ -320,7 +318,7 @@ public class BuildService {
 				articleDetailHtml.append("<div class=\"flex flex-basis-100px\">");
 				if (y < pageSum) {
 					articleDetailHtml.append("<div class=\"flex flex-basis-50px\">");
-					articleDetailHtml.append("<a href=\"" + board.getCode() + "-list-" + (y + 1) + ".html\"> > </a>");
+					articleDetailHtml.append("<a href=\"" + board.getCode() + "-list-" + (y + 1) + ".html\"> 다음 </a>");
 					articleDetailHtml.append("</div>");
 				}
 
@@ -378,7 +376,7 @@ public class BuildService {
 					break;
 				}
 				boardPageHtml.append("<span>");
-				boardPageHtml.append(board.getName());
+				boardPageHtml.append(board.getName() + " 게시판");
 				boardPageHtml.append("</span>");
 				boardPageHtml.append("</h1>");
 				boardPageHtml.append("</section>");
@@ -427,7 +425,7 @@ public class BuildService {
 						break;
 					}
 					boardPageListHtml.append("<span>");
-					boardPageListHtml.append(board.getName());
+					boardPageListHtml.append(board.getName() + " 게시판");
 					boardPageListHtml.append("</span>");
 					boardPageListHtml.append("</h1>");
 					boardPageListHtml.append("</section>");
@@ -483,25 +481,72 @@ public class BuildService {
 					if (i != 1) {
 						boardPageListHtml.append("<div class=\"flex flex-basis-50px\">");
 						boardPageListHtml
-								.append("<a href=\"" + board.getCode() + "-list-" + (i - 1) + ".html\"> < </a>");
+								.append("<a href=\"" + board.getCode() + "-list-" + (i - 1) + ".html\"> 이전 </a>");
 						boardPageListHtml.append("</div>");
 					}
 					boardPageListHtml.append("</div>");
 
 					boardPageListHtml.append("<ul class=\"flex flex-jc-c flex-ai-e flex-grow-1\">");
 
-					for (int k = 1; k <= pages; k++) {
-						String page = board.getCode() + "-list-" + k + ".html";
-						if (k == i) {
-							boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
-							boardPageListHtml.append("<span>" + k + "</span>");
-							boardPageListHtml.append("</li>");
-						} else {
-							boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
-							boardPageListHtml.append("<a href=\"" + page + "\"> " + k + "</a>");
-							boardPageListHtml.append("</li>");
+					if (pages > 9) {
+						if (i < 6) {
+							for (int k = 1; k <= 9; k++) {
+								String page = board.getCode() + "-list-" + k + ".html";
+								if (k == i) {
+									boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+									boardPageListHtml.append("<span>" + k + "</span>");
+									boardPageListHtml.append("</li>");
+								} else {
+									boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+									boardPageListHtml.append("<a href=\"" + page + "\"> " + k + "</a>");
+									boardPageListHtml.append("</li>");
+								}
+							}
+						} else if (i >= 6) {
+							if( i < pages - 4) {
+								for (int k = i-4; k <= i+4; k++) {
+									String page = board.getCode() + "-list-" + k + ".html";
+									if (k == i) {
+										boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+										boardPageListHtml.append("<span>" + k + "</span>");
+										boardPageListHtml.append("</li>");
+									} else {
+										boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+										boardPageListHtml.append("<a href=\"" + page + "\"> " + k + "</a>");
+										boardPageListHtml.append("</li>");
+									}
+								}
+							} else if( i >= pages-4) {
+								for (int k = pages-8; k <= pages; k++) {
+									String page = board.getCode() + "-list-" + k + ".html";
+									if (k == i) {
+										boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+										boardPageListHtml.append("<span>" + k + "</span>");
+										boardPageListHtml.append("</li>");
+									} else {
+										boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+										boardPageListHtml.append("<a href=\"" + page + "\"> " + k + "</a>");
+										boardPageListHtml.append("</li>");
+									}
+								}
+							}
 						}
 
+						
+					} else if (pages <= 9) {
+						for (int k = 1; k <= pages; k++) {
+							String page = board.getCode() + "-list-" + k + ".html";
+							if (k == i) {
+								boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+								boardPageListHtml.append("<span>" + k + "</span>");
+								boardPageListHtml.append("</li>");
+							} else {
+								boardPageListHtml.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+								boardPageListHtml.append("<a href=\"" + page + "\"> " + k + "</a>");
+								boardPageListHtml.append("</li>");
+							}
+
+						}
 					}
 
 					boardPageListHtml.append("</ul>");
@@ -510,7 +555,7 @@ public class BuildService {
 					if (i < pages) {
 						boardPageListHtml.append("<div class=\"flex flex-basis-50px\">");
 						boardPageListHtml
-								.append("<a href=\"" + board.getCode() + "-list-" + (i + 1) + ".html\"> > </a>");
+								.append("<a href=\"" + board.getCode() + "-list-" + (i + 1) + ".html\"> 다음 </a>");
 						boardPageListHtml.append("</div>");
 					}
 

@@ -12,7 +12,14 @@ import com.sbs.example.easytextboard.mysqlutil.SecSql;
 
 public class ArticleDao {
 	
-	
+	public void makedate() {
+		for(int i = 66; i <= 145 ; i++) {
+			doWrite("공지사항 제목"+i , "공지사항 내용"+i , 1 , 1);	
+		}
+		
+		
+	}
+
 
 
 	// doWrite
@@ -333,6 +340,7 @@ public class ArticleDao {
 
 	}
 
+	
 	
 	
 

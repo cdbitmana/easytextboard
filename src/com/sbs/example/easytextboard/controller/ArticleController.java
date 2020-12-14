@@ -50,7 +50,10 @@ public class ArticleController extends Controller {
 			doSelectBoard();
 		} else if (command.equals("article currentBoard")) {
 			showCurrentBoard();
-		} else {
+		} else if(command.equals("article makedate")) {
+			articleService.makedata();
+		}
+		else {
 			System.out.println("존재하지 않는 명령어");
 		}
 	}
