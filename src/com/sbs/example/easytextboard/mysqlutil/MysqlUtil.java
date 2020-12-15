@@ -166,7 +166,7 @@ public class MysqlUtil {
 		
 		return -1;
 	}
-
+	
 	public static String selectRowStringValue(SecSql sql) {
 		Map<String, Object> row = selectRow(sql);
 

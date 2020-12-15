@@ -222,7 +222,12 @@
            margin-top:40px;
            text-align: center;
        }
-       .board-list > table > tbody > tr:not(.tag):hover {
+       .board-list .tag {
+        background-color:#afafaf49;
+        border-top:1px solid black;
+       }
+       
+       .board-list > table > tbody > tr:not(.tag):not(.article-not-exists):hover {
            background-color:#afafaf49;
         
        }
@@ -236,7 +241,7 @@
        .board-list > table > tbody > tr.tag > td{
            position:relative;
        }
-       .board-list > table > tbody > tr.tag > td::before{
+       .board-list > table > tbody > tr.tag > td:not(:first-child)::before{
            content:"";
            display:block;
            clear:both;
@@ -244,22 +249,10 @@
            width:1px;
            height:15px;
            position:absolute;
-           top:50%;
-           
+           top:50%;           
            transform:translateY(-50%);
        }
-       .board-list > table > tbody > tr.tag > td:last-child::after{
-           content:"";
-           display:block;
-           clear:both;
-           background-color:black;
-           width:1px;
-           height:15px;
-           position:absolute;
-           top:50%;
-           left:100%;
-           transform:translateY(-50%);
-       }
+       
        .board-list > table >  tbody > tr > td.line-separate{
            background-color:black;    
            width:1200px;
@@ -276,8 +269,8 @@
        --cell-id__width:80px;
        --cell-writer__width:100px;
        --cell-regDate__width:160px;
-       --cell-hit__width:60px;
-       --cell-recommand__width:60px;
+       --cell-hit__width:70px;
+       --cell-recommand__width:70px;
        --cell-title__width:calc(100% - var(--cell-id__width) - var(--cell-writer__width) - var(--cell-regDate__width) - var(--cell-hit__width) - var(--cell-recommand__width))
        }
        .board-list table > tbody > tr.tag > td.cell-title{
@@ -293,7 +286,7 @@
            width:var(--cell-regDate__width);
        }
        .board-list .cell-hit{
-           width:var(--cell-id__width);
+           width:var(--cell-hit__width);
        }
        .board-list .cell-recommand{
            width:var(--cell-recommand__width);
@@ -304,7 +297,7 @@
        .page-button {
            margin:35px 0;
        }
-       .page-button > div > ul > li > a:hover {
+       .page-button  a:hover {
            text-decoration: underline;
        }
        .page-button > div > ul > li > span {
