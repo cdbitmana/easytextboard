@@ -45,79 +45,85 @@ public class BuildService {
 		String head = Util.getFileContents("site_template/part/head.html");
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
-		ArrayList<Board> boards = articleService.getBoardsForPrint();
+		
 
-		head = createBoardMenu(head, boards);
+		head = getHeadHtml(head);
 
 		createMainPage(head, foot);
 
-		createBoardPage(head, foot, boards);
+		createBoardPage(head, foot);
 
-		createArticleDetail(head, foot, boards);
+		createArticleDetail(head, foot);
 
-		createStatDetail(head, foot, boards);
+		createStatDetail(head, foot);
 
 	}
 
 	// 통계페이지 생성 함수
-	private void createStatDetail(String head, String foot, ArrayList<Board> boards) {
-
+	private void createStatDetail(String head, String foot) {
+		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		String fileName = "index.html";
 
 		List<Member> members = memberService.getMembers();
 		List<Article> articles = articleService.getArticles();
 
-		StringBuilder statHtml = new StringBuilder();
+		StringBuilder statHtmlBuilder = new StringBuilder();
+		
 		head = head.replace("<a href=\"notice-list-1.html\">", "<a href=\"../article/notice-list-1.html\">");
 		head = head.replace("<a href=\"free-list-1.html\">", "<a href=\"../article/free-list-1.html\">");
-		statHtml.append(head);
-		statHtml.append("<main class=\"flex flex-jc-c flex-grow-1\">");
-		statHtml.append("<section class=\"stat-box con-min-width\">");
-		statHtml.append("<div class = \"con\">");
-		statHtml.append("<ul>");
-		statHtml.append("<li>회원 수 : " + members.size() + "</li>");
-		statHtml.append("<li>전체 게시물 수 : " + articles.size() + "</li>");
-		statHtml.append("<li>각 게시판 별 게시물 수");
-		statHtml.append("<ul>");
+		statHtmlBuilder.append(head);
+		
+		String statHtml = Util.getFileContents("site_template/stat/index.html");
+		
+		statHtml = statHtml.replace("${member_count}", String.valueOf(members.size()));
+		statHtml = statHtml.replace("${all_article_count}", String.valueOf(articles.size()));
+		
+		
+		StringBuilder dif_article_count = new StringBuilder();
+		dif_article_count.append("<ul>");
 		for (Board board : boards) {
 			List<Article> articlesByBoard = articleService.getArticlesByBoardCode(board.getCode());
-			statHtml.append("<li>" + board.getName() + " : " + articlesByBoard.size() + "</li>");
+			dif_article_count.append("<li>" + board.getName() + " : " + articlesByBoard.size() + "</li>");
 		}
-		statHtml.append("</ul>");
-		statHtml.append("</li>");
+		dif_article_count.append("</ul>");
+		
+		statHtml = statHtml.replace("${dif_article_count}", dif_article_count.toString());
+		
 		int hitSum = 0;
 		for (Article article : articles) {
 			hitSum += article.getHit();
 		}
 
-		statHtml.append("<li>전체 게시물 조회 수 : " + hitSum + "</li>");
-
-		statHtml.append("<li>각 게시판 별 조회 수");
-		statHtml.append("<ul>");
+		statHtml = statHtml.replace("${all_article_hit_count}", String.valueOf(hitSum));
+		
+		StringBuilder dif_article_hit_count = new StringBuilder();
+		
+		
+		dif_article_hit_count.append("<ul>");
 		for (Board board : boards) {
 			List<Article> articlesByBoard = articleService.getArticlesByBoardCode(board.getCode());
+			
 			int hitSumByBoard = 0;
 			for (Article article : articlesByBoard) {
 				hitSumByBoard += article.getHit();
 			}
-			statHtml.append("<li>" + board.getName() + " : " + hitSumByBoard + "</li>");
+			dif_article_hit_count.append("<li>" + board.getName() + " : " + hitSumByBoard + "</li>");
 
-		}
-		statHtml.append("</li>");
-		statHtml.append("</ul>");
+		}		
+		dif_article_hit_count.append("</ul>");
+		
+		statHtml = statHtml.replace("${dif_article_hit_count}", dif_article_hit_count.toString());
 
-		statHtml.append("</ul>");
-		statHtml.append("</section>");
-		statHtml.append("</main>");
-
-		statHtml.append(foot);
-		Util.writeFileContents("site/stat/" + fileName, statHtml.toString());
+		statHtmlBuilder.append(statHtml);
+		statHtmlBuilder.append(foot);
+		Util.writeFileContents("site/stat/" + fileName, statHtmlBuilder.toString());
 
 	}
 
 	// 게시물 상세보기 생성 함수
-	private void createArticleDetail(String head, String foot, ArrayList<Board> boards) {
-
+	private void createArticleDetail(String head, String foot) {
+		
+		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		for (Board board : boards) {
 
 			List<Article> articles = articleService.getArticlesByBoardCode(board.getCode());
@@ -359,7 +365,8 @@ public class BuildService {
 	}
 
 	// 게시판 페이지 생성 함수
-	private void createBoardPage(String head, String foot, ArrayList<Board> boards) {
+	private void createBoardPage(String head, String foot) {
+		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		for (Board board : boards) {
 
 			List<Article> articles = articleService.getArticlesByBoardCode(board.getCode());
@@ -583,8 +590,10 @@ public class BuildService {
 	}
 
 	// 상단 메뉴 생성 함수
-	private String createBoardMenu(String head, ArrayList<Board> boards) {
+	private String getHeadHtml(String head) {
+		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		StringBuilder changeMenuHtml = new StringBuilder();
+		
 		for (Board board : boards) {
 			changeMenuHtml.append("<li>");
 			changeMenuHtml.append("<a href=\"../article/" + board.getCode() + "-list-1.html" + "\">");
