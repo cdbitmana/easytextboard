@@ -68,11 +68,11 @@ public class ArticleDao {
 		return board;
 	}
 
-	// getArticleRecommand
-	public int getArticleRecommand(int id) {
+	// getArticleRecommend
+	public int getArticleRecommend(int id) {
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT COUNT(*) AS cnt FROM articleRecommand");
+		sql.append("SELECT COUNT(*) AS cnt FROM articleRecommend");
 		sql.append("WHERE articleId = ?", id);
 
 		return MysqlUtil.selectRowIntValue(sql);
@@ -193,11 +193,11 @@ public class ArticleDao {
 
 	}
 
-	// isRecommanded
-	public boolean isRecommanded(int articleId) {
+	// isRecommended
+	public boolean isRecommended(int articleId) {
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM articleRecommand");
+		sql.append("SELECT * FROM articleRecommend");
 		sql.append("WHERE articleId = ?", articleId);
 		sql.append("AND memberId = ?", Container.session.getLoginedId());
 
@@ -210,11 +210,11 @@ public class ArticleDao {
 		return true;
 	}
 
-	// doRecommand
-	public void doRecommand(int articleId) {
+	// doRecommend
+	public void doRecommend(int articleId) {
 		SecSql sql = new SecSql();
 
-		sql.append("INSERT INTO articleRecommand");
+		sql.append("INSERT INTO articleRecommend");
 		sql.append("SET articleId = ?", articleId);
 		sql.append(", memberId = ?", Container.session.getLoginedId());
 
@@ -222,11 +222,11 @@ public class ArticleDao {
 
 	}
 
-	// doCancelRecommand
-	public void doCancelRecommand(int articleId) {
+	// doCancelRecommend
+	public void doCancelRecommend(int articleId) {
 		SecSql sql = new SecSql();
 
-		sql.append("DELETE FROM articleRecommand");
+		sql.append("DELETE FROM articleRecommend");
 		sql.append("WHERE articleId = ?", articleId);
 		sql.append("AND memberId = ?", Container.session.getLoginedId());
 

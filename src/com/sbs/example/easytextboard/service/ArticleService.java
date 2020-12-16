@@ -28,8 +28,8 @@ public class ArticleService {
 		return articleDao.getBoardByCode(currentBoardCode);
 	}
 
-	public int getArticleRecommand(int id) {
-		return articleDao.getArticleRecommand(id);
+	public int getArticleRecommend(int id) {
+		return articleDao.getArticleRecommend(id);
 	}
 
 	public Article getArticleById(int articleId) {
@@ -64,17 +64,17 @@ public class ArticleService {
 
 	}
 
-	public boolean isRecommanded(int articleId) {
-		return articleDao.isRecommanded(articleId);
+	public boolean isRecommended(int articleId) {
+		return articleDao.isRecommended(articleId);
 	}
 
-	public void doRecommand(int articleId) {
-		articleDao.doRecommand(articleId);
+	public void doRecommend(int articleId) {
+		articleDao.doRecommend(articleId);
 
 	}
 
-	public void doCancelRecommand(int articleId) {
-		articleDao.doCancelRecommand(articleId);
+	public void doCancelRecommend(int articleId) {
+		articleDao.doCancelRecommend(articleId);
 
 	}
 

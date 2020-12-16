@@ -270,8 +270,8 @@
        --cell-writer__width:100px;
        --cell-regDate__width:160px;
        --cell-hit__width:70px;
-       --cell-recommand__width:70px;
-       --cell-title__width:calc(100% - var(--cell-id__width) - var(--cell-writer__width) - var(--cell-regDate__width) - var(--cell-hit__width) - var(--cell-recommand__width))
+       --cell-recommend__width:70px;
+       --cell-title__width:calc(100% - var(--cell-id__width) - var(--cell-writer__width) - var(--cell-regDate__width) - var(--cell-hit__width) - var(--cell-recommend__width))
        }
        .board-list table > tbody > tr.tag > td.cell-title{
            text-align: center;
@@ -288,8 +288,8 @@
        .board-list .cell-hit{
            width:var(--cell-hit__width);
        }
-       .board-list .cell-recommand{
-           width:var(--cell-recommand__width);
+       .board-list .cell-recommend{
+           width:var(--cell-recommend__width);
        }
        .board-list .cell-title{
            width:var(--cell-title__width);

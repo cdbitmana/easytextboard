@@ -1,0 +1,70 @@
+
+
+<main class="flex flex-grow-1 flex-dir-col con-min-width">
+    <section class="article con flex flex-dir-col">
+        <div class="article__title-bar flex flex-jc-s-bet flex-ai-c">
+            <div class="article_id flex-basis-50px">${articledetail__article-id}</div>
+            <div class="article_title flex-grow-1">${articledetail__article-title}</div>
+            <div class="article_writer flex-basis-100px"><i class="fas fa-user"></i>${articledetail__article-writer}
+            </div>
+            <div class="article_regDate flex-basis-200px"><i class="fas fa-clock"></i>${articledetail__article-regDate}
+            </div>
+            <div class="article_hit flex-basis-50px"><i class="fas fa-eye"></i>${articledetail__article-hit}</div>
+            <div class="article_recommend flex-basis-50px"><i
+                    class="fas fa-thumbs-up"></i>${articledetail__article-recommend}</div>
+        </div>
+        <div class="article_body flex-grow-1"><span>${articledetail__article-body}</span></div>
+
+        <section class="con-min-width reply">
+            <div class="reply__section">
+                <div class="con reply-box"><i class="fas fa-comment-alt"></i>댓글 ${articledetail__totalreplys}개</div>
+                ${articledetail_replys}
+            </div>
+        </section>
+
+        <div class="con-min-width article-move-button">
+            ${articledetail_articlemovebutton}
+            
+        </div>        
+    </section>
+
+    <section class="con article-list">
+        <section class="title-bar con-min-width">
+            <h1 class="title-bar__title-box con flex flex-jc-c">${articledetail__articlelist-boardname}</h1>
+        </section>
+        <section class="board-list con-min-width">
+            <table class="con">
+                <tr class="tag">
+                    <td class="font-bold cell-id">번호</td>
+                    <td class="font-bold cell-title">제목</td>
+                    <td class="font-bold cell-writer">작성자</td>
+                    <td class="font-bold cell-regDate">작성일</td>
+                    <td class="font-bold cell-hit">조회 수</td>
+                    <td class="font-bold cell-recommend">추천 수</td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="line-separate"></td>
+                </tr>
+                ${articledetail__articlelist}
+            </table>
+        </section>
+        <section class="page-button con-min-width">
+
+            <div class="con flex flex-ai-c flex-jc-s-bet">
+                <div class="flex flex-basis-100px">
+                    ${articledetail__articlelist-firstpagelink}                    
+                    ${articledetail__articlelist-prevpagelink}
+                   
+                </div>
+                <ul class="flex flex-jc-c flex-ai-e flex-grow-1">
+                    ${articledetail__articlelist-pages}
+                </ul>
+                <div class="flex flex-basis-100px">
+                    ${articledetail__articlelist-nextpagelink}
+                    ${articledetail__articlelist-lastpagelink}                    
+                </div>
+            </div>
+
+        </section>
+    </section>
+</main>

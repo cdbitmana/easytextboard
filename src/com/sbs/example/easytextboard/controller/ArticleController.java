@@ -40,18 +40,17 @@ public class ArticleController extends Controller {
 			doWriteReply(command);
 		} else if (command.startsWith("article deleteReply")) {
 			doDeleteReply(command);
-		} else if (command.startsWith("article recommand")) {
-			doRecommand(command);
-		} else if (command.startsWith("article cancelRecommand")) {
-			doCancelRecommand(command);
+		} else if (command.startsWith("article recommend")) {
+			doRecommend(command);
+		} else if (command.startsWith("article cancelRecommend")) {
+			doCancelRecommend(command);
 		} else if (command.equals("article makeBoard")) {
 			doMakeBoard();
 		} else if (command.equals("article selectBoard")) {
 			doSelectBoard();
 		} else if (command.equals("article currentBoard")) {
 			showCurrentBoard();
-		} 
-		else {
+		} else {
 			System.out.println("존재하지 않는 명령어");
 		}
 	}
@@ -123,8 +122,8 @@ public class ArticleController extends Controller {
 
 	}
 
-	// doCancelRecommand
-	private void doCancelRecommand(String command) {
+	// doCancelRecommend
+	private void doCancelRecommend(String command) {
 		if (!Container.session.isLogined()) {
 			System.out.println("로그인 후 이용해주세요.");
 			return;
@@ -145,18 +144,18 @@ public class ArticleController extends Controller {
 			System.out.println("존재하지 않는 게시물입니다.");
 			return;
 		}
-		if (!articleService.isRecommanded(articleId)) {
+		if (!articleService.isRecommended(articleId)) {
 			System.out.println("아직 추천하지 않은 게시물입니다.");
 			return;
 		}
 
-		articleService.doCancelRecommand(articleId);
+		articleService.doCancelRecommend(articleId);
 		System.out.printf("%d번 게시물의 추천을 취소했습니다.\n", articleId);
 
 	}
 
-	// doRecommand
-	private void doRecommand(String command) {
+	// doRecommend
+	private void doRecommend(String command) {
 		if (!Container.session.isLogined()) {
 			System.out.println("로그인 후 이용해주세요.");
 			return;
@@ -177,12 +176,12 @@ public class ArticleController extends Controller {
 			System.out.println("존재하지 않는 게시물입니다.");
 			return;
 		}
-		if (articleService.isRecommanded(articleId)) {
+		if (articleService.isRecommended(articleId)) {
 			System.out.println("이미 추천한 게시물입니다.");
 			return;
 		}
 
-		articleService.doRecommand(articleId);
+		articleService.doRecommend(articleId);
 		System.out.printf("%d번 게시물을 추천했습니다.\n", articleId);
 	}
 
@@ -290,9 +289,9 @@ public class ArticleController extends Controller {
 			String body = articles.get(i).getBody();
 			String name = articles.get(i).getExtraWriter();
 			int hit = articles.get(i).getHit();
-			int recommand = articleService.getArticleRecommand(articles.get(i).getId());
+			int Recommend = articleService.getArticleRecommend(articles.get(i).getId());
 			System.out.printf("%d / %s / %s / %s / %s / %d / %d\n", articleId, regDate, title, body, name, hit,
-					recommand);
+					Recommend);
 		}
 
 	}
@@ -352,14 +351,14 @@ public class ArticleController extends Controller {
 
 		articleService.doIncreaseHit(articleId);
 
-		int recommand = articleService.getArticleRecommand(articleId);
+		int Recommend = articleService.getArticleRecommend(articleId);
 		System.out.println("== 게시물 상세 ==");
 		System.out.printf("번호 : %d\n", articleId);
 		System.out.printf("작성일 : %s\n", article.getRegDate());
 		System.out.printf("작성자 : %s\n", article.getExtraWriter());
 		System.out.printf("제목 : %s\n", article.getTitle());
 		System.out.printf("내용 : %s\n", article.getBody());
-		System.out.printf("조회수 : %d , 추천수 : %d\n", article.getHit() + 1, recommand);
+		System.out.printf("조회수 : %d , 추천수 : %d\n", article.getHit() + 1, Recommend);
 		System.out.println("댓글");
 		ArrayList<ArticleReply> replys = articleService.getReplysForPrintByArticleId(articleId);
 		for (ArticleReply reply : replys) {
@@ -443,9 +442,9 @@ public class ArticleController extends Controller {
 			String body = articles.get(i).getBody();
 			String name = articles.get(i).getExtraWriter();
 			int hit = articles.get(i).getHit();
-			int recommand = articleService.getArticleRecommand(articles.get(i).getId());
+			int Recommend = articleService.getArticleRecommend(articles.get(i).getId());
 			System.out.printf("%d / %s / %s / %s / %s / %d / %d\n", articleId, regDate, title, body, name, hit,
-					recommand);
+					Recommend);
 		}
 
 	}

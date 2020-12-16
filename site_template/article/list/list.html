@@ -1,0 +1,38 @@
+<main class="flex flex-dir-col flex-grow-1">
+    <section class="title-bar con-min-width">
+        <h1 class="title-bar__title-box con flex flex-jc-c">${board-list__boardname}
+        </h1>
+    </section>
+    <section class="board-list con-min-width">
+        <table class="con">
+            <tr class="tag">
+                <td class="font-bold cell-id">번호</td>
+                <td class="font-bold cell-title">제목</td>
+                <td class="font-bold cell-writer">작성자</td>
+                <td class="font-bold cell-regDate">작성일</td>
+                <td class="font-bold cell-hit">조회 수</td>
+                <td class="font-bold cell-recommend">추천 수</td>
+            </tr>
+            <tr>
+                <td colspan="6" class="line-separate"></td>
+            </tr>
+            ${board-list}
+        </table>
+    </section>
+    <div class="flex-grow-1"></div>
+    <section class="page-button con-min-width">
+        <div class="con flex flex-ai-c flex-jc-s-bet">
+            <div class="flex flex-basis-100px">
+                ${board-list__firstpagebutton}
+                ${board-list__prevpagebutton}
+            </div>
+            <ul class="flex flex-jc-c flex-ai-e flex-grow-1">
+                ${board-list__pagebuttons}
+            </ul>
+            <div class="flex flex-basis-100px">
+                ${board-list__nextpagebutton}
+                ${board-list__lastpagebutton}
+            </div>
+        </div>
+    </section>
+</main>
