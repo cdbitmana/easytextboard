@@ -28,10 +28,9 @@ public class BuildService {
 		if (siteDir.exists() == false) {
 			siteDir.mkdir();
 		}
-		
 		/*
 		File statDir = new File("site/stat/");
-		
+
 		if (statDir.exists() == false) {
 			statDir.mkdirs();
 		}
@@ -40,17 +39,20 @@ public class BuildService {
 		if (articleDir.exists() == false) {
 			articleDir.mkdirs();
 		}
-
-		File homeDir = new File("site/home/");
-
-		if (homeDir.exists() == false) {
-			homeDir.mkdirs();
-		}
-
+		
+		 * File homeDir = new File("site/home/");
+		 * 
+		 * if (homeDir.exists() == false) { homeDir.mkdirs(); } Util.copy(cssSource,
+		 * "site/home/app.css");
+		 
 		Util.copy(cssSource, "site/article/app.css");
 		Util.copy(cssSource, "site/stat/app.css");
-		Util.copy(cssSource, "site/home/app.css");
-		 */
+		
+
+		
+		Util.copy(jsSource, "site/article/common.js");
+		Util.copy(jsSource, "site/stat/common.js");
+		*/
 		Util.copy(cssSource, "site/app.css");
 		Util.copy(jsSource, "site/common.js");
 		String head = Util.getFileContents("site_template/part/head.html");
@@ -75,10 +77,8 @@ public class BuildService {
 		List<Article> articles = articleService.getArticles();
 
 		StringBuilder statHtmlBuilder = new StringBuilder();
-
-		statHtmlBuilder.append(getHeadHtml(head));
-
 		String statHtml = Util.getFileContents("site_template/stat/index.html");
+		statHtmlBuilder.append(getHeadHtml(head));
 
 		statHtml = statHtml.replace("${member_count}", String.valueOf(members.size()));
 		statHtml = statHtml.replace("${all_article_count}", String.valueOf(articles.size()));
@@ -368,7 +368,6 @@ public class BuildService {
 			if (pages == 0 && articles.size() > 0) {
 				pages = 1;
 			}
-			
 
 			if (articles.size() == 0) {
 				String boardPageHtml = Util.getFileContents("site_template/article/list/list.html");
@@ -399,7 +398,7 @@ public class BuildService {
 
 				boardPageHtml = boardPageHtml.replace("${board-list}",
 						"<tr class=\"article-not-exists\"><td colspan=\"6\" class=\"font-bold\">작성된 게시물이 없습니다.</td></tr>");
-				
+
 				boardPageHtml = boardPageHtml.replace("${board-list__firstpagebutton}", "");
 				boardPageHtml = boardPageHtml.replace("${board-list__prevpagebutton}", "");
 				boardPageHtml = boardPageHtml.replace("${board-list__pagebuttons}", "");
@@ -411,7 +410,7 @@ public class BuildService {
 				boardPageHtmlBuilder.append(foot);
 				Util.writeFileContents("site/" + fileName, boardPageHtmlBuilder.toString());
 			} else if (articles.size() != 0) {
-				
+
 				for (int i = 1; i <= pages; i++) {
 					String boardPageHtml = Util.getFileContents("site_template/article/list/list.html");
 
@@ -425,13 +424,11 @@ public class BuildService {
 					}
 					int endPage = (int) Math.ceil((double) pages / buttonsInAPage);
 
-					
 					String fileName = "";
 					fileName = board.getCode() + "-list-" + i + ".html";
 
 					boardPageHtmlBuilder.append(getHeadHtml(head));
-					
-					
+
 					StringBuilder board_list__boardname = new StringBuilder();
 
 					switch (board.getCode()) {
@@ -450,10 +447,6 @@ public class BuildService {
 					}
 
 					boardPageHtml = boardPageHtml.replace("${board-list__boardname}", board_list__boardname.toString());
-					
-				
-
-					
 
 					int start = articles.size() - ((i - 1) * itemsInAPage) - 1;
 					int end = (start - itemsInAPage + 1);
@@ -470,19 +463,16 @@ public class BuildService {
 						board_list.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
 						board_list.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-"
 								+ articles.get(j).getId() + ".html\">" + articles.get(j).getTitle() + "</td>");
-						board_list
-								.append("<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>");
-						board_list
-								.append("<td class=\"cell-regDate\">" + articles.get(j).getRegDate() + "</td>");
+						board_list.append("<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>");
+						board_list.append("<td class=\"cell-regDate\">" + articles.get(j).getRegDate() + "</td>");
 						board_list.append("<td class=\"cell-hit\">" + articles.get(j).getHit() + "</td>");
 						board_list.append("<td class=\"cell-recommend\">"
 								+ articleService.getArticleRecommend(articles.get(j).getId()) + "</td>");
 						board_list.append("</tr>");
 					}
-					
+
 					boardPageHtml = boardPageHtml.replace("${board-list}", board_list.toString());
 
-					
 					StringBuilder board_list__firstpagebutton = new StringBuilder();
 					board_list__firstpagebutton.append("");
 					if (pages >= 2) {
@@ -490,9 +480,9 @@ public class BuildService {
 						board_list__firstpagebutton.append("<a href=\"" + board.getCode() + "-list-1.html\"> << </a>");
 						board_list__firstpagebutton.append("</div>");
 					}
-					boardPageHtml = boardPageHtml.replace("${board-list__firstpagebutton}", board_list__firstpagebutton.toString());
-					
-					
+					boardPageHtml = boardPageHtml.replace("${board-list__firstpagebutton}",
+							board_list__firstpagebutton.toString());
+
 					StringBuilder board_list__prevpagebutton = new StringBuilder();
 					board_list__prevpagebutton.append("");
 					if (pageButton != 1) {
@@ -501,11 +491,11 @@ public class BuildService {
 								+ ((pageButton - 1) * buttonsInAPage - 9) + ".html\"> 이전 </a>");
 						board_list__prevpagebutton.append("</div>");
 					}
-					boardPageHtml = boardPageHtml.replace("${board-list__prevpagebutton}", board_list__prevpagebutton.toString());
+					boardPageHtml = boardPageHtml.replace("${board-list__prevpagebutton}",
+							board_list__prevpagebutton.toString());
 
-					
 					StringBuilder board_list__pagebuttons = new StringBuilder();
-					
+
 					for (int k = startPageButton; k <= endPageButton; k++) {
 						String page = board.getCode() + "-list-" + k + ".html";
 						if (k == i) {
@@ -518,8 +508,8 @@ public class BuildService {
 							board_list__pagebuttons.append("</li>");
 						}
 					}
-					boardPageHtml = boardPageHtml.replace("${board-list__pagebuttons}", board_list__pagebuttons.toString());
-					
+					boardPageHtml = boardPageHtml.replace("${board-list__pagebuttons}",
+							board_list__pagebuttons.toString());
 
 					StringBuilder board_list__nextpagebutton = new StringBuilder();
 					board_list__nextpagebutton.append("");
@@ -529,8 +519,8 @@ public class BuildService {
 								+ (pageButton * buttonsInAPage + 1) + ".html\"> 다음 </a>");
 						board_list__nextpagebutton.append("</div>");
 					}
-					boardPageHtml = boardPageHtml.replace("${board-list__nextpagebutton}", board_list__nextpagebutton.toString());
-					
+					boardPageHtml = boardPageHtml.replace("${board-list__nextpagebutton}",
+							board_list__nextpagebutton.toString());
 
 					StringBuilder board_list__lastpagebutton = new StringBuilder();
 					if (pages >= 2) {
@@ -539,11 +529,11 @@ public class BuildService {
 								.append("<a href=\"" + board.getCode() + "-list-" + pages + ".html\"> >> </a>");
 						board_list__lastpagebutton.append("</div>");
 					}
-					boardPageHtml = boardPageHtml.replace("${board-list__lastpagebutton}", board_list__lastpagebutton.toString());
-					
+					boardPageHtml = boardPageHtml.replace("${board-list__lastpagebutton}",
+							board_list__lastpagebutton.toString());
+
 					boardPageHtmlBuilder.append(boardPageHtml);
-					
-					
+
 					boardPageHtmlBuilder.append(foot);
 
 					Util.writeFileContents("site/" + fileName, boardPageHtmlBuilder.toString());
@@ -558,7 +548,7 @@ public class BuildService {
 
 		StringBuilder mainPageHtml = new StringBuilder();
 		String homeHtml = Util.getFileContents("site_template/home/index.html");
-		
+
 		mainPageHtml.append(getHeadHtml(head));
 		mainPageHtml.append(homeHtml);
 		mainPageHtml.append(foot);
@@ -572,7 +562,7 @@ public class BuildService {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 
 		StringBuilder changeMenuHtml = new StringBuilder();
-
+		
 		for (Board board : boards) {
 			changeMenuHtml.append("<li>");
 			changeMenuHtml.append("<a href=\"" + board.getCode() + "-list-1.html" + "\">");
@@ -595,8 +585,11 @@ public class BuildService {
 			changeMenuHtml.append("</a>");
 			changeMenuHtml.append("</li>");
 		}
+		
 		return head = head.replace("${boardListHead}", changeMenuHtml.toString());
 
 	}
+
+	
 
 }
