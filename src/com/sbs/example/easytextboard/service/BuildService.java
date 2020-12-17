@@ -23,17 +23,26 @@ public class BuildService {
 
 	public void makeHtml() {
 		String cssSource = "site_template/part/app.css";
-
+		String jsSource = "site_template/resource/common.js";
+		File siteDir = new File("site");
+		if (siteDir.exists() == false) {
+			siteDir.mkdir();
+		}
+		
+		/*
 		File statDir = new File("site/stat/");
+		
 		if (statDir.exists() == false) {
 			statDir.mkdirs();
 		}
 		File articleDir = new File("site/article/");
+
 		if (articleDir.exists() == false) {
 			articleDir.mkdirs();
 		}
 
 		File homeDir = new File("site/home/");
+
 		if (homeDir.exists() == false) {
 			homeDir.mkdirs();
 		}
@@ -41,7 +50,9 @@ public class BuildService {
 		Util.copy(cssSource, "site/article/app.css");
 		Util.copy(cssSource, "site/stat/app.css");
 		Util.copy(cssSource, "site/home/app.css");
-
+		 */
+		Util.copy(cssSource, "site/app.css");
+		Util.copy(jsSource, "site/common.js");
 		String head = Util.getFileContents("site_template/part/head.html");
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
@@ -58,7 +69,7 @@ public class BuildService {
 	// 통계페이지 생성 함수
 	private void createStatDetail(String head, String foot) {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
-		String fileName = "index.html";
+		String fileName = "statindex.html";
 
 		List<Member> members = memberService.getMembers();
 		List<Article> articles = articleService.getArticles();
@@ -108,7 +119,7 @@ public class BuildService {
 
 		statHtmlBuilder.append(statHtml);
 		statHtmlBuilder.append(foot);
-		Util.writeFileContents("site/stat/" + fileName, statHtmlBuilder.toString());
+		Util.writeFileContents("site/" + fileName, statHtmlBuilder.toString());
 
 	}
 
@@ -334,7 +345,7 @@ public class BuildService {
 				articleDetailHtmlBuilder.append(articleDetailHtml);
 				articleDetailHtmlBuilder.append(foot);
 
-				Util.writeFileContents("site/article/" + fileName, articleDetailHtmlBuilder.toString());
+				Util.writeFileContents("site/" + fileName, articleDetailHtmlBuilder.toString());
 
 			}
 		}
@@ -398,7 +409,7 @@ public class BuildService {
 				boardPageHtmlBuilder.append(boardPageHtml);
 
 				boardPageHtmlBuilder.append(foot);
-				Util.writeFileContents("site/article/" + fileName, boardPageHtmlBuilder.toString());
+				Util.writeFileContents("site/" + fileName, boardPageHtmlBuilder.toString());
 			} else if (articles.size() != 0) {
 				
 				for (int i = 1; i <= pages; i++) {
@@ -535,7 +546,7 @@ public class BuildService {
 					
 					boardPageHtmlBuilder.append(foot);
 
-					Util.writeFileContents("site/article/" + fileName, boardPageHtmlBuilder.toString());
+					Util.writeFileContents("site/" + fileName, boardPageHtmlBuilder.toString());
 				}
 			}
 		}
@@ -551,7 +562,7 @@ public class BuildService {
 		mainPageHtml.append(getHeadHtml(head));
 		mainPageHtml.append(homeHtml);
 		mainPageHtml.append(foot);
-		Util.writeFileContents("site/home/" + "index.html", mainPageHtml.toString());
+		Util.writeFileContents("site/" + "index.html", mainPageHtml.toString());
 
 	}
 
@@ -564,7 +575,7 @@ public class BuildService {
 
 		for (Board board : boards) {
 			changeMenuHtml.append("<li>");
-			changeMenuHtml.append("<a href=\"../article/" + board.getCode() + "-list-1.html" + "\">");
+			changeMenuHtml.append("<a href=\"" + board.getCode() + "-list-1.html" + "\">");
 
 			switch (board.getCode()) {
 			case "notice":

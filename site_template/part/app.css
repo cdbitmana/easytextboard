@@ -21,6 +21,9 @@
        html {
          font-family: 'LotteMartDream', sans-serif;
        }
+       .tui-editor-contents p{
+        font-family: 'LotteMartDream', sans-serif
+       }
        
        /* 노말라이즈 */
        body, ul, li {
@@ -354,10 +357,10 @@
            border-bottom:2px solid black;
            
        }
-       .article_body > span{
+       .article_body p{
            display:block;
            padding:20px;
-           font-size:1.1rem;
+           font-size:1.3rem;
 
        }
        .article-move-button{

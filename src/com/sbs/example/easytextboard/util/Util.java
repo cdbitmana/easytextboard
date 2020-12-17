@@ -15,7 +15,24 @@ public class Util {
 		Date time = new Date();
 		return format.format(time);
 	}
-
+	// 폴더 삭제
+	public static void deleteDir(String filePath) {
+		File deleteFolder = new File(filePath);
+		
+		if(deleteFolder.exists()) {
+			File[] deleteFolderList = deleteFolder.listFiles();
+			
+			for(int i = 0 ; i < deleteFolderList.length; i++) {
+				if(deleteFolderList[i].isFile()) {
+					deleteFolderList[i].delete();
+				}else {
+					deleteDir(deleteFolderList[i].getPath());
+				}
+				deleteFolderList[i].delete();
+			}
+			deleteFolder.delete();
+		}
+	}
 	// 파일에 내용쓰기
 	public static void writeFileContents(String filePath, int data) {
 		writeFileContents(filePath, data + "");
