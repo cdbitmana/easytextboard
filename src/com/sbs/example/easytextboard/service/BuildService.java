@@ -154,41 +154,7 @@ public class BuildService {
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-body}",
 						articles.get(i).getBody());
 
-				ArrayList<ArticleReply> articleReplys = articleService
-						.getReplysForPrintByArticleId(articles.get(i).getId());
-
-				articleDetailHtml = articleDetailHtml.replace("${articledetail__totalreplys}",
-						String.valueOf(articleReplys.size()));
-
-				StringBuilder articleDetailReplyBuilder = new StringBuilder();
-				if (articleReplys.size() > 0) {
-					articleDetailReplyBuilder.append("<div class=\"reply-box__replys\">");
-					for (ArticleReply articleReply : articleReplys) {
-						articleDetailReplyBuilder.append("<div class=\"con reply-list flex\">");
-						articleDetailReplyBuilder.append("<div class=\"reply_writer flex-basis-100px\">");
-						articleDetailReplyBuilder.append("<span>");
-						articleDetailReplyBuilder.append(articleReply.getExtraName());
-						articleDetailReplyBuilder.append("</span>");
-						articleDetailReplyBuilder.append("</div>");
-						articleDetailReplyBuilder.append("<div class=\"reply_body flex-grow-1\">");
-						articleDetailReplyBuilder.append("<span>");
-						articleDetailReplyBuilder.append(articleReply.getBody());
-						articleDetailReplyBuilder.append("</span>");
-						articleDetailReplyBuilder.append("</div>");
-						articleDetailReplyBuilder.append("<div class=\"reply_regDate\">");
-						articleDetailReplyBuilder.append("<span>");
-						articleDetailReplyBuilder.append(articleReply.getRegDate());
-						articleDetailReplyBuilder.append("</span>");
-						articleDetailReplyBuilder.append("</div>");
-						articleDetailReplyBuilder.append("</div>");
-					}
-					articleDetailReplyBuilder.append("</div>");
-				} else {
-					articleDetailReplyBuilder.append("");
-				}
-
-				articleDetailHtml = articleDetailHtml.replace("${articledetail_replys}",
-						articleDetailReplyBuilder.toString());
+				
 
 				StringBuilder articleDetail__ArticleMoveButton = new StringBuilder();
 				articleDetail__ArticleMoveButton.append("");

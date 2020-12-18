@@ -1,5 +1,3 @@
-
-
 <main class="flex flex-grow-1 flex-dir-col con-min-width">
 
 
@@ -15,19 +13,24 @@
             <div class="article_recommend flex-basis-50px"><i
                     class="fas fa-thumbs-up"></i>${articledetail__article-recommend}</div>
         </div>
-        <div id ="viewer" class="article_body flex-grow-1">${articledetail__article-body}</div>
+        <div id="viewer" class="article_body flex-grow-1">${articledetail__article-body}</div>
 
-        <section class="con-min-width reply">
-            <div class="reply__section">
-                <div class="con reply-box"><i class="fas fa-comment-alt"></i>댓글 ${articledetail__totalreplys}개</div>
-                ${articledetail_replys}
-            </div>
-        </section>
+        <div id="disqus_thread"></div>
+        <script>
+            (function () { // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                s.src = 'https://blogssg.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+                Disqus.</a></noscript>
 
         <div class="con-min-width article-move-button">
             ${articledetail_articlemovebutton}
-            
-        </div>        
+
+        </div>
     </section>
 
     <section class="con article-list">
@@ -54,21 +57,21 @@
 
             <div class="con flex flex-ai-c flex-jc-s-bet">
                 <div class="flex flex-basis-100px">
-                    ${articledetail__articlelist-firstpagelink}                    
+                    ${articledetail__articlelist-firstpagelink}
                     ${articledetail__articlelist-prevpagelink}
-                   
+
                 </div>
                 <ul class="flex flex-jc-c flex-ai-e flex-grow-1">
                     ${articledetail__articlelist-pages}
                 </ul>
                 <div class="flex flex-basis-100px">
                     ${articledetail__articlelist-nextpagelink}
-                    ${articledetail__articlelist-lastpagelink}                    
+                    ${articledetail__articlelist-lastpagelink}
                 </div>
             </div>
 
         </section>
     </section>
-    
-    
+
+
 </main>
