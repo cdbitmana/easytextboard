@@ -144,40 +144,60 @@
        /* 컨테이너 끝 */
 
        /* 로고바 시작 */
-       .logo-bar{           
-           background-color:#afafaf;
-           z-index:10;
-       }
-       .logo-bar > .logo-box{           
-           font-size:2rem;
+       .logo-box{           
+           font-size:2.5rem;
        }              
        /* 로고바 끝 */
 
        /* 메뉴바 시작 */
-       .menu-bar {
-           background-color:#afafaf;
-           z-index:5;
+       .top-bar{
+        background-color:white;
+        border-bottom:1px solid black;
+        height:100px;
+       }
+       .menu-bar {           
+           z-index:100;
+           height:100%;
+        
        }
        
        .menu-bar ul {
-           background-color:#afafaf;
-           text-align: center;
+        text-align: center;
+        font-size:1.4rem;
+        box-sizing: border-box;
        }       
-       .menu-box ul > li {
-        position:relative;
+       .menu-bar ul > li {
+        
+        padding:0 10px;
+        
         }
-       .menu-bar ul ul {
+       .menu-bar > div > ul ul {
            display:none;
            position: absolute;
-           top:100%;
-           left:0;
-           width:100%;  
+           
            
           }   
-      
-       .menu-box ul > li:hover ul{
+          .menu-bar2{
+            display:none;
+            position: absolute;
+            top:100px;
+            left:0;
+            background-color:white;
+            border-top:1px solid black;
+            border-bottom:1px solid black;
+            z-index:50;
+            width:100%;
+            
+        }
+        .menu-bar2 .list-box{
+            width:200px;
+        }
+       .menu-bar ul > li:hover ul{
            display:block; 
            animation:drop_down .4s;           
+       }
+       .menu-bar ul > li:hover .menu-bar2{           
+           display:block;
        }
        @keyframes drop_down{
         0%{
@@ -188,20 +208,19 @@
         }
     }
         
-       .menu-box ul > li > a {
-        display:block;
-        padding:10px;
-        
+       .menu-bar ul > li > a {
+        display:block;        
        }       
        
-       .menu-box ul > li:hover > a {
-        color:white;
-        background-color:black;
+       .menu-bar ul > li:hover > a {
+      
+        
        }
-       .menu-box > ul > li:hover > a {        
+       .menu-bar > ul > li:hover > a {        
         border-radius:10px 10px 0 0;
         z-index:1;
        }
+      
        /* 메뉴바 끝 */
 
        /* 홈 화면 시작 */
