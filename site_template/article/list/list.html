@@ -1,10 +1,10 @@
-<main class="flex flex-dir-col flex-grow-1">
-    <section class="title-bar con-min-width">
-        <h1 class="title-bar__title-box con flex flex-jc-c">${board-list__boardname}
+<main class="con-min-width flex flex-dir-col flex-grow-1">
+    <section class="title-bar main-con">
+        <h1 class="title-bar__title-box flex flex-jc-c">${board-list__boardname}
         </h1>
     </section>
-    <section class="board-list con-min-width">
-        <table class="con">
+    <section class="main-con board-list">
+        <table>
             <tr class="tag">
                 <td class="font-bold cell-id">번호</td>
                 <td class="font-bold cell-title">제목</td>
@@ -19,9 +19,9 @@
             ${board-list}
         </table>
     </section>
-    <div class="flex-grow-1"></div>
-    <section class="page-button con-min-width">
-        <div class="con flex flex-ai-c flex-jc-s-bet">
+    <div class="main-con flex-grow-1"></div>
+    <section class="page-button main-con">
+        <div class="flex flex-ai-c flex-jc-s-bet">
             <div class="flex flex-basis-100px">
                 ${board-list__firstpagebutton}
                 ${board-list__prevpagebutton}

@@ -26,28 +26,53 @@
 </head>
 
 <body>
-    <div class="container flex flex-dir-col">
+    
+       
+        <div class="side-bar flex">
+            <div class="close-button">X</div>
+            <div class="flex flex-ai-c width-100p">
+            <ul class="width-100p">
+                <li><a class="flex flex-jc-c flex-ai-c height-100p" href="">PROFILE</a></li>
+                <li><a class="flex flex-jc-c flex-ai-c height-100p" href="">BOARD </a> 
+                       <div class="side-box width-100p">
+                        <ul>
+                            ${boardListHead}
+                        </ul>  
+                    </div>                
+                </li>
+                <li><a class="flex flex-jc-c flex-ai-c height-100p" href="">PORTFOLIO</a></li>
+                <li><a class="flex flex-jc-c flex-ai-c height-100p" href="">GUESTBOOK</a></li>          
+            </ul>  
+        </div>
+        </div>
+   
 
-        <header class="con-min-width top-bar flex">
-            <div class="flex menu-bar con flex">
-                <div class="flex flex-ai-c logo-box">
-                    <a href="">DLOG</a>
-                </div>
+    <div class="container flex flex-dir-col">
+        <div class="wrapper">
+        <header class="flex top-bar con-min-width">
+            <div class="con flex">
+                <div class="logo-box"><a class="height-100p flex flex-ai-c" href="">DLOG</a></div>
                 <div class="flex-grow-1"></div>
-                <ul class="flex flex-ai-c">
-                    <li class="flex flex-ai-c"><a href="">PROFILE</a></li>
-                    <li class="flex flex-ai-c">BOARD
-                        <div class="menu-bar2 con-min-width">
-                            <div class="flex con">
-                                <div class="flex-grow-1"></div>
-                                <ul class="list-box">
+                <div class="flex menu-box1">
+                    <ul class="flex">
+                        <li><a class="flex flex-ai-c height-100p" href="">PROFILE</a></li>
+                        <li><a class="flex flex-ai-c height-100p" href="">BOARD</a>                            
+                            <div class="con-min-width menu-box2">
+                                <div class="flex con">
+                                    <div class="flex-grow-1"></div>
+                                <ul>
                                     ${boardListHead}
                                 </ul>
                             </div>
-                        </div>
-                    </li>
-                    <li class="flex flex-ai-c"><a href="">PORTFOLIO</a></li>
-                    <li class="flex flex-ai-c"><a href="">GUESTBOOK</a></li>
-                </ul>
+                            </div>
+                        </li>
+                        <li><a class="flex flex-ai-c height-100p" href="">PORTFOLIO</a></li>
+                        <li><a class="flex flex-ai-c height-100p" href="">GUESTBOOK</a></li>
+                        <li><span class="flex flex-ai-c height-100p menu-button" href="">=</span></li>
+                    </ul>
+                </div>
             </div>
         </header>
+    </div>
+    
+    

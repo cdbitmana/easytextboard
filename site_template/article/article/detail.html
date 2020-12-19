@@ -1,7 +1,7 @@
 <main class="flex flex-grow-1 flex-dir-col con-min-width">
 
 
-    <section class="article con flex flex-dir-col">
+    <section class="article main-con flex flex-dir-col">
         <div class="article__title-bar flex flex-jc-s-bet flex-ai-c">
             <div class="article_id flex-basis-50px">${articledetail__article-id}</div>
             <div class="article_title flex-grow-1">${articledetail__article-title}</div>
@@ -27,18 +27,18 @@
         <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
                 Disqus.</a></noscript>
 
-        <div class="con-min-width article-move-button">
+        <div class="article-move-button">
             ${articledetail_articlemovebutton}
 
         </div>
     </section>
 
-    <section class="con article-list">
-        <section class="title-bar con-min-width">
-            <h1 class="title-bar__title-box con flex flex-jc-c">${articledetail__articlelist-boardname}</h1>
+    <section class="main-con article-list">
+        <section class="title-bar">
+            <h1 class="title-bar__title-box flex flex-jc-c">${articledetail__articlelist-boardname}</h1>
         </section>
-        <section class="board-list con-min-width">
-            <table class="con">
+        <section class="board-list">
+            <table class="">
                 <tr class="tag">
                     <td class="font-bold cell-id">번호</td>
                     <td class="font-bold cell-title">제목</td>
@@ -53,9 +53,10 @@
                 ${articledetail__articlelist}
             </table>
         </section>
-        <section class="page-button con-min-width">
+        <div class="main-con flex-grow-1"></div>
+        <section class="page-button">
 
-            <div class="con flex flex-ai-c flex-jc-s-bet">
+            <div class="flex flex-ai-c flex-jc-s-bet">
                 <div class="flex flex-basis-100px">
                     ${articledetail__articlelist-firstpagelink}
                     ${articledetail__articlelist-prevpagelink}

@@ -533,17 +533,6 @@ public class BuildService {
 			changeMenuHtml.append("<li>");
 			changeMenuHtml.append("<a href=\"" + board.getCode() + "-list-1.html" + "\">");
 
-			switch (board.getCode()) {
-			case "notice":
-				changeMenuHtml.append("<i class=\"fas fa-flag\"></i>");
-				break;
-			case "free":
-				changeMenuHtml.append("<i class=\"fas fa-clipboard\"></i>");
-				break;
-			default:
-				changeMenuHtml.append("<i class=\"far fa-clipboard\"></i>");
-				break;
-			}
 
 			changeMenuHtml.append("<span>");
 			changeMenuHtml.append(board.getName() + "게시판");
