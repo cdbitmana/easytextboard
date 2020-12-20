@@ -234,20 +234,44 @@
       }
        /* 메뉴바 끝 */
 
+      /* 스크롤탑 버튼 시작 */
+      .scrolltop-button {
+          position:fixed;
+          bottom:0;
+          right:0;
+          display:none;
+          width:50px;
+          height:50px;
+          background-color:black;
+          border:2px solid gray;
+          color:white;
+          font-size:25px;
+          text-align: center;
+          line-height: 50px;
+      }
+      /* 스크롤탑 버튼 끝 */
+
        /* 사이드 바 시작 */
       .side-bar{
+          color:gray;
           width:300px;
           height:100vh;
-          background-color:gray;
+          background-color:black;
           position:fixed;
           z-index:500;
           margin-left:100%;
           transform:translateX(100%);
           transition:transform .5s;
+          border-left:2px solid white;
+      }
+      .side-bar > .side-bar__logo{
+          text-align: center;
+          font-size:1.7rem;
+          margin-top:40px ;
       }
       .side-bar__menu-button{
           position:absolute;
-          top:40px;
+          top:45px;
           right:40px;
       }
       .side-bar__menu-button{
@@ -258,12 +282,14 @@
        margin-top:100px;
     }     
       .side-bar > .side-bar__menu-box1 > ul > li {
-          font-size:2rem;
+          font-size:1.2rem;
           transition:transform .4s;           
           position:relative;
-          padding:15px 0;
-          
-      }      
+          padding:15px 0;          
+      }    
+      .side-bar > .side-bar__menu-box1 > ul > li:hover > a{
+          color:white;
+      }  
       .side-bar > .side-bar__menu-box1 > ul > li div {          
           display:none;          
           position:absolute;   
@@ -271,36 +297,35 @@
       .side-bar > .side-bar__menu-box1 > ul > li:hover  div {
           display:block;
         }
-
-    .side-bar__menu-box2 > ul > li {
+        .side-bar .side-bar__menu-box2 > ul > li:hover > a {
+color:white;
+        }
+        .side-bar__menu-box2 > ul > li {
+            margin:10px 0;
+        }
+        .side-bar__menu-box2{
+            margin-top:10px;
+        }
+    .side-bar__menu-box3 > ul > li {
         padding:10px 0;
     }
-    .side-bar__menu-box2{
+    .side-bar__menu-box3{
         position:absolute;
         bottom:10px;
-        
+        font-size:1.5rem;
     }
-    .side-bar__menu-box2 > ul > li {        
+    .side-bar__menu-box3 > ul > li {        
         padding:0 10px;
+    }
+    .side-bar__menu-box3 > ul > li:hover {
+        color:white;
     }
        /* 사이드 바 끝 */
 
-       /* 사이드 메뉴 시작 */       
-       .side-menu{
-        position: absolute;        
-        top:450px;
-        left:150px;        
-        background-color:blue;
-        width:100px;
-        height:100px;
-    }
-       /* 사이드 메뉴 끝 */
-
        /* 홈 화면 시작 */  
-       .img-box{   
-           height:300px;  
-           position:relative;
-           
+       .img-box{
+           height:400px;  
+           position:relative;           
        }    
        .img-container{
            position:relative;
@@ -308,30 +333,32 @@
        }
        .img-container::before{
            content:"";
-           display:block;
-        background-color:rgba(0, 0, 0, 0.5);
-        z-index:1;
-        position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
+           display:block;           
+           z-index:1;
+           position:absolute;
+           top:0;
+           left:0;
+           right:0;
+           bottom:0;
        }
-       .img-box > img{
-           display:block;
+       .img-box > .img-cell{
+           align-self: center;           
            position:absolute;
            width:100%;
-           height:100%;
-          object-fit: cover;
-           
+           text-align:center;
+           box-sizing: border-box;
        }
-       .img-box > img:nth-child(2){
+       .img-cell > img {
+           object-fit: cover;
+           height:400px;
+       }
+       .img-box > .img-cell:nth-child(2){
            transform: translateX(100%);
        }
-       .img-box > img:nth-child(3){
+       .img-box > .img-cell:nth-child(3){
         transform: translateX(200%);
     }
-    .img-box > img:nth-child(4){
+    .img-box > .img-cell:nth-child(4){
         transform: translateX(300%);
     }
        .home-main{

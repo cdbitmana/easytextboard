@@ -1,6 +1,15 @@
 
 
 
+$(window).on('scroll',function(){
+if($(window).scrollTop() >= 5){
+    $(".scrolltop-button").fadeIn(400);
+}else{
+    $(".scrolltop-button").fadeOut(400);
+}
+});
+
+
 
 $(".menu-button").click(function () {   
         $(".side-bar").css("transform", "translateX(-100%)");
@@ -14,14 +23,14 @@ $(".side-bar__menu-button").click(function () {
 
 
 
-var side_box_height = $("div.side-bar>div>ul>li>div.side-box").css("height");
+var side_box_height = $(".side-bar__menu-box1>ul>li>div.side-bar__menu-box2").css("height");
 
-$("div.side-bar > div > ul > li:nth-child(2)").hover(function () {
-    $("div.side-bar > div > ul > li:nth-child(2):hover ~ li").css("transform", "translateY(" + side_box_height + ")");
+$(".side-bar__menu-box1 > ul > li:nth-child(2)").hover(function () {
+    $(".side-bar__menu-box1 > ul > li:nth-child(2) ~ li").css("transform", "translateY(" + side_box_height + ")");
 });
 
-$("div.side-bar > div > ul > li:nth-child(2)").mouseleave(function () {
-    $("div.side-bar > div > ul > li:nth-child(2) ~ li").css("transform", "translateY(0%)");
+$(".side-bar__menu-box1 > ul > li:nth-child(2)").mouseleave(function () {
+    $(".side-bar__menu-box1 > ul > li:nth-child(2) ~ li").css("transform", "translateY(0%)");
 });
 
 function home_main__Body__init() {
@@ -46,7 +55,7 @@ home_main__Body__init();
 
 
  const container = document.querySelector('.img-box'),
-    slides = document.querySelectorAll('img'),
+    slides = document.querySelectorAll('.img-cell'),
     slidecounter = slides.length;
 let currentIndex = 0;
 

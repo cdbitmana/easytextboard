@@ -522,12 +522,13 @@ public class BuildService {
 		List<Article> articles = articleService.getArticlesByBoardId();
 		
 		StringBuilder article_box = new StringBuilder();
-		
-		int end = 6;
-		if(articles.size() < 6) {
-			end = articles.size();
+		int start = articles.size()-1;
+		int itemsInAPage = 6;
+		int end = start - itemsInAPage;
+		if(end < 0) {
+			end = 0;
 		}
-		for(int i = 0 ; i < end ; i++) {
+		for(int i = start ; i >= end ; i--) {
 			article_box.append("<a class=\"home-main__article-box\" href=\""+articles.get(i).getExtra__boardCode() +"-"+articles.get(i).getId()+".html\">");
 			article_box.append("<div>");
 			article_box.append("<div class=\"flex home-main__article-box__titlebar\">");
