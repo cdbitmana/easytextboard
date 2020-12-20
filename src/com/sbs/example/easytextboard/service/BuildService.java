@@ -29,30 +29,26 @@ public class BuildService {
 			siteDir.mkdir();
 		}
 		/*
-		File statDir = new File("site/stat/");
-
-		if (statDir.exists() == false) {
-			statDir.mkdirs();
-		}
-		File articleDir = new File("site/article/");
-
-		if (articleDir.exists() == false) {
-			articleDir.mkdirs();
-		}
-		
+		 * File statDir = new File("site/stat/");
+		 * 
+		 * if (statDir.exists() == false) { statDir.mkdirs(); } File articleDir = new
+		 * File("site/article/");
+		 * 
+		 * if (articleDir.exists() == false) { articleDir.mkdirs(); }
+		 * 
 		 * File homeDir = new File("site/home/");
 		 * 
 		 * if (homeDir.exists() == false) { homeDir.mkdirs(); } Util.copy(cssSource,
 		 * "site/home/app.css");
-		 
-		Util.copy(cssSource, "site/article/app.css");
-		Util.copy(cssSource, "site/stat/app.css");
-		
-
-		
-		Util.copy(jsSource, "site/article/common.js");
-		Util.copy(jsSource, "site/stat/common.js");
-		*/
+		 * 
+		 * Util.copy(cssSource, "site/article/app.css"); Util.copy(cssSource,
+		 * "site/stat/app.css");
+		 * 
+		 * 
+		 * 
+		 * Util.copy(jsSource, "site/article/common.js"); Util.copy(jsSource,
+		 * "site/stat/common.js");
+		 */
 		Util.copy(cssSource, "site/app.css");
 		Util.copy(jsSource, "site/common.js");
 		String head = Util.getFileContents("site_template/part/head.html");
@@ -66,8 +62,25 @@ public class BuildService {
 
 		createStatDetail(head, foot);
 
+		createProfile(head,foot);
 	}
-
+	
+	// 프로필페이지 생성 함수
+	private void createProfile(String head, String foot) {
+		
+		String fileName = "profile.html";
+		
+		String profileHtml = Util.getFileContents("site_template/profile/profile.html");
+		StringBuilder profileBuilder = new StringBuilder();
+		head = getHeadHtml(head);
+		profileBuilder.append(head);
+		profileBuilder.append(profileHtml);
+		profileBuilder.append(foot);
+		
+		Util.writeFileContents("site/" + fileName, profileBuilder.toString());
+		
+	}
+	
 	// 통계페이지 생성 함수
 	private void createStatDetail(String head, String foot) {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
@@ -153,8 +166,6 @@ public class BuildService {
 						String.valueOf(articleService.getArticleRecommend(articles.get(i).getId())));
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-body}",
 						articles.get(i).getBody());
-
-				
 
 				StringBuilder articleDetail__ArticleMoveButton = new StringBuilder();
 				articleDetail__ArticleMoveButton.append("");
@@ -513,38 +524,44 @@ public class BuildService {
 	private void createMainPage(String head, String foot) {
 
 		StringBuilder mainPageHtml = new StringBuilder();
-		
 
 		mainPageHtml.append(getHeadHtml(head));
-		
+
 		String homeHtml = Util.getFileContents("site_template/home/index.html");
-		
+
 		List<Article> articles = articleService.getArticlesByBoardId();
-		
-		StringBuilder article_box = new StringBuilder();
-		int start = articles.size()-1;
+
+		int start = articles.size() - 1;
 		int itemsInAPage = 6;
 		int end = start - itemsInAPage;
-		if(end < 0) {
+		if (end < 0) {
 			end = 0;
 		}
-		for(int i = start ; i >= end ; i--) {
-			article_box.append("<a class=\"home-main__article-box\" href=\""+articles.get(i).getExtra__boardCode() +"-"+articles.get(i).getId()+".html\">");
-			article_box.append("<div>");
+		StringBuilder article_box = new StringBuilder();
+		for (int i = start; i >= end; i--) {
+
+			article_box.append("<div class=\"home-main__article-box\">");
 			article_box.append("<div class=\"flex home-main__article-box__titlebar\">");
-			article_box.append("<div class=\"home-main__article-box__boardname\">"+articles.get(i).getExtra__boardName()+"</div>");
-			article_box.append("<div class=\"home-main__article-box__title flex-grow-1\">"+articles.get(i).getTitle()+"</div>");
-			article_box.append("<div class=\"home-main__article-box__writer\">"+articles.get(i).getExtra__writer()+"</div>");
+			article_box.append("<div class=\"home-main__article-box__boardname\">"
+					+ articles.get(i).getExtra__boardName() + "</div>");
+			article_box.append("<div class=\"home-main__article-box__title flex-grow-1\">" + articles.get(i).getTitle()
+					+ "</div>");
+			article_box.append(
+					"<div class=\"home-main__article-box__writer\">" + articles.get(i).getExtra__writer() + "</div>");
 			article_box.append("</div>");
-			article_box.append("<div class=\"home-main__article-box__body\">"+articles.get(i).getBody()+"</div>");
-			article_box.append("</div>");
+			article_box.append("<div class=\"home-main__article-box__body\">" + articles.get(i).getBody() + "</div>");
+			article_box.append("<div class=\"home-main__article-box__detail\">");
+			article_box.append(
+					"<a href=\"" + articles.get(i).getExtra__boardCode() + "-" + articles.get(i).getId() + ".html\">");
+			article_box.append("자세히 보기");
 			article_box.append("</a>");
+			article_box.append("</div>");
+			article_box.append("</div>");
 		}
-		
+
 		homeHtml = homeHtml.replace("${home-main__article-box}", article_box.toString());
-		
-		
 		mainPageHtml.append(homeHtml);
+
 		mainPageHtml.append(foot);
 		Util.writeFileContents("site/" + "index.html", mainPageHtml.toString());
 
@@ -556,23 +573,19 @@ public class BuildService {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 
 		StringBuilder changeMenuHtml = new StringBuilder();
-		
+
 		for (Board board : boards) {
 			changeMenuHtml.append("<li>");
 			changeMenuHtml.append("<a href=\"" + board.getCode() + "-list-1.html" + "\">");
-
-
 			changeMenuHtml.append("<span>");
 			changeMenuHtml.append(board.getName() + "게시판");
 			changeMenuHtml.append("</span>");
 			changeMenuHtml.append("</a>");
 			changeMenuHtml.append("</li>");
 		}
-		
+
 		return head = head.replace("${boardListHead}", changeMenuHtml.toString());
 
 	}
-
-	
 
 }

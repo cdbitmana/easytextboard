@@ -2,7 +2,7 @@
 
 
 $(window).on('scroll',function(){
-if($(window).scrollTop() >= 5){
+if($(window).scrollTop() >= 25){
     $(".scrolltop-button").fadeIn(400);
 }else{
     $(".scrolltop-button").fadeOut(400);
@@ -10,15 +10,14 @@ if($(window).scrollTop() >= 5){
 });
 
 
-
 $(".menu-button").click(function () {   
         $(".side-bar").css("transform", "translateX(-100%)");
-      
+       $(".scrolltop-button").css("transform", "translateX(-303px)");
 });
 
 $(".side-bar__menu-button").click(function () {
     $("div.side-bar").css("transform", "translateX(0%)");
-   
+    $(".scrolltop-button").css("transform", "translateX(0%)");
 });
 
 
@@ -63,11 +62,15 @@ let currentIndex = 0;
 var lele = 0;
 var i = 0;
 function moveleft() {
+    if(container == null || slides == null){
+        return;
+    }
+
     if (i < slidecounter - 1) {
         lele += 100;
         i++;
         container.style.transition = '.6s'
-        setTimeout('moveleft()', 3000);
+        setTimeout('moveleft()', 6000);
     } else {
         container.style.transition = '0s'
         lele = 0;
@@ -85,6 +88,9 @@ moveleft();
 function ArticleDetail__Body__init() {
 
     var body = document.querySelector('.article_body');
+    if(body == null){
+        return;
+    }
     var initialValue = body.innerHTML.trim();
     initialValue = initialValue.replace(/&gt;/gi, ">");
     initialValue = initialValue.replace(/&lt;/gi, "<");
