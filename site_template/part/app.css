@@ -191,7 +191,7 @@
       }    
       .menu-box1 > ul > li > .menu-box2{
         display:none;
-        background-color:white;
+        background-color:rgb(150, 231, 125);
         position:absolute;
         top:100px;
         left:0;
@@ -224,6 +224,10 @@
           padding:15px;
           margin:0px;
           margin-right:250px;
+          
+      }
+      .menu-box2 > div > ul > li:hover > a{
+          
       }
       .menu-button{                  
         z-index:600;
