@@ -57,7 +57,7 @@ function moveleft() {
     if (i < slidecounter - 1) {
         lele += 100;
         i++;
-        container.style.transition = '.3s'
+        container.style.transition = '.6s'
         setTimeout('moveleft()', 3000);
     } else {
         container.style.transition = '0s'
