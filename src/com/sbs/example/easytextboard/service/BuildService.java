@@ -513,9 +513,36 @@ public class BuildService {
 	private void createMainPage(String head, String foot) {
 
 		StringBuilder mainPageHtml = new StringBuilder();
-		String homeHtml = Util.getFileContents("site_template/home/index.html");
+		
 
 		mainPageHtml.append(getHeadHtml(head));
+		
+		String homeHtml = Util.getFileContents("site_template/home/index.html");
+		
+		List<Article> articles = articleService.getArticlesByBoardId();
+		
+		StringBuilder article_box = new StringBuilder();
+		
+		int end = 6;
+		if(articles.size() < 6) {
+			end = articles.size();
+		}
+		for(int i = 0 ; i < end ; i++) {
+			article_box.append("<a href=\""+articles.get(i).getExtra__boardCode() +"-"+articles.get(i).getId()+".html\">");
+			article_box.append("<div class=\"home-main__article-box\">");
+			article_box.append("<div class=\"flex home-main__article-box__titlebar\">");
+			article_box.append("<div class=\"home-main__article-box__boardname\">"+articles.get(i).getExtra__boardName()+"</div>");
+			article_box.append("<div class=\"home-main__article-box__title flex-grow-1\">"+articles.get(i).getTitle()+"</div>");
+			article_box.append("<div class=\"home-main__article-box__writer\">"+articles.get(i).getExtra__writer()+"</div>");
+			article_box.append("</div>");
+			article_box.append("<div class=\"home-main__article-box__body\">"+articles.get(i).getBody()+"</div>");
+			article_box.append("</div>");
+			article_box.append("</a>");
+		}
+		
+		homeHtml = homeHtml.replace("${home-main__article-box}", article_box.toString());
+		
+		
 		mainPageHtml.append(homeHtml);
 		mainPageHtml.append(foot);
 		Util.writeFileContents("site/" + "index.html", mainPageHtml.toString());

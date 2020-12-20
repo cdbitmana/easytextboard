@@ -103,6 +103,8 @@ public class ArticleService {
 		return articleDao.getArticles();
 	}
 
-	
+	public List<Article> getArticlesByBoardId() {
+		return articleDao.getArticlesByBoardId();
+	}
 
 }

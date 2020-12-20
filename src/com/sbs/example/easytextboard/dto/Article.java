@@ -12,7 +12,8 @@ public class Article {
 	private int hit;
 	private int boardId;
 	private String extra__writer;
-
+	private String extra__boardName;
+	private String extra__boardCode;
 	public Article(Map<String, Object> articleMap) {
 		this.id = (int) articleMap.get("id");
 		this.regDate = (String) articleMap.get("regDate");
@@ -23,6 +24,36 @@ public class Article {
 		this.hit = (int) articleMap.get("hit");
 		this.boardId = (int) articleMap.get("boardId");
 		this.extra__writer = (String) articleMap.get("extra__writer");
+		this.extra__boardName = (String) articleMap.get("extra__boardName");
+		this.extra__boardCode = (String) articleMap.get("extra__boardCode");
+	}
+
+	public String getExtra__boardCode() {
+		return extra__boardCode;
+	}
+
+	public void setExtra__boardCode(String extra__boardCode) {
+		this.extra__boardCode = extra__boardCode;
+	}
+
+	public String getExtra__writer() {
+		return extra__writer;
+	}
+
+	public void setExtra__writer(String extra__writer) {
+		this.extra__writer = extra__writer;
+	}
+
+	public String getExtra__boardName() {
+		return extra__boardName;
+	}
+
+	public void setExtra__boardName(String extra__boardName) {
+		this.extra__boardName = extra__boardName;
+	}
+
+	public String getUpdateDate() {
+		return updateDate;
 	}
 
 	public String getRegDate() {
