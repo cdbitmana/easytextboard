@@ -454,8 +454,14 @@
        .home-main__article-box__titlebar{
            border-bottom: 2px solid gray;
            padding-bottom:5px;
+           width:100%;
            text-overflow: ellipsis;
            white-space: nowrap;
+       }
+       .home-main__article-box__title{
+           overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
        }
        .home-main__article-box__boardname::after{
            content:"";
@@ -469,7 +475,7 @@
        }
        .home-main__article-box__boardname{
            text-align:center;
-           width:60px;
+           min-width:80px;
            position:relative;
        }
        .home-main__article-box__title{
@@ -477,7 +483,7 @@
        }
        .home-main__article-box__writer{
         text-align:center;
-        width:60px;
+        min-width:60px;
     }
     .home-main__article-box__body{      
         overflow: hidden;
