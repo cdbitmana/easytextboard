@@ -21,7 +21,8 @@
        html {
          font-family: 'LotteMartDream', sans-serif;
        }
-       .tui-editor-contents p{
+       
+       .tui-editor-contents > pre > code{
         font-family: 'LotteMartDream', sans-serif;
         font-size:16px;
        }
@@ -157,6 +158,9 @@
        table,td{
            border-collapse: collapse;
        }
+       .text-center{
+           text-align: center;
+       }
 
        /* 컨테이너 시작 */
        .container{           
@@ -236,7 +240,7 @@
       
       .menu-box2 > div > ul {          
           margin:10px 0;
-          margin-right:250px;
+          margin-right:135px;
           
       }
       .menu-button{                  
@@ -425,6 +429,10 @@
     .img-box > .img-cell:nth-child(4){
         transform: translateX(300%);
     }
+    .home-recent{
+        margin-top:50px;
+        text-align:center;
+    }
        .home-main{
            margin-top:50px;
            margin-bottom:50px;
@@ -434,8 +442,7 @@
            height:200px; 
            margin:30px 0 45px 0;
            padding:8px;
-           box-sizing: border-box;
-           
+           box-sizing: border-box;           
            border-radius:20px;
            background-color:white;
            
@@ -443,7 +450,8 @@
        .home-main__article-box__titlebar{
            border-bottom: 2px solid gray;
            padding-bottom:5px;
-           overflow: hidden;
+           text-overflow: ellipsis;
+           white-space: nowrap;
        }
        .home-main__article-box__boardname::after{
            content:"";
@@ -471,11 +479,11 @@
         overflow: hidden;
         height:160px;
         box-sizing: border-box;
-        padding: 10px 0;
+        padding: 10px;
         
     }
     
-    .home-main__article-box__body .tui-editor-contents pre.lang-java{
+    .home-main__article-box__body .tui-editor-contents pre{
         height:160px;
         
         overflow:hidden;
@@ -541,7 +549,7 @@
            padding:0;
            height:1px;
        }
-      .board-list > table > tobody > tr:not(.tag) > .cell-title{
+      .board-list > table > tbody > tr:not(.tag) > .cell-title{
            text-align: left;
            padding-left:50px;
            margin-left:55px;
@@ -635,13 +643,14 @@
        .article_body {
            padding:20px 0;
        }       
-       .article_body p{
-           display:block;
-           padding:20px;
-           
-       }
-       #viewer > .tui-editor-contents > pre.lang-java{
+       
+       #viewer > .tui-editor-contents > pre {
+        
         border-radius:20px;
+    }
+    #viewer > .tui-editor-contents > pre > code{
+        font-family: 'LotteMartDream', sans-serif;
+        font-size:16px;
     }
        #disqus_thread{
         border-top:2px solid black;
@@ -709,11 +718,90 @@
         /* 통계 상세보기 끝 */  
         
         /* 프로필 페이지 시작 */
-      
+       .content-1{
+        position:relative;            
+        overflow:auto;       
+        overflow:hidden;
+        background-color:#F8E88B;
+       }
+       
+       .content-1__wrapper{          
+           z-index:50; 
+           margin:150px auto 150px 150px;
+       }
+    .content-1  .profile_text {
+        position:relative;        
+        background-color:#F69069;
+        height:500px;
+        padding:35px;
+        border-radius:10px;
+    }
+    .content-1  .profile_text > p:first-child {
+        text-decoration: underline;
+        margin-bottom:15px;
+        color:white;
+        font-size:1.2rem;
+    }
+    .content-1  .profile_text > p:not(:first-child){
+        color:white;
+    }
+    .content-1  .profile_text > span {
+        color:white;
+        font-size:3rem;
+    }
+    .content-1  .profile_text > span:first-of-type{
+        display:inline-block;
+        margin-bottom:15px;
+    }
+    .content-1  .profile_text > .profile_arrow {
+        margin-left:120px;
+        cursor:pointer;
+    }
+      .profile_detail {   
+        overflow: hidden;     
+        position:absolute;
+        top:0;
+        left:0;
+        width:0;
+        background-color:#F69069;
+        height:500px;
+        padding:35px 35px 35px 200px;     
+        border-radius:10px;
+        transition:all 1s;  
+        z-index:-10;
+        color:white;
+        
+    }
+    .profile_detail__text1 > ul {
+        margin:0 40px;
+    }
+    .profile_detail__text1 > ul:nth-child(3){
+        margin-left:60px;
+    }
+    .profile_detail__text1 > ul > li {
+        margin:30px 0;
+        white-space: nowrap;
+    }
+    .content-1__bg-text{
+        position:absolute;
+        left:50%;
+        margin:150px auto  350px auto;
+        height:570px;
+        width:800px;
+        z-index:30;
+    }
+    .content-1__bg-text > div {
+        width:100%;
+        height:100%;
+    }
+    .content-1__bg-text > div > img {
+        max-width:100%;
+        max-height:100%;
+    }
         .content-2{
             position:relative;            
             overflow:auto;
-            background-image: url("profileimage/content-1.jpg");
+            background-image: url("profileimage/content-2.jpg");
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
@@ -728,7 +816,7 @@
             content:"";
             display:block;
             z-index: 1;
-            background-color:rgba(0, 0, 0, 0.7);
+            background-color:rgba(0, 0, 0, 0.65);
         }
         .content-2 > .outline {
             position:relative;
@@ -755,7 +843,7 @@
             left:50%;
             top:50%;            
             transform: translate(-50% , -50%);
-            border:1px solid white;
+            border:2px solid white;
             border-radius:100%;
             z-index:2;  
         }
@@ -773,31 +861,59 @@
             right:0;
             background-color:#f69069;    
         }
+        .content-2 > .outline > .circle4{
+            background-color:white;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+        }
         /* 프로필 페이지 끝 */
 
         /* 방명록 페이지 시작 */
-        .guestbook-list > table{
+        .guestbook-list > div{
             width:100%;
+            position:relative;
         }
-        .guestbook-list > table > tbody > tr {
-            margin:15px 0;
-            padding:15px;
-            height:80px;
-            
+        .guestbook-list > div > div {
+            margin:40px 0;
+            position:relative;
+            width:60%;
         }
-        .guestbook-list > table > tbody > tr > td.guestbook-id{
-            padding-top:10px;
-            margin-right:10px;
+        .guestbook-list > div > div:nth-child(2n){
+            position:relative;
+            align-self:flex-end;
+            text-align: right;
         }
-        .guestbook-list > table > tbody > tr > td.guestbook-title {
+        
+        .guestbook-list > div > div > div.guestbook-title{
+            position:relative;
             background-color:white;
-            padding:10px;
-            border-radius:20px;
+            padding:15px;
+            border-radius:15px;
+            margin-top:5px;
+            min-height:50px;
         }
-        .guestbook-list > table > tbody > tr > td.guestbook-writer{
-            margin-left:15px;
-            text-align: center;
-            line-height:40px;
+        .guestbook-list > div > div:nth-child(2n+1) > div.guestbook-writer{
+            position:absolute;
+            top:-20px;
+            left:20px;
+        }
+        .guestbook-list > div > div:nth-child(2n) > div.guestbook-writer{
+            position:absolute;
+            top:-20px;
+            right:20px;
+        }
+        .guestbook-list > div > div:nth-child(2n+1) > div.guestbook-regDate{
+            position:absolute;
+            width:200px;
+            top:75%;
+            left:102%;
+        }
+        .guestbook-list > div > div:nth-child(2n) > div.guestbook-regDate{
+           position:absolute;
+           width:200px;
+           top:75%;
+           right:102%;
         }
         /* 방명록 페이지 끝 */
 
@@ -817,16 +933,23 @@
         object-fit: contain;
     }
     .copyright-box{
-        margin-top:50px;
-        padding-left:60px;
+        margin-top:40px;
+        padding-left:100px;
     }
     .text-box > p {
         padding:0;
         margin:0;
     }
+    .copyright-box > .text-box > ul > li {
+        margin-right:20px;
+    }
+    .copyright-box > .text-box > ul > li > a > i {
+        margin:0;
+        padding:0;
+    }
     .copyright-box > span{
         display:block;
-        margin-top:50px;
+        margin-top:35px;
     }
     .bottom-logo-bar__logo-box {
         padding:50px 0;

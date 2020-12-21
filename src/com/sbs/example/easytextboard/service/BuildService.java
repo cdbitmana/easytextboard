@@ -115,14 +115,16 @@ public class BuildService {
 
 			for (int j = start; j >= end; j--) {
 
-				board_list.append("<tr class=\"flex\">");
-				board_list.append("<td class=\"guestbook-id\">" + guestBooks.get(j).getId() + "</td>");
-				board_list
-						.append("<td class=\"flex-grow-1 guestbook-title\">" + guestBooks.get(j).getTitle() + "</td>");
-				board_list.append("<td class=\"guestbook-writer\">");
+				board_list.append("<div class=\"flex\">");
+				
 				board_list.append("<div class=\"guestbook-writer\">" + guestBooks.get(j).getExtra__writer() + "</div>");
-				board_list.append("<div class=\"k-regDate\">" + guestBooks.get(j).getRegDate() + "</div>");
-				board_list.append("</td>");
+				board_list.append("<div class=\"flex-grow-1 guestbook-title\">" + guestBooks.get(j).getTitle());
+				board_list.append("</div>");
+				board_list.append("<div class=\"guestbook-regDate\">" + guestBooks.get(j).getRegDate() + "</div>");
+				
+				board_list.append("</div>");
+				
+				
 			}
 
 			guestBookHtml = guestBookHtml.replace("${guestbook-list}", board_list.toString());
@@ -343,16 +345,13 @@ public class BuildService {
 
 				switch (board.getCode()) {
 				case "notice":
-					articleDetail__articlelist_boardName
-							.append("<span>" + board.getName() + " 게시판</span>");
+					articleDetail__articlelist_boardName.append("<span>" + board.getName() + " 게시판</span>");
 					break;
 				case "free":
-					articleDetail__articlelist_boardName
-							.append("<span>" + board.getName() + " 게시판</span>");
+					articleDetail__articlelist_boardName.append("<span>" + board.getName() + " 게시판</span>");
 					break;
 				default:
-					articleDetail__articlelist_boardName
-							.append("<span>" + board.getName() + " 게시판</span>");
+					articleDetail__articlelist_boardName.append("<span>" + board.getName() + " 게시판</span>");
 					break;
 				}
 
@@ -524,16 +523,13 @@ public class BuildService {
 
 					switch (board.getCode()) {
 					case "notice":
-						board_list__boardname
-								.append("<span>" + board.getName() + " 게시판</span>");
+						board_list__boardname.append("<span>" + board.getName() + " 게시판</span>");
 						break;
 					case "free":
-						board_list__boardname
-								.append("<span>" + board.getName() + " 게시판</span>");
+						board_list__boardname.append("<span>" + board.getName() + " 게시판</span>");
 						break;
 					default:
-						board_list__boardname
-								.append("<span>" + board.getName() + " 게시판</span>");
+						board_list__boardname.append("<span>" + board.getName() + " 게시판</span>");
 						break;
 					}
 
@@ -647,7 +643,7 @@ public class BuildService {
 
 		int start = articles.size() - 1;
 		int itemsInAPage = 6;
-		int end = start - itemsInAPage;
+		int end = start - itemsInAPage + 1;
 		if (end < 0) {
 			end = 0;
 		}

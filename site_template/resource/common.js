@@ -10,14 +10,29 @@ if($(window).scrollTop() >= 25){
 });
 
 
+$(".profile_arrow").hover(function(){
+  $(".profile_detail").css("width", "900px");
+  $(".profile_detail").css("left", "290px");
+});
+
+$(".content-1__wrapper").mouseleave(function(){
+    $(".profile_detail").css("width", "0");
+    $(".profile_detail").css("left", "0");
+  });
+
+
+
+
 $(".menu-button").click(function () {   
         $(".side-bar").css("transform", "translateX(-100%)");
        $(".scrolltop-button").css("transform", "translateX(-303px)");
+      
 });
 
 $(".side-bar__menu-button").click(function () {
     $("div.side-bar").css("transform", "translateX(0%)");
     $(".scrolltop-button").css("transform", "translateX(0%)");
+
 });
 
 
