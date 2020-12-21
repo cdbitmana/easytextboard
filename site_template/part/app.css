@@ -397,24 +397,23 @@
        }
        .img-cell:nth-child(1) > .img {
         
-        
-        background-image: url("../site_template/home/main1.jpg");
+        background-image: url("homeimage/main1.jpg");
         
        }
        .img-cell:nth-child(2) > .img {
        
-        background-image: url("../site_template/home/main2.jpg");
+        background-image: url("homeimage/main2.jpg");
         
        }
        .img-cell:nth-child(3) > .img {
        
-        background-image: url("../site_template/home/main3.jpg");
+        background-image: url("homeimage/main3.jpg");
      
      
        }
        .img-cell:nth-child(4) > .img {
         
-        background-image: url("../site_template/home/main1.jpg");
+        background-image: url("homeimage/main1.jpg");
         
        }
        .img-box > .img-cell:nth-child(2){
