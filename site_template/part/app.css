@@ -115,15 +115,19 @@
        }
        .flex-basis-50px{
            flex-basis: 50px;
+           min-width:50px;
        }
        .flex-basis-100px{
            flex-basis:100px;
+           min-width:100px;
        }
        .flex-basis-150px{
            flex-basis:150px;
+           min-width:150px;
        }
        .flex-basis-200px{
            flex-basis: 200px;
+           min-width:200px;
        }
        .flex-grow-1{
            flex-grow: 1;
@@ -516,15 +520,26 @@
         background-color:#afafaf49;
         border-top:1px solid black;
        }
-       
+       .board-list > table{
+           table-layout: fixed;
+       }
        .board-list > table > tbody > tr:not(.tag):not(.article-not-exists):hover {
            background-color:#afafaf49;
         
        }
+       
        .board-list > table > tbody > tr > td {
            padding-top:10px;
-           padding-bottom: 10px;       
+           padding-bottom: 10px;   
+           overflow:hidden;
+		   white-space : nowrap;
+	       text-overflow: ellipsis;
        }       
+       .board-list > table > tbody > tr > td:not(.line-separate){
+           max-height:30px;
+           box-sizing: border-box;           
+           
+       }
        .board-list > table > tbody > tr > td > a:hover{
            text-decoration: underline;        
        }
@@ -551,9 +566,11 @@
        }
       .board-list > table > tbody > tr:not(.tag) > .cell-title{
            text-align: left;
-           padding-left:50px;
-           margin-left:55px;
+           padding-left:25px;
+           margin-left:25px;           
+           
        }
+       
        
        :root{
        --cell-id__width:80px;
@@ -603,7 +620,7 @@
        } 
        .article__title-bar{
         margin:20px 0;
-        
+        width:100%;
        }
        .article__title-bar > div:not(.article_title) {
            text-align: center;
@@ -626,7 +643,11 @@
            position: relative;
        }
        .article_title{
-           padding-left:30px;
+           padding-left:30px;           
+           overflow:hidden;
+           text-overflow: ellipsis;
+           white-space: nowrap;
+           
        }
        .article__title-bar::after{
            content:"";

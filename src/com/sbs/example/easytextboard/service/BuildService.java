@@ -483,7 +483,7 @@ public class BuildService {
 				boardPageHtmlBuilder.append(getHeadHtml(head));
 
 				StringBuilder board_list__boardname = new StringBuilder();
-
+				board_list__boardname.append(board.getName() +" 게시판");
 				boardPageHtml = boardPageHtml.replace("${board-list__boardname}", board_list__boardname.toString());
 
 				boardPageHtml = boardPageHtml.replace("${board-list}",
