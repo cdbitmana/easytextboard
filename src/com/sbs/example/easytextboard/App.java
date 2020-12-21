@@ -13,6 +13,7 @@ public class App {
 	MemberController memberController;
 	ArticleService articleService;
 	MemberService memberService;
+	GuestBookService guestBookService;
 	BuildController buildController;
 
 	public App() {
@@ -21,6 +22,7 @@ public class App {
 		memberController = Container.memberController;
 		articleService = Container.articleService;
 		memberService = Container.memberService;
+		guestBookService = Container.guestBookService;
 		buildController = Container.buildController;
 		
 		

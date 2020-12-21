@@ -11,9 +11,6 @@ import com.sbs.example.easytextboard.mysqlutil.MysqlUtil;
 import com.sbs.example.easytextboard.mysqlutil.SecSql;
 
 public class ArticleDao {
-	
-
-
 
 	// doWrite
 	public int doWrite(String title, String body, int memberId, int boardId) {
@@ -337,13 +334,14 @@ public class ArticleDao {
 	public List<Article> getArticlesByBoardId() {
 		List<Article> articles = new ArrayList<>();
 		SecSql sql = new SecSql();
-		
-		sql.append("SELECT A.* , B.name AS extra__boardName , B.code AS extra__boardCode, M.name AS extra__writer FROM article AS A");
+
+		sql.append(
+				"SELECT A.* , B.name AS extra__boardName , B.code AS extra__boardCode, M.name AS extra__writer FROM article AS A");
 		sql.append("INNER JOIN `board` AS B");
 		sql.append("ON A.boardId = B.id");
 		sql.append("INNER JOIN `member` AS M");
 		sql.append("ON A.memberId = M.id");
-		
+
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
 
 		for (Map<String, Object> articleMap : articleMapList) {
@@ -352,8 +350,24 @@ public class ArticleDao {
 		return articles;
 	}
 
-	
-	
-	
+	// guestBookService exception 해결하면 삭제할 것
+	public List<GuestBook> getGuestBooks() {
+
+		List<GuestBook> guestBooks = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT G.* , M.name AS extra__writer FROM guestbook AS G");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON G.memberId = M.id");
+
+		List<Map<String, Object>> guestBookMapList = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> guestBookMap : guestBookMapList) {
+			guestBooks.add(new GuestBook(guestBookMap));
+		}
+
+		return guestBooks;
+	}
 
 }

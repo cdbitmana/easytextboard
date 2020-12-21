@@ -18,13 +18,15 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - hailrain</title>
+    <title>DLOG</title>
     <meta name="google-site-verification" content="rn7Tpz7rbqF5Ss3qku9sWvLyaueNYLF-QRe_06ZCNz8" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="app.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <link rel="shortcut icon" href="../site_template/part/logo.png">
+    <link rel="icon" href="../site_template/part/logo.png">
 
 </head>
 
@@ -32,14 +34,16 @@
     
        
         <div class="side-bar flex flex-dir-col">
-            <span class="side-bar__logo">DLOG</span>
+            <div class="flex flex-jc-c">
+            <span class="side-bar__logo"><a href=""><img src="../site_template/part/side_bar_logo.png" alt=""></a></span>
+        </div>
             <span class="side-bar__menu-button" href=""><i class="fas fa-times-circle"></i></span>
-            <div class="flex width-100p side-bar__menu-box1">            
+            <div class="flex flex-jc-c width-100p side-bar__menu-box1">            
             <ul class="width-100p">
                 <li><a class="flex flex-jc-c flex-ai-c height-100p" href="">PROFILE</a></li>
                 <li><a class="flex flex-jc-c flex-ai-c height-100p" href="">BOARD </a> 
                        <div class="side-bar__menu-box2 width-100p">
-                        <ul>
+                        <ul class="width-100p">
                             ${boardListHead}
                         </ul>  
                     </div>                
@@ -63,7 +67,7 @@
         <div class="wrapper">
         <header class="flex top-bar con-min-width">
             <div class="con flex">
-                <div class="logo-box"><a class="height-100p flex flex-ai-c" href="index.html">DLOG</a></div>
+                <div class="logo-box flex flex-ai-c"><a class="height-100p flex flex-ai-c" href="index.html"><img src="../site_template/part/logo.png" alt=""></a></div>
                 <div class="flex-grow-1"></div>
                 <div class="flex menu-box1">
                     <ul class="flex">
@@ -79,7 +83,7 @@
                             </div>
                         </li>
                         <li><a class="height-100p" href="">STATISTICS</a></li>
-                        <li><a class="height-100p" href="">GUESTBOOK</a></li>
+                        <li><a class="height-100p" href="guestbook-list-1.html">GUESTBOOK</a></li>
                     </ul>                    
                 </div>
                 

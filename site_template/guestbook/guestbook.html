@@ -1,0 +1,35 @@
+<main class="con-min-width flex flex-dir-col flex-grow-1">
+
+    <section class="guestbook-title main-con">
+        <h1 class="guestbook__title-bar__title-box flex flex-jc-c">방명록
+        </h1>
+    </section>
+
+    <section class="main-con guestbook-list">
+        <table class="guestbook-list__table">           
+
+
+            ${guestbook-list}
+
+        </table>
+    </section>
+
+    <div class="main-con flex-grow-1"></div>
+
+    <section class="page-button main-con">
+        <div class="flex flex-ai-c flex-jc-s-bet">
+            <div class="flex flex-basis-100px">
+                ${guestbook-list__firstpagebutton}
+                ${guestbook-list__prevpagebutton}
+            </div>
+            <ul class="flex flex-jc-c flex-ai-e flex-grow-1">
+                ${guestbook-list__pagebuttons}
+            </ul>
+            <div class="flex flex-basis-100px">
+                ${guestbook-list__nextpagebutton}
+                ${guestbook-list__lastpagebutton}
+            </div>
+        </div>
+    </section>
+
+</main>

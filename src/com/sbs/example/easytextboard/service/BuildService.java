@@ -8,6 +8,7 @@ import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dto.Article;
 import com.sbs.example.easytextboard.dto.ArticleReply;
 import com.sbs.example.easytextboard.dto.Board;
+import com.sbs.example.easytextboard.dto.GuestBook;
 import com.sbs.example.easytextboard.dto.Member;
 import com.sbs.example.easytextboard.util.Util;
 
@@ -15,10 +16,12 @@ public class BuildService {
 
 	ArticleService articleService;
 	MemberService memberService;
+	GuestBookService guestBookService;
 
 	public BuildService() {
 		articleService = Container.articleService;
 		memberService = Container.memberService;
+		guestBookService = Container.guestBookService;
 	}
 
 	public void makeHtml() {
@@ -62,25 +65,151 @@ public class BuildService {
 
 		createStatDetail(head, foot);
 
-		createProfile(head,foot);
+		createProfile(head, foot);
+
+		createGuestBook(head, foot);
 	}
-	
-	// 프로필페이지 생성 함수
+
+	// 방명록 페이지 생성 함수
+	private void createGuestBook(String head, String foot) {
+		/*
+		 * List<GuestBook> guestBooks = guestBookService.getGuestBooks();
+		 */
+
+		List<GuestBook> guestBooks = articleService.getGuestBooks();
+		int itemsInAPage = 10;
+		int pages = guestBooks.size() / itemsInAPage;
+		if (guestBooks.size() % 10 != 0) {
+			pages++;
+		}
+
+		if (pages == 0 && guestBooks.size() > 0) {
+			pages = 1;
+		}
+
+		for (int i = 1; i <= pages; i++) {
+			String guestBookHtml = Util.getFileContents("site_template/guestbook/guestbook.html");
+
+			StringBuilder guestBookHtmlBuilder = new StringBuilder();
+			int buttonsInAPage = 10;
+			int pageButton = (int) Math.ceil((double) i / buttonsInAPage);
+			int startPageButton = (pageButton - 1) * buttonsInAPage + 1;
+			int endPageButton = startPageButton + buttonsInAPage - 1;
+			if (endPageButton > pages) {
+				endPageButton = pages;
+			}
+			int endPage = (int) Math.ceil((double) pages / buttonsInAPage);
+
+			String fileName = "";
+			fileName = "guestbook" + "-list-" + i + ".html";
+
+			guestBookHtmlBuilder.append(getHeadHtml(head));
+
+			int start = guestBooks.size() - ((i - 1) * itemsInAPage) - 1;
+			int end = (start - itemsInAPage + 1);
+			if (end < 0) {
+				end = 0;
+			}
+
+			StringBuilder board_list = new StringBuilder();
+
+			for (int j = start; j >= end; j--) {
+
+				board_list.append("<tr class=\"flex\">");
+				board_list.append("<td class=\"guestbook-id\">" + guestBooks.get(j).getId() + "</td>");
+				board_list
+						.append("<td class=\"flex-grow-1 guestbook-title\">" + guestBooks.get(j).getTitle() + "</td>");
+				board_list.append("<td class=\"guestbook-writer\">");
+				board_list.append("<div class=\"guestbook-writer\">" + guestBooks.get(j).getExtra__writer() + "</div>");
+				board_list.append("<div class=\"k-regDate\">" + guestBooks.get(j).getRegDate() + "</div>");
+				board_list.append("</td>");
+			}
+
+			guestBookHtml = guestBookHtml.replace("${guestbook-list}", board_list.toString());
+
+			StringBuilder guestbook_list__firstpagebutton = new StringBuilder();
+			guestbook_list__firstpagebutton.append("");
+			if (pages >= 2) {
+				guestbook_list__firstpagebutton.append("<div class=\"flex flex-basis-50px\">");
+				guestbook_list__firstpagebutton.append("<a href=\"guestbook-list-1.html\"> << </a>");
+				guestbook_list__firstpagebutton.append("</div>");
+			}
+			guestBookHtml = guestBookHtml.replace("${guestbook-list__firstpagebutton}",
+					guestbook_list__firstpagebutton.toString());
+
+			StringBuilder guestbook_list__prevpagebutton = new StringBuilder();
+			guestbook_list__prevpagebutton.append("");
+			if (pageButton != 1) {
+				guestbook_list__prevpagebutton.append("<div class=\"flex flex-basis-50px\">");
+				guestbook_list__prevpagebutton.append(
+						"<a href=\"guestbook-list-" + ((pageButton - 1) * buttonsInAPage - 9) + ".html\"> 이전 </a>");
+				guestbook_list__prevpagebutton.append("</div>");
+			}
+			guestBookHtml = guestBookHtml.replace("${guestbook-list__prevpagebutton}",
+					guestbook_list__prevpagebutton.toString());
+
+			StringBuilder guestbook_list__pagebuttons = new StringBuilder();
+
+			for (int k = startPageButton; k <= endPageButton; k++) {
+				String page = "guestbook-list-" + k + ".html";
+				if (k == i) {
+					guestbook_list__pagebuttons.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+					guestbook_list__pagebuttons.append("<span>" + k + "</span>");
+					guestbook_list__pagebuttons.append("</li>");
+				} else {
+					guestbook_list__pagebuttons.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
+					guestbook_list__pagebuttons.append("<a href=\"" + page + "\"> " + k + "</a>");
+					guestbook_list__pagebuttons.append("</li>");
+				}
+			}
+			guestBookHtml = guestBookHtml.replace("${guestbook-list__pagebuttons}",
+					guestbook_list__pagebuttons.toString());
+
+			StringBuilder guestbook_list__nextpagebutton = new StringBuilder();
+			guestbook_list__nextpagebutton.append("");
+			if (pageButton < endPage) {
+				guestbook_list__nextpagebutton.append("<div class=\"flex flex-basis-50px\">");
+				guestbook_list__nextpagebutton
+						.append("<a href=\"guestbook-list-" + (pageButton * buttonsInAPage + 1) + ".html\"> 다음 </a>");
+				guestbook_list__nextpagebutton.append("</div>");
+			}
+			guestBookHtml = guestBookHtml.replace("${guestbook-list__nextpagebutton}",
+					guestbook_list__nextpagebutton.toString());
+
+			StringBuilder guestbook_list__lastpagebutton = new StringBuilder();
+			if (pages >= 2) {
+				guestbook_list__lastpagebutton.append("<div class=\"flex flex-basis-50px\">");
+				guestbook_list__lastpagebutton.append("<a href=\"guestbook-list-" + pages + ".html\"> >> </a>");
+				guestbook_list__lastpagebutton.append("</div>");
+			}
+			guestBookHtml = guestBookHtml.replace("${guestbook-list__lastpagebutton}",
+					guestbook_list__lastpagebutton.toString());
+
+			guestBookHtmlBuilder.append(guestBookHtml);
+
+			guestBookHtmlBuilder.append(foot);
+
+			Util.writeFileContents("site/" + fileName, guestBookHtmlBuilder.toString());
+		}
+
+	}
+
+	// 프로필 페이지 생성 함수
 	private void createProfile(String head, String foot) {
-		
+
 		String fileName = "profile.html";
-		
+
 		String profileHtml = Util.getFileContents("site_template/profile/profile.html");
 		StringBuilder profileBuilder = new StringBuilder();
 		head = getHeadHtml(head);
 		profileBuilder.append(head);
 		profileBuilder.append(profileHtml);
 		profileBuilder.append(foot);
-		
+
 		Util.writeFileContents("site/" + fileName, profileBuilder.toString());
-		
+
 	}
-	
+
 	// 통계페이지 생성 함수
 	private void createStatDetail(String head, String foot) {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
@@ -215,15 +344,15 @@ public class BuildService {
 				switch (board.getCode()) {
 				case "notice":
 					articleDetail__articlelist_boardName
-							.append("<i class=\"fas fa-flag\"></i><span>" + board.getName() + " 게시판</span>");
+							.append("<span>" + board.getName() + " 게시판</span>");
 					break;
 				case "free":
 					articleDetail__articlelist_boardName
-							.append("<i class=\"fas fa-clipboard\"></i><span>" + board.getName() + " 게시판</span>");
+							.append("<span>" + board.getName() + " 게시판</span>");
 					break;
 				default:
 					articleDetail__articlelist_boardName
-							.append("<i class=\"far fa-clipboard\"></i><span>" + board.getName() + " 게시판</span>");
+							.append("<span>" + board.getName() + " 게시판</span>");
 					break;
 				}
 
@@ -356,21 +485,6 @@ public class BuildService {
 
 				StringBuilder board_list__boardname = new StringBuilder();
 
-				switch (board.getCode()) {
-				case "notice":
-					board_list__boardname
-							.append("<i class=\"fas fa-flag\"></i><span>" + board.getName() + " 게시판</span>");
-					break;
-				case "free":
-					board_list__boardname
-							.append("<i class=\"fas fa-clipboard\"></i><span>" + board.getName() + " 게시판</span>");
-					break;
-				default:
-					board_list__boardname
-							.append("<i class=\"far fa-clipboard\"></i><span>" + board.getName() + " 게시판</span>");
-					break;
-				}
-
 				boardPageHtml = boardPageHtml.replace("${board-list__boardname}", board_list__boardname.toString());
 
 				boardPageHtml = boardPageHtml.replace("${board-list}",
@@ -411,15 +525,15 @@ public class BuildService {
 					switch (board.getCode()) {
 					case "notice":
 						board_list__boardname
-								.append("<i class=\"fas fa-flag\"></i><span>" + board.getName() + " 게시판</span>");
+								.append("<span>" + board.getName() + " 게시판</span>");
 						break;
 					case "free":
 						board_list__boardname
-								.append("<i class=\"fas fa-clipboard\"></i><span>" + board.getName() + " 게시판</span>");
+								.append("<span>" + board.getName() + " 게시판</span>");
 						break;
 					default:
 						board_list__boardname
-								.append("<i class=\"far fa-clipboard\"></i><span>" + board.getName() + " 게시판</span>");
+								.append("<span>" + board.getName() + " 게시판</span>");
 						break;
 					}
 

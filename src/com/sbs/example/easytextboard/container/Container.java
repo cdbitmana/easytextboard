@@ -9,15 +9,18 @@ import com.sbs.example.easytextboard.controller.*;
 import com.sbs.example.easytextboard.dao.*;
 
 public class Container {
+	
 	public static Session session;
 	public static Scanner scanner;
 	public static MemberDao memberDao;
 	public static ArticleDao articleDao;
+	public static GuestBookDao guestBookDao;
 	public static MemberService memberService;
 	public static ArticleService articleService;
-	public static MemberController memberController;
-	public static ArticleController articleController;
+	public static GuestBookService guestBookService;
 	public static BuildService buildService;
+	public static MemberController memberController;
+	public static ArticleController articleController;	
 	public static BuildController buildController;
 	
 
@@ -26,11 +29,14 @@ public class Container {
 		scanner = new Scanner(System.in);
 		memberDao = new MemberDao();
 		articleDao = new ArticleDao();
+		guestBookDao = new GuestBookDao();
 		memberService = new MemberService();
 		articleService = new ArticleService();
-		memberController = new MemberController();
-		articleController = new ArticleController();
 		buildService = new BuildService();
+		guestBookService = new GuestBookService();
+		memberController = new MemberController();
+		articleController = new ArticleController();		
 		buildController = new BuildController();
+		
 	}
 }
