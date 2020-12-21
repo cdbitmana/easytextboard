@@ -713,7 +713,7 @@
         .content-2{
             position:relative;            
             overflow:auto;
-            background-image: url("../site_template/profile/content-1.jpg");
+            background-image: url("profileimage/content-1.jpg");
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
