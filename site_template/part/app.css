@@ -178,6 +178,7 @@
            z-index:200;
        }
       .top-bar{
+          position:relative;
           height:100px;          
           background-color:rgb(231,237,250);
           box-sizing: border-box;        
@@ -200,7 +201,7 @@
      
       .menu-box1 > ul > li {
           margin:0;
-          padding:3px 15px;
+          padding:0 15px;
           font-size:1.3rem;
           line-height: 100px;          
       }
@@ -247,10 +248,14 @@
           margin-right:135px;
           
       }
-      .menu-button{                  
+      .menu-button{        
+          position:absolute;
+          top:50%;
+          right:50px;          
         z-index:600;
-        margin-right:40px;
-        font-size:1.3rem;
+        font-size:1.2rem;
+        transform: translateY(-50%);
+        
       }
       .menu-button:hover{          
         cursor: pointer;
