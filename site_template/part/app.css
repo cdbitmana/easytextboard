@@ -236,13 +236,13 @@
             transform:translateY(0%);
         }
     }
-    .menu-box2 > div > ul {          
+    .menu-box2 >  ul {    
+        position: relative;;      
         margin:10px 0;
-        margin-right:100px;
-        
+        margin-left:1340px;
     }
       
-      .menu-box2 > div > ul > li{
+      .menu-box2 >  ul > li{
           line-height: initial;
           padding:15px 0;
       }
