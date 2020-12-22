@@ -236,18 +236,18 @@
             transform:translateY(0%);
         }
     }
-    
+    .menu-box2 > div > ul {          
+        margin:10px 0;
+        margin-right:100px;
+        
+    }
       
       .menu-box2 > div > ul > li{
           line-height: initial;
           padding:15px 0;
       }
       
-      .menu-box2 > div > ul {          
-          margin:10px 0;
-          margin-right:135px;
-          
-      }
+      
       .menu-button{        
           position:absolute;
           top:50%;
