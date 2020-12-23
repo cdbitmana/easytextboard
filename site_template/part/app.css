@@ -884,7 +884,7 @@
             left:50%;
             top:50%;            
             transform: translate(-50% , -50%);
-            border:2px solid white;
+            border:5px solid white;
             border-radius:100%;
             z-index:2;  
         }
