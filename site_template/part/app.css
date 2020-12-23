@@ -239,7 +239,7 @@
     .menu-box2 >  ul {    
         position: relative;      
         margin:10px 0;
-        margin-left:1340px;
+        margin-left:1225px;
     }
       
       .menu-box2 >  ul > li{
@@ -732,17 +732,26 @@
        /* 게시물 상세보기 끝 */
 
        /* 통계 상세보기 시작 */
+       .stat-box { 
+           margin-top:50px;
+       }
+       .stat-box > div > ul > li{
+        padding:10px;
+        list-style:disc;
+        background-color:#f8e88ba8;
+        border-radius:10px;
+        
+       }
+       
        .stat-box li{
-           margin:5px 35px;           
+           margin:15px 35px;    
+          ;  
+           
        }
        .stat-box > div {
            padding-top:20px;
        }
-       .stat-box > div > ul > li {           
-            padding:10px 0;
-           list-style:disc;
-          border-bottom: 2px solid black;
-       }
+       
      
        .stat-box > div > ul > li > ul > li{
            list-style:circle;
