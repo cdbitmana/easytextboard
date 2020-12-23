@@ -909,12 +909,12 @@
         }
         .content-2 > .content-2__bg-text-box::after{
             content:"";
-            width:40px;
+            width:240px;
             height:3px;
             background-color:white;
             position:absolute;
             top:-30px;
-            left:33px;
+            left:25px;
         }
         .content-2 > .content-2__bg-text-box > .content-2__bg-text{
             font-size:4rem;

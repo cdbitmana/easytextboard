@@ -65,7 +65,7 @@ public class BuildService {
 
 		createArticleDetail(head, foot);
 
-		createStatDetail(head, foot);
+		// createStatDetail(head, foot);
 
 		createProfile(head, foot);
 
@@ -214,7 +214,7 @@ public class BuildService {
 
 	}
 
-	// 통계페이지 생성 함수
+	/* 통계페이지 생성 함수
 	private void createStatDetail(String head, String foot) {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		String fileName = "statindex.html";
@@ -268,6 +268,7 @@ public class BuildService {
 		Util.writeFileContents("site/" + fileName, statHtmlBuilder.toString());
 
 	}
+	*/ 
 
 	// 게시물 상세보기 생성 함수
 	private void createArticleDetail(String head, String foot) {
