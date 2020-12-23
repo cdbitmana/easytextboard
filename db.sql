@@ -22,7 +22,8 @@ updateDate = NOW(),
 title = '제목1',
 `body` = '내용1',
 memberId = 1,
-boardId = 1;
+boardId = 1,
+hit = 0;
 
 INSERT INTO article
 SET regDate = NOW(),
@@ -30,7 +31,8 @@ updateDate = NOW(),
 title = '제목2',
 `body` = '내용2',
 memberId = 1,
-boardId = 1;
+boardId = 1,
+hit = 0;
 
 INSERT INTO article
 SET regDate = NOW(),
@@ -38,7 +40,8 @@ updateDate = NOW(),
 title = '제목3',
 `body` = '내용3',
 memberId = 1,
-boardId = 1;
+boardId = 1,
+hit = 0;
 
 # 회원 테이블 생성
 CREATE TABLE `member` (

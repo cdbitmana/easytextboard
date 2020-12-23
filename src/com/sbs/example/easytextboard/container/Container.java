@@ -32,8 +32,9 @@ public class Container {
 		guestBookDao = new GuestBookDao();
 		memberService = new MemberService();
 		articleService = new ArticleService();
-		buildService = new BuildService();
+		
 		guestBookService = new GuestBookService();
+		buildService = new BuildService();
 		memberController = new MemberController();
 		articleController = new ArticleController();		
 		buildController = new BuildController();

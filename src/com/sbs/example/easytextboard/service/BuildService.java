@@ -14,14 +14,16 @@ import com.sbs.example.easytextboard.util.Util;
 
 public class BuildService {
 
+	GuestBookService guestBookService;
 	ArticleService articleService;
 	MemberService memberService;
-	GuestBookService guestBookService;
+	
 
 	public BuildService() {
+		guestBookService = Container.guestBookService;
 		articleService = Container.articleService;
 		memberService = Container.memberService;
-		guestBookService = Container.guestBookService;
+		
 	}
 
 	public void makeHtml() {
@@ -76,7 +78,7 @@ public class BuildService {
 		 * List<GuestBook> guestBooks = guestBookService.getGuestBooks();
 		 */
 
-		List<GuestBook> guestBooks = articleService.getGuestBooks();
+		List<GuestBook> guestBooks = guestBookService.getGuestBooks();
 		int itemsInAPage = 10;
 		int pages = guestBooks.size() / itemsInAPage;
 		if (guestBooks.size() % 10 != 0) {

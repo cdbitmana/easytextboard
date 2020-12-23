@@ -107,9 +107,6 @@ public class ArticleService {
 		return articleDao.getArticlesByBoardId();
 	}
 
-	// guestBookService exception 해결하면 삭제할것
-	public List<GuestBook> getGuestBooks() {
-		return articleDao.getGuestBooks();
-	}
+	
 
 }
