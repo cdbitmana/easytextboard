@@ -2,19 +2,50 @@
 <html lang="ko">
 
 <head>
+    <!-- 메타태그정보 //-->
+    <!-- META -->
+    <link rel="canonical" href="${site-main-url}" />
+    <meta name="subject" content="${site-subject}" />
+    <meta name="title" content="${site-name}" />
+    <meta name="keywords" content="${site-keywords}" />
+    <meta name="copyright" content="${site-name}" />
+    <meta name="pubdate" content="${current-date}" />
+    <meta name="lastmod" content="${current-date}" />
+    <!-- OPENGRAPH -->
+    <meta property="og:site_name" content="${site-name}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="${site-subject}" />
+    <meta property="og:description" content="${site-description}" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="logoimage/ogimage.png" />
+    <meta property="og:image:alt" content="${site-domain}" />
+    <meta property="og:image:width" content="486" />
+    <meta property="og:image:height" content="254" />
+    <meta property="og:updated_time" content="${current-date}" />
+    <meta property="og:pubdate" content="${current-date}" />
+    <meta property="og:url" content="${site-main-url}" />
+    <!-- TWITTER -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${site-subject}" />
+    <meta name="twitter:site" content="@${site-name}" />
+    <meta name="twitter:creator" content="@${site-name}" />
+    <meta name="twitter:image" content="/img/logo/logo_opengraph.png">
+    <meta name="twitter:description" content="${site-description}" />
+    <!-- GOOGLE+ -->
+    <meta itemprop="headline" content="${site-name}" />
+    <meta itemprop="name" content="${site-name}" />
+    <meta itemprop="description" content="${site-description}" />
+    <meta itemprop="image" content="/img/logo/logo_opengraph.png" />
+
+    <title>${page-title}</title>
     
-    <meta property="og:title" content="DLOG">
-    <meta property="og:image" content="logoimage/ogimage.png">
-    <meta property="og:description" content="DLOG - 이명학님의 개인 블로그입니다.">
-    <meta property="og:image:width" content="800">
-    <meta property="og:image:height" content="400">
-    
+
     <script data-ad-client="ca-pub-1940074004342489" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TDBME1CZ9L"></script>
-    
+
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
@@ -25,75 +56,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DLOG</title>
-    <script data-ad-client="ca-pub-1940074004342489" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-1940074004342489" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <meta name="google-site-verification" content="rn7Tpz7rbqF5Ss3qku9sWvLyaueNYLF-QRe_06ZCNz8" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="app.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
+
     <link rel="shortcut icon" href="logoimage/favicon.png">
     <link rel="icon" href="logoimage/favicon.png">
 
 </head>
 
 <body id="top">
-    
-       
-        <div class="side-bar flex flex-dir-col">
-            <div class="flex flex-jc-c">
-            <span class="side-bar__logo"><a href="index.html"><img src="logoimage/side_bar_logo.png" alt=""></a></span>
+
+
+    <div class="side-bar flex flex-dir-col">
+        <div class="flex flex-jc-c">
+            <a class="side-bar__logo" href="index.html"></a>
         </div>
-            <span class="side-bar__menu-button" href=""><i class="fas fa-times-circle"></i></span>
-            <div class="flex flex-jc-c width-100p side-bar__menu-box1">            
+        <span class="side-bar__menu-button" href=""><i class="fas fa-times-circle"></i></span>
+        <div class="flex flex-jc-c width-100p side-bar__menu-box1">
             <ul class="width-100p">
                 <li><a class="flex flex-jc-c flex-ai-c height-100p" href="profile.html">PROFILE</a></li>
-                <li><a class="flex flex-jc-c flex-ai-c height-100p" href="">BOARD </a> 
-                       <div class="side-bar__menu-box2 width-100p">
+                <li><a class="flex flex-jc-c flex-ai-c height-100p" href="">BOARD </a>
+                    <div class="side-bar__menu-box2 width-100p">
                         <ul class="width-100p">
                             ${boardListHead}
-                        </ul>  
-                    </div>                
+                        </ul>
+                    </div>
                 </li>
                 <li><a class="flex flex-jc-c flex-ai-c height-100p" href="statindex.html">STATISTICS</a></li>
-                <li><a class="flex flex-jc-c flex-ai-c height-100p" href="guestbook-list-1.html">GUESTBOOK</a></li>                        
-            </ul>  
+                <li><a class="flex flex-jc-c flex-ai-c height-100p" href="guestbook-list-1.html">GUESTBOOK</a></li>
+            </ul>
         </div>
         <div class="flex flex-jc-c width-100p side-bar__menu-box3">
             <ul class="flex">
                 <li><a href="https://cdbitmana.tistory.com/" target="_blank"><i class="fab fa-blogger"></i></a></li>
-                <li><a href="https://ko-kr.facebook.com/" target="_blank"><i class="fab fa-facebook-square"></i></a></li>
-                <li><a href="https://github.com/cdbitmana/" target="_blank"><i class="fab fa-github-square"></i></a></li>
+                <li><a href="https://ko-kr.facebook.com/" target="_blank"><i class="fab fa-facebook-square"></i></a>
+                </li>
+                <li><a href="https://github.com/cdbitmana/" target="_blank"><i class="fab fa-github-square"></i></a>
+                </li>
                 <li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
             </ul>
-        </div>    
         </div>
-        
+    </div>
+
 
     <div class="container flex flex-dir-col">
         <div class="wrapper">
-        <header class="flex top-bar con-min-width">
-            <div class="con flex">
-                <div class="logo-box flex flex-ai-c"><a class="height-100p flex flex-ai-c" href="index.html"><img src="logoimage/logo.png" alt=""></a></div>
-                <div class="flex-grow-1"></div>
-                <div class="flex menu-box1">
-                    <ul class="flex">
-                        <li><a class="height-100p" href="profile.html">PROFILE</a></li>
-                        <li><a class="height-100p" href="">BOARD</a>                            
-                            <div class="width-100p menu-box2">                            
-                            <ul>
-                                ${boardListHead}
-                            </ul>
-                            </div>
-                        </li>
-                        <li><a class="flex flex-jc-c flex-ai-c height-100p" href="statindex.html">STATISTICS</a></li>
-                        <li><a class="height-100p" href="guestbook-list-1.html">GUESTBOOK</a></li>
-                    </ul>                    
+            <header class="flex top-bar con-min-width">
+                <div class="con flex">
+                    <a class="logo-box" href="index.html"></a>
+                    <div class="flex-grow-1"></div>
+                    <div class="flex menu-box1">
+                        <ul class="flex">
+                            <li><a class="height-100p" href="profile.html">PROFILE</a></li>
+                            <li><a class="height-100p" href="">BOARD</a>
+                                <div class="width-100p menu-box2">
+                                    <ul>
+                                        ${boardListHead}
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><a class="flex flex-jc-c flex-ai-c height-100p" href="statindex.html">STATISTICS</a>
+                            </li>
+                            <li><a class="height-100p" href="guestbook-list-1.html">GUESTBOOK</a></li>
+                        </ul>
+                    </div>
+
                 </div>
-                
-            </div>
-            <span class="flex flex-ai-c menu-button" href=""><i class="fas fa-bars"></i></span>
-        </header>
-    </div>
-    
-    <a  class="scrolltop-button" href="#top"><i class="fas fa-arrow-up"></i></a>
+                <span class="flex flex-ai-c menu-button" href=""><i class="fas fa-bars"></i></span>
+            </header>
+        </div>
+
+        <a class="scrolltop-button" href="#top"><i class="fas fa-arrow-up"></i></a>

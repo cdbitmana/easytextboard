@@ -184,19 +184,16 @@
       }
       
       .logo-box  {                
-                height:100%;
-                padding:10px 0;
-                padding-top:15px;
-                padding-bottom:10px;
-                margin-right:60px;
+                width:100px;                
+                height:100px;
                 box-sizing: border-box;
+                background-image: url("logoimage/logo.png");
+                background-position: center;
+                background-size:170%;
+                background-repeat: no-repeat;
       }     
       
-      .logo-box > a > img {
-          
-          height:100%;
-          object-fit:contain;
-      }
+     
      
       .menu-box1 > ul > li {
           margin:0;
@@ -295,19 +292,15 @@
           border-left:2px solid gray;
       }
       .side-bar .side-bar__logo{          
-          width:80px;
-          height:80px;
-          margin-top:40px ;
+          width:120px;
+          height:120px;
+          margin-top:40px;
+          background-image: url("logoimage/logo.png");
+          background-position: center;
+          background-size:200%;
+          background-repeat: no-repeat;
+          box-sizing: border-box;
           
-      }
-      .side-bar  .side-bar__logo > a {
-          width:100%;
-          height:100%;
-      }
-      .side-bar  .side-bar__logo > a > img{
-          width:100%;
-          height:100%;
-          object-fit:contain;
       }
       .side-bar__menu-button{
           position:absolute;
@@ -992,14 +985,15 @@
         color:white;
     }
     .bottom-logo-bar__logo-box {
-        width:100px;
+        margin-top:40px;
+        width: 100px;
         height:100px;
+        background-image: url("logoimage/bottom_bar_logo.png");
+        background-position: center;
+        background-size: 200%;
+        background-repeat: no-repeat;
     }
-    .bottom-logo-bar__logo-box > a > img {
-        width:100%;
-        height:100%;
-        object-fit: contain;
-    }
+    
     .copyright-box{
         margin-top:40px;
         padding-left:100px;
@@ -1018,9 +1012,5 @@
     .copyright-box > span{
         display:block;
         margin-top:35px;
-    }
-    .bottom-logo-bar__logo-box {
-        padding:50px 0;
-        font-size:2.5rem;
     }
     /* 하단 로고 바 끝 */

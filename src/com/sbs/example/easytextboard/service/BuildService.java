@@ -56,24 +56,24 @@ public class BuildService {
 		 */
 		Util.copy(cssSource, "site/app.css");
 		Util.copy(jsSource, "site/common.js");
-		String head = Util.getFileContents("site_template/part/head.html");
+		
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
-		createMainPage(head, foot);
+		createMainPage("index", foot);
 
-		createBoardPage(head, foot);
+		createBoardPage("article_list", foot);
 
-		createArticleDetail(head, foot);
+		createArticleDetail("article_detail", foot);
 
-		createStatDetail(head, foot);
+		createStatDetail("statistics", foot);
 
-		createProfile(head, foot);
+		createProfile("profile", foot);
 
-		createGuestBook(head, foot);
+		createGuestBook("guestbook", foot);
 	}
 
 	// 방명록 페이지 생성 함수
-	private void createGuestBook(String head, String foot) {
+	private void createGuestBook(String pageName, String foot) {
 		/*
 		 * List<GuestBook> guestBooks = guestBookService.getGuestBooks();
 		 */
@@ -105,7 +105,7 @@ public class BuildService {
 			String fileName = "";
 			fileName = "guestbook" + "-list-" + i + ".html";
 
-			guestBookHtmlBuilder.append(getHeadHtml(head));
+			guestBookHtmlBuilder.append(getHeadHtml(pageName));
 
 			int start = guestBooks.size() - ((i - 1) * itemsInAPage) - 1;
 			int end = (start - itemsInAPage + 1);
@@ -199,14 +199,14 @@ public class BuildService {
 	}
 
 	// 프로필 페이지 생성 함수
-	private void createProfile(String head, String foot) {
+	private void createProfile(String pageName, String foot) {
 
 		String fileName = "profile.html";
 
 		String profileHtml = Util.getFileContents("site_template/profile/profile.html");
 		StringBuilder profileBuilder = new StringBuilder();
-		head = getHeadHtml(head);
-		profileBuilder.append(head);
+		pageName = getHeadHtml(pageName);
+		profileBuilder.append(pageName);
 		profileBuilder.append(profileHtml);
 		profileBuilder.append(foot);
 
@@ -215,7 +215,7 @@ public class BuildService {
 	}
 
 	// 통계페이지 생성 함수 
-	private void createStatDetail(String head, String foot) {
+	private void createStatDetail(String pageName, String foot) {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		String fileName = "statindex.html";
 
@@ -224,7 +224,7 @@ public class BuildService {
 
 		StringBuilder statHtmlBuilder = new StringBuilder();
 		String statHtml = Util.getFileContents("site_template/stat/index.html");
-		statHtmlBuilder.append(getHeadHtml(head));
+		statHtmlBuilder.append(getHeadHtml(pageName));
 
 		statHtml = statHtml.replace("${member_count}", String.valueOf(members.size()));
 		statHtml = statHtml.replace("${all_article_count}", String.valueOf(articles.size()));
@@ -271,7 +271,7 @@ public class BuildService {
 	
 
 	// 게시물 상세보기 생성 함수
-	private void createArticleDetail(String head, String foot) {
+	private void createArticleDetail(String pageName, String foot) {
 
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 
@@ -284,8 +284,8 @@ public class BuildService {
 				String writer = memberService.getMemberById(articles.get(i).getMemberId()).getName();
 				String fileName = board.getCode() + "-" + articles.get(i).getId() + ".html";
 				StringBuilder articleDetailHtmlBuilder = new StringBuilder();
-
-				articleDetailHtmlBuilder.append(getHeadHtml(head));
+				Article article = articles.get(i);
+				articleDetailHtmlBuilder.append(getHeadHtml(pageName,article));
 
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-id}",
 						String.valueOf(articles.get(i).getId()));
@@ -460,7 +460,7 @@ public class BuildService {
 	}
 
 	// 게시판 페이지 생성 함수
-	private void createBoardPage(String head, String foot) {
+	private void createBoardPage(String pageName, String foot) {
 
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		for (Board board : boards) {
@@ -483,7 +483,7 @@ public class BuildService {
 				StringBuilder boardPageHtmlBuilder = new StringBuilder();
 				String fileName = "";
 				fileName = board.getCode() + "-list-1.html";
-				boardPageHtmlBuilder.append(getHeadHtml(head));
+				boardPageHtmlBuilder.append(getHeadHtml(pageName));
 
 				StringBuilder board_list__boardname = new StringBuilder();
 				board_list__boardname.append(board.getName() +" 게시판");
@@ -520,7 +520,7 @@ public class BuildService {
 					String fileName = "";
 					fileName = board.getCode() + "-list-" + i + ".html";
 
-					boardPageHtmlBuilder.append(getHeadHtml(head));
+					boardPageHtmlBuilder.append(getHeadHtml(pageName));
 
 					StringBuilder board_list__boardname = new StringBuilder();
 
@@ -634,11 +634,11 @@ public class BuildService {
 	}
 
 	// 메인화면 생성 함수
-	private void createMainPage(String head, String foot) {
+	private void createMainPage(String pageName, String foot) {
 
 		StringBuilder mainPageHtml = new StringBuilder();
 
-		mainPageHtml.append(getHeadHtml(head));
+		mainPageHtml.append(getHeadHtml(pageName));
 
 		String homeHtml = Util.getFileContents("site_template/home/index.html");
 
@@ -679,9 +679,16 @@ public class BuildService {
 		Util.writeFileContents("site/" + "index.html", mainPageHtml.toString());
 
 	}
-
-	// 상단 메뉴 생성 함수
-	private String getHeadHtml(String head) {
+	
+	// getHeadHtml
+	private String getHeadHtml(String pageName) {
+		return getHeadHtml(pageName,null);
+	}
+	
+	
+	private String getHeadHtml(String pageName , Object relObj) {
+		
+		String head = Util.getFileContents("site_template/part/head.html");
 
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 
@@ -697,8 +704,66 @@ public class BuildService {
 			changeMenuHtml.append("</li>");
 		}
 
-		return head = head.replace("${boardListHead}", changeMenuHtml.toString());
+		head = head.replace("${boardListHead}", changeMenuHtml.toString());
+		
+		
+		
+		String pageTitle = getPageTitle(pageName, relObj);
 
+		head = head.replace("${page-title}", pageTitle);
+
+		String siteName = "DLOG";
+		String siteSubject = "이명학의 개인 블로그";
+		String siteDescription = "개발자의 기술/일상 관련 글들을 공유합니다.";
+		String siteKeywords = "HTML, CSS, JAVASCRIPT, JAVA, SPRING, MySQL, 리눅스, 리액트";
+		String siteDomain = "blog.hailrain.site";
+		String siteMainUrl = "https://" + siteDomain;
+		String currentDate = Util.getNowDateStr().replace(" ", "T");
+		
+		
+		if ( relObj instanceof Article ) {
+			Article article = (Article)relObj;
+			siteSubject = article.getTitle();
+			siteDescription = article.getBody();
+			siteDescription = siteDescription.replaceAll("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]", "");
+		}
+
+		head = head.replace("${site-name}", siteName);
+		head = head.replace("${site-subject}", siteSubject);
+		head = head.replace("${site-description}", siteDescription);
+		head = head.replace("${site-domain}", siteDomain);
+		head = head.replace("${site-domain}", siteDomain);
+		head = head.replace("${current-date}", currentDate);
+		head = head.replace("${site-main-url}", siteMainUrl);
+		head = head.replace("${site-keywords}", siteKeywords);
+
+		return head;
+
+	}
+	
+	// getPageTitle
+	private String getPageTitle(String pageName, Object relObj) {
+		StringBuilder sb = new StringBuilder();
+
+		String forPrintPageName = pageName;
+
+		if (forPrintPageName.equals("index")) {
+			forPrintPageName = "home";
+		}
+
+		forPrintPageName = forPrintPageName.toUpperCase();
+		forPrintPageName = forPrintPageName.replaceAll("_", " ");
+
+		sb.append("DLOG | ");
+		sb.append(forPrintPageName);
+
+		if (relObj instanceof Article) {
+			Article article = (Article) relObj;
+
+			sb.insert(0, article.getTitle() + " | ");
+		}
+
+		return sb.toString();
 	}
 
 }
