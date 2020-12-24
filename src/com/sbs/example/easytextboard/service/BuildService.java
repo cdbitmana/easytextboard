@@ -462,7 +462,7 @@ public class BuildService {
 	}
 
 	private String getArticleDetailFileName(Article article) {
-		return article.getExtra__boardCode() + "-list-" + article.getId();
+		return article.getExtra__boardCode() +"-"+ article.getId() +".html";
 		
 	}
 
