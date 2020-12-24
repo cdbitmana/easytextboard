@@ -450,6 +450,8 @@ public class BuildService {
 
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__articlelist-lastpagelink}",
 						articledetail__articlelist_lastpagelink.toString());
+				articleDetailHtml = articleDetailHtml.replace("${site-domain}", "blog.hailrain.site");
+				articleDetailHtml = articleDetailHtml.replace("${file-name}", getArticleDetailFileName(article));
 				articleDetailHtmlBuilder.append(articleDetailHtml);
 				articleDetailHtmlBuilder.append(foot);
 
@@ -458,6 +460,12 @@ public class BuildService {
 			}
 		}
 	}
+
+	private String getArticleDetailFileName(Article article) {
+		return article.getExtra__boardCode() + "-list-" + article.getId();
+		
+	}
+
 
 	// 게시판 페이지 생성 함수
 	private void createBoardPage(String pageName, String foot) {
