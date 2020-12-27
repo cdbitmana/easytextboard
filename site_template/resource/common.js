@@ -10,14 +10,16 @@ if($(window).scrollTop() >= 25){
 });
 
 
-$(".profile_arrow").hover(function(){
+$(".profile_arrow > i").hover(function(){
   $(".profile_detail").css("width", "900px");
   $(".profile_detail").css("left", "290px");
+  $(".extend").css("visibility","hidden");
 });
 
 $(".content-1__wrapper").mouseleave(function(){
     $(".profile_detail").css("width", "0");
     $(".profile_detail").css("left", "0");
+    $(".extend").css("visibility","visible");
   });
 
 
