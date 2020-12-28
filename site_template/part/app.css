@@ -453,13 +453,16 @@
            border-bottom: 2px solid gray;
            padding-bottom:5px;
            width:100%;
+           height:16px;
            text-overflow: ellipsis;
            white-space: nowrap;
+           
        }
        .home-main__article-box__title{
-           overflow: hidden;
+           overflow-x: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        line-height:16px;
        }
        .home-main__article-box__boardname::after{
            content:"";
@@ -527,6 +530,9 @@
        .board-list > table{
            table-layout: fixed;
        }
+       .board-list > table > tbody > tr:not(.line-separate){
+           height:41px;
+       }
        .board-list > table > tbody > tr:not(.tag):not(.article-not-exists):hover {
            background-color:#afafaf49;
         
@@ -539,7 +545,7 @@
 		   white-space : nowrap;
 	       text-overflow: ellipsis;
        }       
-       .board-list > table > tbody > tr > td:not(.line-separate){
+       .board-list > table > tbody > tr:not(.line-separate) > td{
            max-height:30px;
            box-sizing: border-box;           
            
@@ -562,7 +568,7 @@
            transform:translateY(-50%);
        }
        
-       .board-list > table >  tbody > tr > td.line-separate{
+       .board-list > table >  tbody > tr.line-separate > td{
            background-color:black;    
            width:1200px;
            padding:0;
@@ -604,6 +610,8 @@
        }
        .board-list .cell-title{
            width:var(--cell-title__width);
+           height:10px;
+           
        }
        .page-button {
            margin:35px auto;
