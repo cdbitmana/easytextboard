@@ -9,6 +9,18 @@ if($(window).scrollTop() >= 25){
 }
 });
 
+function getPageName(){
+    var pageName = ""; 
+    var tempPageName = window.location.href;
+    var strPageName = tempPageName.split("/");
+    pageName = strPageName[strPageName.length-1].split("?")[0];
+    if(pageName == "profile.html"){
+        $(".top-bar").css("background-color","#F8E88B");
+    }
+    return pageName;
+}
+getPageName();
+
 
 $(".profile_arrow > i").hover(function(){
   $(".profile_detail").css("width", "900px");

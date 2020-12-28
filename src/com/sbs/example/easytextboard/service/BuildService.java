@@ -17,13 +17,12 @@ public class BuildService {
 	GuestBookService guestBookService;
 	ArticleService articleService;
 	MemberService memberService;
-	
 
 	public BuildService() {
 		guestBookService = Container.guestBookService;
 		articleService = Container.articleService;
 		memberService = Container.memberService;
-		
+
 	}
 
 	public void makeHtml() {
@@ -56,7 +55,7 @@ public class BuildService {
 		 */
 		Util.copy(cssSource, "site/app.css");
 		Util.copy(jsSource, "site/common.js");
-		
+
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
 		createMainPage("index", foot);
@@ -118,15 +117,14 @@ public class BuildService {
 			for (int j = start; j >= end; j--) {
 
 				board_list.append("<div class=\"flex\">");
-				
+
 				board_list.append("<div class=\"guestbook-writer\">" + guestBooks.get(j).getExtra__writer() + "</div>");
 				board_list.append("<div class=\"flex-grow-1 guestbook-title\">" + guestBooks.get(j).getTitle());
 				board_list.append("</div>");
 				board_list.append("<div class=\"guestbook-regDate\">" + guestBooks.get(j).getRegDate() + "</div>");
-				
+
 				board_list.append("</div>");
-				
-				
+
 			}
 
 			guestBookHtml = guestBookHtml.replace("${guestbook-list}", board_list.toString());
@@ -214,7 +212,7 @@ public class BuildService {
 
 	}
 
-	// 통계페이지 생성 함수 
+	// 통계페이지 생성 함수
 	private void createStatDetail(String pageName, String foot) {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		String fileName = "statindex.html";
@@ -268,7 +266,6 @@ public class BuildService {
 		Util.writeFileContents("site/" + fileName, statHtmlBuilder.toString());
 
 	}
-	
 
 	// 게시물 상세보기 생성 함수
 	private void createArticleDetail(String pageName, String foot) {
@@ -285,7 +282,7 @@ public class BuildService {
 				String fileName = board.getCode() + "-" + articles.get(i).getId() + ".html";
 				StringBuilder articleDetailHtmlBuilder = new StringBuilder();
 				Article article = articles.get(i);
-				articleDetailHtmlBuilder.append(getHeadHtml(pageName,article));
+				articleDetailHtmlBuilder.append(getHeadHtml(pageName, article));
 
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-id}",
 						String.valueOf(articles.get(i).getId()));
@@ -462,10 +459,9 @@ public class BuildService {
 	}
 
 	private String getArticleDetailFileName(Article article) {
-		return article.getExtra__boardCode() +"-"+ article.getId() +".html";
-		
-	}
+		return article.getExtra__boardCode() + "-" + article.getId() + ".html";
 
+	}
 
 	// 게시판 페이지 생성 함수
 	private void createBoardPage(String pageName, String foot) {
@@ -494,7 +490,7 @@ public class BuildService {
 				boardPageHtmlBuilder.append(getHeadHtml(pageName));
 
 				StringBuilder board_list__boardname = new StringBuilder();
-				board_list__boardname.append(board.getName() +" 게시판");
+				board_list__boardname.append(board.getName() + " 게시판");
 				boardPageHtml = boardPageHtml.replace("${board-list__boardname}", board_list__boardname.toString());
 
 				boardPageHtml = boardPageHtml.replace("${board-list}",
@@ -687,15 +683,14 @@ public class BuildService {
 		Util.writeFileContents("site/" + "index.html", mainPageHtml.toString());
 
 	}
-	
+
 	// getHeadHtml
 	private String getHeadHtml(String pageName) {
-		return getHeadHtml(pageName,null);
+		return getHeadHtml(pageName, null);
 	}
-	
-	
-	private String getHeadHtml(String pageName , Object relObj) {
-		
+
+	private String getHeadHtml(String pageName, Object relObj) {
+
 		String head = Util.getFileContents("site_template/part/head.html");
 
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
@@ -713,9 +708,7 @@ public class BuildService {
 		}
 
 		head = head.replace("${boardListHead}", changeMenuHtml.toString());
-		
-		
-		
+
 		String pageTitle = getPageTitle(pageName, relObj);
 
 		head = head.replace("${page-title}", pageTitle);
@@ -727,10 +720,9 @@ public class BuildService {
 		String siteDomain = "blog.hailrain.site";
 		String siteMainUrl = "https://" + siteDomain;
 		String currentDate = Util.getNowDateStr().replace(" ", "T");
-		
-		
-		if ( relObj instanceof Article ) {
-			Article article = (Article)relObj;
+
+		if (relObj instanceof Article) {
+			Article article = (Article) relObj;
 			siteSubject = article.getTitle();
 			siteDescription = article.getBody();
 			siteDescription = siteDescription.replaceAll("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]", "");
@@ -748,7 +740,7 @@ public class BuildService {
 		return head;
 
 	}
-	
+
 	// getPageTitle
 	private String getPageTitle(String pageName, Object relObj) {
 		StringBuilder sb = new StringBuilder();
@@ -766,6 +758,7 @@ public class BuildService {
 		sb.append(forPrintPageName);
 
 		if (relObj instanceof Article) {
+
 			Article article = (Article) relObj;
 
 			sb.insert(0, article.getTitle() + " | ");
