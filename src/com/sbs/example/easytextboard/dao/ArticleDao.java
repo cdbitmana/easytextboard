@@ -93,16 +93,36 @@ public class ArticleDao {
 	}
 
 	// doModify
-	public void doModify(String title, String body, int articleId) {
+	public int doModify(Map<String, Object> args) {
 		SecSql sql = new SecSql();
 
+		
+		int id = (int) args.get("id");
+		String title = args.get("title") != null ? (String) args.get("title") : null;
+		String body = args.get("body") != null ? (String) args.get("body") : null;
+		int likesCount = args.get("likesCount") != null ? (int) args.get("likesCount") : -1;
+		int commentsCount = args.get("commentsCount") != null ? (int) args.get("commentsCount") : -1;
+		
 		sql.append("UPDATE article");
-		sql.append("SET title = ?", title);
-		sql.append(", `body` = ?", body);
-		sql.append("WHERE id = ?", articleId);
-		sql.append("AND boardId = ?", Container.session.getCurrentBoardId());
+		sql.append("SET updateDate = NOW()");
+		if (title != null) {
+			sql.append(", title = ?", title);
+		}
 
-		MysqlUtil.update(sql);
+		if (body != null) {
+			sql.append(", body = ?", body);
+		}
+
+		if (likesCount != -1) {
+			sql.append(", likesCount = ?", likesCount);
+		}
+
+		if (commentsCount != -1) {
+			sql.append(", commentsCount = ?", commentsCount);
+		}
+		sql.append("WHERE id = ?", id);
+
+		return MysqlUtil.update(sql);
 
 	}
 
@@ -320,7 +340,11 @@ public class ArticleDao {
 		List<Article> articles = new ArrayList<>();
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM article");
+		sql.append("SELECT A.* , M.name AS extra__writer , B.name AS extra__boardName , B.code AS extra__boardCode FROM article AS A");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON A.memberId = M.id");
+		sql.append("INNER JOIN `board` AS B");
+		sql.append("ON A.boardId = B.id");
 
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
 

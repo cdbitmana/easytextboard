@@ -2,7 +2,9 @@ package com.sbs.example.easytextboard.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dto.Article;
@@ -17,12 +19,12 @@ public class BuildService {
 	GuestBookService guestBookService;
 	ArticleService articleService;
 	MemberService memberService;
-
+	private DisqusApiService disqusApiService;
 	public BuildService() {
 		guestBookService = Container.guestBookService;
 		articleService = Container.articleService;
 		memberService = Container.memberService;
-
+		disqusApiService = Container.disqusApiService;
 	}
 
 	public void makeHtml() {
@@ -57,6 +59,8 @@ public class BuildService {
 		Util.copy(jsSource, "site/common.js");
 
 		String foot = Util.getFileContents("site_template/part/foot.html");
+		
+		loadDisqusData();
 
 		createMainPage("index", foot);
 
@@ -69,6 +73,26 @@ public class BuildService {
 		createProfile("profile", foot);
 
 		createGuestBook("guestbook", foot);
+	}
+
+	private void loadDisqusData() {
+		List<Article> articles = articleService.getArticles();
+
+		for (Article article : articles) {
+			Map<String, Object> disqusArticleData = disqusApiService.getArticleData(article);
+
+			if (disqusArticleData != null) {
+				int likesCount = (int) disqusArticleData.get("likesCount");
+				int commentsCount = (int) disqusArticleData.get("commentsCount");
+
+				Map<String, Object> modifyArgs = new HashMap<>();
+				modifyArgs.put("id", article.getId());
+				modifyArgs.put("likesCount", likesCount);
+				modifyArgs.put("commentsCount", commentsCount);
+
+				articleService.modify(modifyArgs);
+			}
+		}
 	}
 
 	// 방명록 페이지 생성 함수
@@ -295,6 +319,8 @@ public class BuildService {
 						String.valueOf(articles.get(i).getHit()));
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-recommend}",
 						String.valueOf(articleService.getArticleRecommend(articles.get(i).getId())));
+				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-comments}",
+						String.valueOf(articles.get(i).getCommentsCount()));
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-body}",
 						articles.get(i).getBody());
 
@@ -458,7 +484,7 @@ public class BuildService {
 		}
 	}
 
-	private String getArticleDetailFileName(Article article) {
+	public String getArticleDetailFileName(Article article) {
 		return article.getExtra__boardCode() + "-" + article.getId() + ".html";
 
 	}

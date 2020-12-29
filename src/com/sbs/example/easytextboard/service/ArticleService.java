@@ -1,7 +1,9 @@
 package com.sbs.example.easytextboard.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sbs.example.easytextboard.container.*;
 import com.sbs.example.easytextboard.dao.*;
@@ -36,9 +38,18 @@ public class ArticleService {
 		return articleDao.getArticleById(articleId);
 	}
 
-	public void doModify(String title, String body, int articleId) {
-		articleDao.doModify(title, body, articleId);
+	public int doModify(String title, String body, int articleId) {
+		Map<String, Object> modifyArgs = new HashMap<>();
+		modifyArgs.put("id", articleId);
+		modifyArgs.put("title", title);
+		modifyArgs.put("body", body);
 
+		return modify(modifyArgs);
+
+	}
+
+	public int modify(Map<String, Object> args) {
+		return (int)articleDao.doModify(args);
 	}
 
 	public Article getArticleForPrintById(int articleId) {
@@ -106,7 +117,5 @@ public class ArticleService {
 	public List<Article> getArticlesByBoardId() {
 		return articleDao.getArticlesByBoardId();
 	}
-
-	
 
 }

@@ -11,9 +11,12 @@ public class Article {
 	private int memberId;
 	private int hit;
 	private int boardId;
+	private int likesCount;
+	private int commentsCount;
 	private String extra__writer;
 	private String extra__boardName;
 	private String extra__boardCode;
+	
 	public Article(Map<String, Object> articleMap) {
 		this.id = (int) articleMap.get("id");
 		this.regDate = (String) articleMap.get("regDate");
@@ -22,12 +25,28 @@ public class Article {
 		this.body = (String) articleMap.get("body");
 		this.memberId = (int) articleMap.get("memberId");
 		this.hit = (int) articleMap.get("hit");
+		this.likesCount = (int) articleMap.get("likesCount");
+		this.commentsCount = (int) articleMap.get("commentsCount");
 		this.boardId = (int) articleMap.get("boardId");
 		this.extra__writer = (String) articleMap.get("extra__writer");
 		this.extra__boardName = (String) articleMap.get("extra__boardName");
 		this.extra__boardCode = (String) articleMap.get("extra__boardCode");
 	}
+	public int getLikesCount() {
+		return likesCount;
+	}
 
+	public void setLikesCount(int likesCount) {
+		this.likesCount = likesCount;
+	}
+
+	public int getCommentsCount() {
+		return commentsCount;
+	}
+
+	public void setCommentsCount(int commentsCount) {
+		this.commentsCount = commentsCount;
+	}
 	public String getExtra__boardCode() {
 		return extra__boardCode;
 	}
