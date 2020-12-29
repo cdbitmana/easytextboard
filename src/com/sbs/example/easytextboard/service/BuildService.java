@@ -361,7 +361,7 @@ public class BuildService {
 				StringBuilder articleDetail__articleList = new StringBuilder();
 				for (int j = start; j >= end; j--) {
 					articleDetail__articleList.append("<tr class =\"line-separate\">");
-					articleDetail__articleList.append("<td colspan=\"6\"</td>");
+					articleDetail__articleList.append("<td colspan=\"6\"></td>");
 					articleDetail__articleList.append("</tr>");
 					articleDetail__articleList.append("<tr>");
 					if (articles.get(i).getId() == articles.get(j).getId()) {
@@ -551,7 +551,7 @@ public class BuildService {
 					StringBuilder board_list = new StringBuilder();
 					for (int j = start; j >= end; j--) {
 						board_list.append("<tr class =\"line-separate\">");
-						board_list.append("<td colspan=\"6\"</td>");
+						board_list.append("<td colspan=\"6\"></td>");
 						board_list.append("</tr>");
 						board_list.append("<tr>");
 						board_list.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
