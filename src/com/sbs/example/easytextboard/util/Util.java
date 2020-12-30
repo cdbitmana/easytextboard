@@ -137,7 +137,7 @@ public class Util {
 		
 	}
 	
-	// 연결을 통해서 데이터 받아오기
+	// 연결을 통해서 데이터 받아오기 (callApi)
 	public static String callApi(String urlStr, String... args) {
 		// URL 구성 시작
 		StringBuilder queryString = new StringBuilder();
@@ -192,7 +192,7 @@ public class Util {
 		return content.toString();
 	}
 	
-	
+	// 연결을 통해 가져온 데이터를 Map으로 리턴
 	public static Map<String, Object> callApiResponseToMap(String urlStr, String... args) {
 		String jsonString = callApi(urlStr, args);
 
@@ -207,6 +207,7 @@ public class Util {
 		return null;
 	}
 
+	// 연결을 통해서 가져온 데이터를 입력한 클래스타입으로 리턴
 	public static Object callApiResponseTo(Class cls, String urlStr, String... args) {
 		String jsonString = callApi(urlStr, args);
 

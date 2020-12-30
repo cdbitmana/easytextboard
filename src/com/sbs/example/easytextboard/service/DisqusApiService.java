@@ -9,6 +9,7 @@ import com.sbs.example.easytextboard.dto.Article;
 import com.sbs.example.easytextboard.util.Util;
 
 public class DisqusApiService {
+	
 	public Map<String, Object> getArticleData(Article article) {
 		
 		String fileName = Container.buildService.getArticleDetailFileName(article);

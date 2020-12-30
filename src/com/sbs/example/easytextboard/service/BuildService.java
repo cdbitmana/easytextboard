@@ -75,6 +75,7 @@ public class BuildService {
 		createGuestBook("guestbook", foot);
 	}
 
+	// disqus에서 데이터를 받아와서 댓글수와 추천수를 DB에 반영함
 	private void loadDisqusData() {
 		List<Article> articles = articleService.getArticles();
 
