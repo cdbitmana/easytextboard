@@ -12,4 +12,20 @@ public class AppConfig {
 	public String getDisqusForumName() {
 		return "blogssg";
 	}
+
+	public String getDbHost() {
+		return "localhost";
+	}
+
+	public String getDbId() {
+		return "sbsst";
+	}
+
+	public String getDbPw() {
+		return "sbs123414";
+	}
+
+	public String getDbName() {
+		return "textBoard";
+	}
 }
