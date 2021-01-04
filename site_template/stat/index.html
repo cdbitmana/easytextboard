@@ -1,15 +1,7 @@
 <main class="flex flex-jc-c flex-grow-1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <section class="stat-box con-min-width">
         <div class = "con">
-            <ul>
-                <li>회원 수 : ${member_count}</li>
-                <li>전체 게시물 수 : ${all_article_count}</li>
-                <li>각 게시판 별 게시물 수                   
-                        ${dif_article_count}                       
-                </li>
-                <li>전체 게시물 조회 수 : ${all_article_hit_count}</li>
-                <li>각 게시판 별 조회 수
-                    ${dif_article_hit_count}                   
-                </ul>
+            <canvas id="myChart"></canvas>
             </section>
         </main>
