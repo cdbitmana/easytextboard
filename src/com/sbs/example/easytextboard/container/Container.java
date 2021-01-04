@@ -18,7 +18,7 @@ public class Container {
 	public static GuestBookDao guestBookDao;
 	public static MemberService memberService;
 	public static ArticleService articleService;
-	public static GuestBookService guestBookService;
+	public static GuestBookService guestBookService;	
 	public static GoogleAnalyticsApiService googleAnalyticsApiService;
 	public static BuildService buildService;
 	public static DisqusApiService disqusApiService;

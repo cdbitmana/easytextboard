@@ -60,7 +60,9 @@ public class BuildService {
 
 		String foot = Util.getFileContents("site_template/part/foot.html");
 		
-		loadDisqusData();
+		Container.disqusApiService.loadDisqusData();
+		
+		Container.googleAnalyticsApiService.updatePageHits();
 
 		createMainPage("index", foot);
 
@@ -75,26 +77,7 @@ public class BuildService {
 		createGuestBook("guestbook", foot);
 	}
 
-	// disqus에서 데이터를 받아와서 댓글수와 추천수를 DB에 반영함
-	private void loadDisqusData() {
-		List<Article> articles = articleService.getArticles();
-
-		for (Article article : articles) {
-			Map<String, Object> disqusArticleData = disqusApiService.getArticleData(article);
-
-			if (disqusArticleData != null) {
-				int likesCount = (int) disqusArticleData.get("likesCount");
-				int commentsCount = (int) disqusArticleData.get("commentsCount");
-
-				Map<String, Object> modifyArgs = new HashMap<>();
-				modifyArgs.put("id", article.getId());
-				modifyArgs.put("likesCount", likesCount);
-				modifyArgs.put("commentsCount", commentsCount);
-
-				articleService.modify(modifyArgs);
-			}
-		}
-	}
+	
 
 	// 방명록 페이지 생성 함수
 	private void createGuestBook(String pageName, String foot) {

@@ -1,6 +1,7 @@
 package com.sbs.example.easytextboard.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.sbs.example.easytextboard.apidto.DisqusApiDataListThread;
@@ -9,6 +10,33 @@ import com.sbs.example.easytextboard.dto.Article;
 import com.sbs.example.easytextboard.util.Util;
 
 public class DisqusApiService {
+	
+	ArticleService articleService;
+	
+	public DisqusApiService() {
+		articleService = Container.articleService;
+	}
+	
+	// disqus에서 데이터를 받아와서 댓글수와 추천수를 DB에 반영함
+		public void loadDisqusData() {
+			List<Article> articles = articleService.getArticles();
+
+			for (Article article : articles) {
+				Map<String, Object> disqusArticleData = getArticleData(article);
+
+				if (disqusArticleData != null) {
+					int likesCount = (int) disqusArticleData.get("likesCount");
+					int commentsCount = (int) disqusArticleData.get("commentsCount");
+
+					Map<String, Object> modifyArgs = new HashMap<>();
+					modifyArgs.put("id", article.getId());
+					modifyArgs.put("likesCount", likesCount);
+					modifyArgs.put("commentsCount", commentsCount);
+
+					articleService.modify(modifyArgs);
+				}
+			}
+		}
 	
 	public Map<String, Object> getArticleData(Article article) {
 		
