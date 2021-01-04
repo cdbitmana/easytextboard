@@ -117,5 +117,9 @@ public class ArticleService {
 	public List<Article> getArticlesByBoardId() {
 		return articleDao.getArticlesByBoardId();
 	}
+	
+	public void updatePageHits() {
+		articleDao.updatePageHits();
+	}
 
 }

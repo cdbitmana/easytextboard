@@ -9,7 +9,7 @@ public class Article {
 	private String title;
 	private String body;
 	private int memberId;
-	private int hit;
+	private int hitCount;
 	private int boardId;
 	private int likesCount;
 	private int commentsCount;
@@ -24,7 +24,7 @@ public class Article {
 		this.title = (String) articleMap.get("title");
 		this.body = (String) articleMap.get("body");
 		this.memberId = (int) articleMap.get("memberId");
-		this.hit = (int) articleMap.get("hit");
+		this.hitCount = (int) articleMap.get("hitCount");
 		this.likesCount = (int) articleMap.get("likesCount");
 		this.commentsCount = (int) articleMap.get("commentsCount");
 		this.boardId = (int) articleMap.get("boardId");
@@ -99,8 +99,8 @@ public class Article {
 		return memberId;
 	}
 
-	public int getHit() {
-		return hit;
+	public int getHitCount() {
+		return hitCount;
 	}
 
 	public int getBoardId() {
@@ -135,8 +135,8 @@ public class Article {
 		this.memberId = memberId;
 	}
 
-	public void setHit(int hit) {
-		this.hit = hit;
+	public void setHitCount(int hitCount) {
+		this.hitCount = hitCount;
 	}
 
 	public void setBoardId(int boardId) {

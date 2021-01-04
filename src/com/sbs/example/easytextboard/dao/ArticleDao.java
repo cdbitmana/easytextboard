@@ -305,7 +305,7 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 		Article article = getArticleById(articleId);
 		sql.append("UPDATE article SET");
-		sql.append("hit = ?", article.getHit() + 1);
+		sql.append("hit = ?", article.getHitCount() + 1);
 		sql.append("WHERE boardId = ?", Container.session.getCurrentBoardId());
 
 		MysqlUtil.update(sql);
@@ -374,6 +374,33 @@ public class ArticleDao {
 			articles.add(new Article(articleMap));
 		}
 		return articles;
+	}
+
+	// updatePageHits 
+	public int updatePageHits() {
+
+		SecSql sql = new SecSql();
+		sql.append("UPDATE article AS AR");
+		sql.append("INNER JOIN (");
+		sql.append("    SELECT CAST(REPLACE(REPLACE(GA4_PP.pagePathWoQueryStr, '/it-detail-', ''), '.html', '') AS UNSIGNED) AS articleId,");
+		sql.append("    hit");
+		sql.append("    FROM (");
+		sql.append("        SELECT");
+		sql.append("        IF(");
+		sql.append("            INSTR(GA4_PP.pagePath, '?') = 0,");
+		sql.append("            GA4_PP.pagePath,");
+		sql.append("            SUBSTR(GA4_PP.pagePath, 1, INSTR(GA4_PP.pagePath, '?') - 1)");
+		sql.append("        ) AS pagePathWoQueryStr,");
+		sql.append("        SUM(GA4_PP.hit) AS hit");
+		sql.append("        FROM ga4DataPagePath AS GA4_PP");
+		sql.append("        WHERE GA4_PP.pagePath LIKE '/it-detail-%.html%'");
+		sql.append("        GROUP BY pagePathWoQueryStr");
+		sql.append("    ) AS GA4_PP");
+		sql.append(") AS GA4_PP");
+		sql.append("ON AR.id = GA4_PP.articleId");
+		sql.append("SET AR.hitCount = GA4_PP.hit");
+
+		return MysqlUtil.update(sql);
 	}
 
 

@@ -264,7 +264,7 @@ public class BuildService {
 
 		int hitSum = 0;
 		for (Article article : articles) {
-			hitSum += article.getHit();
+			hitSum += article.getHitCount();
 		}
 
 		statHtml = statHtml.replace("${all_article_hit_count}", String.valueOf(hitSum));
@@ -277,7 +277,7 @@ public class BuildService {
 
 			int hitSumByBoard = 0;
 			for (Article article : articlesByBoard) {
-				hitSumByBoard += article.getHit();
+				hitSumByBoard += article.getHitCount();
 			}
 			dif_article_hit_count.append("<li>" + board.getName() + " : " + hitSumByBoard + "</li>");
 
@@ -304,7 +304,7 @@ public class BuildService {
 			for (int i = 0; i < articles.size(); i++) {
 				String articleDetailHtml = Util.getFileContents("site_template/article/article/detail.html");
 				String writer = memberService.getMemberById(articles.get(i).getMemberId()).getName();
-				String fileName = board.getCode() + "-" + articles.get(i).getId() + ".html";
+				String fileName = board.getCode() + "-detail-" + articles.get(i).getId() + ".html";
 				StringBuilder articleDetailHtmlBuilder = new StringBuilder();
 				Article article = articles.get(i);
 				articleDetailHtmlBuilder.append(getHeadHtml(pageName, article));
@@ -317,7 +317,7 @@ public class BuildService {
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-regDate}",
 						articles.get(i).getRegDate());
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-hit}",
-						String.valueOf(articles.get(i).getHit()));
+						String.valueOf(articles.get(i).getHitCount()));
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-recommend}",
 						String.valueOf(articleService.getArticleRecommend(articles.get(i).getId())));
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-comments}",
@@ -329,12 +329,12 @@ public class BuildService {
 				articleDetail__ArticleMoveButton.append("");
 				if (i != articles.size() - 1) {
 					articleDetail__ArticleMoveButton.append("<div class=\"con next-article\"><a href=\""
-							+ board.getCode() + "-" + articles.get(i + 1).getId() + ".html\">다음글</a></div>");
+							+ board.getCode() + "-detail-" + articles.get(i + 1).getId() + ".html\">다음글</a></div>");
 				}
 
 				if (i != 0) {
 					articleDetail__ArticleMoveButton.append("<div class=\"con next-article\"><a href=\""
-							+ board.getCode() + "-" + articles.get(i - 1).getId() + ".html\">이전글</a></div>");
+							+ board.getCode() + "-detail-" + articles.get(i - 1).getId() + ".html\">이전글</a></div>");
 				}
 
 				articleDetailHtml = articleDetailHtml.replace("${articledetail_articlemovebutton}",
@@ -397,13 +397,13 @@ public class BuildService {
 						articleDetail__articleList.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
 					}
 
-					articleDetail__articleList.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-"
+					articleDetail__articleList.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-detail-"
 							+ articles.get(j).getId() + ".html\">" + articles.get(j).getTitle() + "</td>");
 					articleDetail__articleList
 							.append("<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>");
 					articleDetail__articleList
 							.append("<td class=\"cell-regDate\">" + articles.get(j).getRegDate() + "</td>");
-					articleDetail__articleList.append("<td class=\"cell-hit\">" + articles.get(j).getHit() + "</td>");
+					articleDetail__articleList.append("<td class=\"cell-hit\">" + articles.get(j).getHitCount() + "</td>");
 					articleDetail__articleList.append("<td class=\"cell-recommend\">"
 							+ articleService.getArticleRecommend(articles.get(j).getId()) + "</td>");
 					articleDetail__articleList.append("</tr>");
@@ -486,7 +486,7 @@ public class BuildService {
 	}
 
 	public String getArticleDetailFileName(Article article) {
-		return article.getExtra__boardCode() + "-" + article.getId() + ".html";
+		return article.getExtra__boardCode() + "-detail-" + article.getId() + ".html";
 
 	}
 
@@ -582,11 +582,11 @@ public class BuildService {
 						board_list.append("</tr>");
 						board_list.append("<tr>");
 						board_list.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
-						board_list.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-"
+						board_list.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-detail-"
 								+ articles.get(j).getId() + ".html\">" + articles.get(j).getTitle() + "</td>");
 						board_list.append("<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>");
 						board_list.append("<td class=\"cell-regDate\">" + articles.get(j).getRegDate() + "</td>");
-						board_list.append("<td class=\"cell-hit\">" + articles.get(j).getHit() + "</td>");
+						board_list.append("<td class=\"cell-hit\">" + articles.get(j).getHitCount() + "</td>");
 						board_list.append("<td class=\"cell-recommend\">"
 								+ articleService.getArticleRecommend(articles.get(j).getId()) + "</td>");
 						board_list.append("</tr>");

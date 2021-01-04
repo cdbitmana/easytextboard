@@ -19,6 +19,7 @@ public class Container {
 	public static MemberService memberService;
 	public static ArticleService articleService;
 	public static GuestBookService guestBookService;
+	public static GoogleAnalyticsApiService googleAnalyticsApiService;
 	public static BuildService buildService;
 	public static DisqusApiService disqusApiService;
 	public static MemberController memberController;
@@ -30,6 +31,7 @@ public class Container {
 		config = new AppConfig();
 		session = new Session();
 		scanner = new Scanner(System.in);
+		googleAnalyticsApiService = new GoogleAnalyticsApiService();
 		memberDao = new MemberDao();
 		articleDao = new ArticleDao();
 		guestBookDao = new GuestBookDao();

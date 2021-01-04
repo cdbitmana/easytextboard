@@ -28,4 +28,8 @@ public class AppConfig {
 	public String getDbName() {
 		return "textBoard";
 	}
+
+	public String getGa4PropertyId() {
+		return "256600531";
+	}
 }

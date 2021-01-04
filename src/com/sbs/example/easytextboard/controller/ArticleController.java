@@ -288,7 +288,7 @@ public class ArticleController extends Controller {
 			String title = articles.get(i).getTitle();
 			String body = articles.get(i).getBody();
 			String name = articles.get(i).getExtraWriter();
-			int hit = articles.get(i).getHit();
+			int hit = articles.get(i).getHitCount();
 			int Recommend = articleService.getArticleRecommend(articles.get(i).getId());
 			System.out.printf("%d / %s / %s / %s / %s / %d / %d\n", articleId, regDate, title, body, name, hit,
 					Recommend);
@@ -358,7 +358,7 @@ public class ArticleController extends Controller {
 		System.out.printf("작성자 : %s\n", article.getExtraWriter());
 		System.out.printf("제목 : %s\n", article.getTitle());
 		System.out.printf("내용 : %s\n", article.getBody());
-		System.out.printf("조회수 : %d , 추천수 : %d\n", article.getHit() + 1, Recommend);
+		System.out.printf("조회수 : %d , 추천수 : %d\n", article.getHitCount() + 1, Recommend);
 		System.out.println("댓글");
 		ArrayList<ArticleReply> replys = articleService.getReplysForPrintByArticleId(articleId);
 		for (ArticleReply reply : replys) {
@@ -441,7 +441,7 @@ public class ArticleController extends Controller {
 			String title = articles.get(i).getTitle();
 			String body = articles.get(i).getBody();
 			String name = articles.get(i).getExtraWriter();
-			int hit = articles.get(i).getHit();
+			int hit = articles.get(i).getHitCount();
 			int Recommend = articleService.getArticleRecommend(articles.get(i).getId());
 			System.out.printf("%d / %s / %s / %s / %s / %d / %d\n", articleId, regDate, title, body, name, hit,
 					Recommend);
