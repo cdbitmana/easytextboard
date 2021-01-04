@@ -679,7 +679,7 @@ public class BuildService {
 			article_box.append("<div class=\"home-main__article-box__body\">" + articles.get(i).getBody() + "</div>");
 			article_box.append("<div class=\"home-main__article-box__detail\">");
 			article_box.append(
-					"<a href=\"" + articles.get(i).getExtra__boardCode() + "-" + articles.get(i).getId() + ".html\">");
+					"<a href=\"" + articles.get(i).getExtra__boardCode() + "-detail-" + articles.get(i).getId() + ".html\">");
 			article_box.append("자세히 보기");
 			article_box.append("</a>");
 			article_box.append("</div>");

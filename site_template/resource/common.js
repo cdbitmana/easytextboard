@@ -9,7 +9,7 @@ if($(window).scrollTop() >= 25){
 }
 });
 
-function getPageName(){
+function changeTopbar(){
     var pageName = ""; 
     var tempPageName = window.location.href;
     var strPageName = tempPageName.split("/");
@@ -19,7 +19,7 @@ function getPageName(){
     }
     return pageName;
 }
-getPageName();
+changeTopbar();
 
 
 $(".profile_arrow > i").hover(function(){
