@@ -96,13 +96,12 @@ public class ArticleDao {
 	public int doModify(Map<String, Object> args) {
 		SecSql sql = new SecSql();
 
-		
 		int id = (int) args.get("id");
 		String title = args.get("title") != null ? (String) args.get("title") : null;
 		String body = args.get("body") != null ? (String) args.get("body") : null;
 		int likesCount = args.get("likesCount") != null ? (int) args.get("likesCount") : -1;
 		int commentsCount = args.get("commentsCount") != null ? (int) args.get("commentsCount") : -1;
-		
+
 		sql.append("UPDATE article");
 		sql.append("SET updateDate = NOW()");
 		if (title != null) {
@@ -340,7 +339,8 @@ public class ArticleDao {
 		List<Article> articles = new ArrayList<>();
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT A.* , M.name AS extra__writer , B.name AS extra__boardName , B.code AS extra__boardCode FROM article AS A");
+		sql.append(
+				"SELECT A.* , M.name AS extra__writer , B.name AS extra__boardName , B.code AS extra__boardCode FROM article AS A");
 		sql.append("INNER JOIN `member` AS M");
 		sql.append("ON A.memberId = M.id");
 		sql.append("INNER JOIN `board` AS B");
@@ -376,14 +376,14 @@ public class ArticleDao {
 		return articles;
 	}
 
-	// updatePageHits 
+	// updatePageHits
 	public int updatePageHits() {
 
 		SecSql sql = new SecSql();
 		sql.append("UPDATE article AS AR");
 		sql.append("INNER JOIN (");
-		sql.append("    SELECT CAST(REPLACE(REPLACE(GA4_PP.pagePathWoQueryStr, '/it-detail-', ''), '.html', '') AS UNSIGNED) AS articleId,");
-		sql.append("    hit");
+		sql.append(
+				"    SELECT CAST(REPLACE(REPLACE(SUBSTR(GA4_PP.pagePathWoQueryStr, INSTR(GA4_PP.pagePathWoQueryStr , '-detail-')), '-detail-' , ''), '.html', '') AS UNSIGNED) AS articleId, hit");
 		sql.append("    FROM (");
 		sql.append("        SELECT");
 		sql.append("        IF(");
@@ -393,7 +393,7 @@ public class ArticleDao {
 		sql.append("        ) AS pagePathWoQueryStr,");
 		sql.append("        SUM(GA4_PP.hit) AS hit");
 		sql.append("        FROM ga4DataPagePath AS GA4_PP");
-		sql.append("        WHERE GA4_PP.pagePath LIKE '/it-detail-%.html%'");
+		sql.append("        WHERE GA4_PP.pagePath LIKE '/%-detail-%.html%'");
 		sql.append("        GROUP BY pagePathWoQueryStr");
 		sql.append("    ) AS GA4_PP");
 		sql.append(") AS GA4_PP");
@@ -408,14 +408,15 @@ public class ArticleDao {
 		List<Article> articles = new ArrayList<>();
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT A.* , M.name AS extra__writer , B.name AS extra__boardName , B.code AS extra__boardCode FROM article AS A");
+		sql.append(
+				"SELECT A.* , M.name AS extra__writer , B.name AS extra__boardName , B.code AS extra__boardCode FROM article AS A");
 		sql.append("INNER JOIN `member` AS M");
 		sql.append("ON A.memberId = M.id");
 		sql.append("INNER JOIN `board` AS B");
 		sql.append("ON A.boardId = B.id");
-		sql.append("WHERE A.boardId = ?" , boardId);
+		sql.append("WHERE A.boardId = ?", boardId);
 		sql.append("ORDER BY A.hitCount DESC");
-		sql.append("LIMIT 7");
+		sql.append("LIMIT 5");
 
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
 
@@ -425,7 +426,5 @@ public class ArticleDao {
 
 		return articles;
 	}
-
-
 
 }

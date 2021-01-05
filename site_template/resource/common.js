@@ -1,11 +1,12 @@
+/* 홈 화면 게시물 내용 토스트UI 적용 시작 */
 function home_main__Body__init() {
-
-    var body = document.querySelectorAll('.home-main__article-box__body');
+    
+    const body = document.querySelectorAll('.home-main__article-box__body');
     for (var i = 0; i < body.length; i++) {
-        var initialValue = body[i].innerHTML.trim();
+        const initialValue = body[i].innerHTML.trim();
         initialValue = initialValue.replace(/&gt;/gi, ">");
         initialValue = initialValue.replace(/&lt;/gi, "<");
-        var viewer = new toastui.Editor.factory({
+        const viewer = new toastui.Editor.factory({
 
             el: body[i],
             initialValue: initialValue,
@@ -16,19 +17,20 @@ function home_main__Body__init() {
     }
 }
 home_main__Body__init();
+/* 홈 화면 게시물 내용 토스트UI 적용 끝 */
 
-
+/* 게시물 내용 토스트UI 적용 시작 */
 function ArticleDetail__Body__init() {
 
-    var body = document.querySelector('.article_body');
+    const body = document.querySelector('.article_body');
     if(body == null){
         return;
     }
-    var initialValue = body.innerHTML.trim();
+    const initialValue = body.innerHTML.trim();
     initialValue = initialValue.replace(/&gt;/gi, ">");
     initialValue = initialValue.replace(/&lt;/gi, "<");
 
-    var viewer = new toastui.Editor.factory({
+    const viewer = new toastui.Editor.factory({
 
         el: body,
         initialValue: initialValue,
@@ -38,29 +40,9 @@ function ArticleDetail__Body__init() {
     });
 }
 ArticleDetail__Body__init();
+/* 게시물 내용 토스트UI 적용 끝 */
 
-/* chart.js api 시작 */
-{{articleHitChart}}
-/*
-var articleHit = document.getElementById('articleHitChart').getContext('2d');
-var chart = new Chart(articleHit, {
-    // The type of chart we want to create
-    type: 'doughnut',
-
-    // The data for our dataset
-    data: {
-        labels: ['a','b','c','d','e','f','g'],
-        datasets: [{            
-            data: [1,2,3,4,5,6,7],
-            backgroundColor:['red','orange','yellow']
-        }]
-    },
-    // Configuration options go here
-    options: {}
-});
-*/
-/* chart.js api 끝 */
-
+/* 스크롤탑 버튼 시작 */
 $(window).on('scroll',function(){
 if($(window).scrollTop() >= 25){
     $(".scrolltop-button").fadeIn(400);
@@ -68,7 +50,9 @@ if($(window).scrollTop() >= 25){
     $(".scrolltop-button").fadeOut(400);
 }
 });
+/* 스크롤탑 버튼 끝 */
 
+/* 프로필 페이지 탑바 색전환 시작 */
 function changeTopbar(){
     var pageName = ""; 
     var tempPageName = window.location.href;
@@ -80,20 +64,25 @@ function changeTopbar(){
     return pageName;
 }
 changeTopbar();
+/* 프로필 페이지 탑바 색전환 끝 */
 
+/* 프로필 페이지 펼치기 시작 */
 
-$(".profile_arrow > i").hover(function(){
-  $(".profile_detail").css("width", "900px");
-  $(".profile_detail").css("left", "290px");
-  $(".extend").css("visibility","hidden");
+$(".profile_arrow_extend > i").click(function(){               
+        $(".profile_detail").css("width", "900px");
+        $(".profile_detail").css("left", "290px");
+        $(".profile_arrow_extend").css("display","none");
+        $(".profile_arrow_shorten").css("display","flex");
+     
 });
 
-$(".content-1__wrapper").mouseleave(function(){
+$(".profile_arrow_shorten > i").click(function(){
     $(".profile_detail").css("width", "0");
     $(".profile_detail").css("left", "0");
-    $(".extend").css("visibility","visible");
+    $(".profile_arrow_shorten").css("display","none");
+    $(".profile_arrow_extend").css("display","flex");
   });
-
+/* 프로필 페이지 펼치기 끝 */
 
 
 
@@ -156,6 +145,24 @@ function moveleft() {
 moveleft();
 
 
+/* chart.js api 시작 */
+{{articleHitChart}}
+/*
+var articleHit = document.getElementById('articleHitChart').getContext('2d');
+var chart = new Chart(articleHit, {
+    // The type of chart we want to create
+    type: 'doughnut',
 
-
-
+    // The data for our dataset
+    data: {
+        labels: ['a','b','c','d','e','f','g'],
+        datasets: [{            
+            data: [1,2,3,4,5,6,7],
+            backgroundColor:['red','orange','yellow']
+        }]
+    },
+    // Configuration options go here
+    options: {}
+});
+*/
+/* chart.js api 끝 */

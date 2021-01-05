@@ -733,30 +733,12 @@
        /* 게시물 상세보기 끝 */
 
        /* 통계 상세보기 시작 */
-       .stat-box { 
-           margin-top:50px;
+       .articleChart{
+           margin:50px 0px;
        }
-       .stat-box > div > ul > li{
-        padding:10px;
-        
-        background-color:#f8e88ba8;
-        border-radius:10px;
-        
+       .articleChart > div {
+           padding:20px;
        }
-       
-       .stat-box li{
-           margin:15px 35px;    
-          ;  
-           
-       }
-       .stat-box > div {
-           padding-top:20px;
-       }
-       
-     
-       .stat-box > div > ul > li > ul > li{
-           list-style:circle;
-       }       
         /* 통계 상세보기 끝 */  
         
         /* 프로필 페이지 시작 */
@@ -787,7 +769,7 @@
     .content-1  .profile_text > p:not(:first-child){
         color:white;
     }
-    .content-1  .profile_text > span {
+    .content-1  .profile_text > .profile_short {
         color:white;
         font-size:3rem;
     }
@@ -795,15 +777,18 @@
         display:inline-block;
         margin-bottom:15px;
     }
-    .content-1  .profile_text > .profile_arrow {
+    .content-1  .profile_text > .profile_short> .profile_arrow {
         position:relative;
         margin-left:120px;
         cursor:pointer;
+        text-align: center;
     }
-    .profile_text > .profile_arrow > .extend {
-        position:absolute;
-        top:120%;
-        left:0;
+    
+    .content-1  .profile_text > .profile_short > .profile_arrow_shorten{
+        display:none;
+    } 
+    .profile_text > .profile_short > .profile_arrow > .extend {
+        margin-top:10px;
         font-size:1rem;
         
     }

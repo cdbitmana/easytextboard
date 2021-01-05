@@ -23,20 +23,23 @@ public class GoogleAnalyticsApiService {
 	public void updateGa4DataPageHits() {
 		String ga4PropertyId = Container.config.getGa4PropertyId();
 		try (AlphaAnalyticsDataClient analyticsData = AlphaAnalyticsDataClient.create()) {
-			RunReportRequest request = RunReportRequest.newBuilder()
+			RunReportRequest request = RunReportRequest.newBuilder().setLimit(-1)
 					.setEntity(Entity.newBuilder().setPropertyId(ga4PropertyId))
 					.addDimensions(Dimension.newBuilder().setName("pagePath"))
 					.addMetrics(Metric.newBuilder().setName("activeUsers"))
-					.addDateRanges(DateRange.newBuilder().setStartDate("2021-01-01").setEndDate("today")).build();
+					.addDateRanges(DateRange.newBuilder().setStartDate("2020-12-01").setEndDate("today")).build();
+
+			
 
 			RunReportResponse response = analyticsData.runReport(request);
 
 			System.out.println("Report result:");
 			for (Row row : response.getRowsList()) {
+
 				String pagePath = row.getDimensionValues(0).getValue();
 				int hit = Integer.parseInt(row.getMetricValues(0).getValue());
-				System.out.printf("%s , %d\n",pagePath,hit);
-				
+				System.out.printf("%s , %d\n", pagePath, hit);
+
 				update(pagePath, hit);
 			}
 		} catch (IOException e) {

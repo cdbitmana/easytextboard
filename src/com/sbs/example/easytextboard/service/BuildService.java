@@ -238,8 +238,10 @@ public class BuildService {
 
 			List<Article> articles = articleService.getArticlesForStaticPage(board.getId());
 
-			articleHitChartHtml.append("<div class=\"con\">");
+			articleHitChartHtml.append("<div class=\"articleChart con\">");
+			articleHitChartHtml.append("<div>");
 			articleHitChartHtml.append("<canvas id=\"articleHitChart" + board.getId() + "\"></canvas>");
+			articleHitChartHtml.append("</div>");
 			articleHitChartHtml.append("</div>");
 
 			articleHitChartJs.append("var articleHit"+board.getId()+" = document.getElementById('articleHitChart" + board.getId()
@@ -266,7 +268,7 @@ public class BuildService {
 				articleHitChartJs.append(articles.get(i).getHitCount()+",");
 			}
 			articleHitChartJs.append("],");
-			articleHitChartJs.append("backgroundColor:['red','orange','yellow','green','blue','navy','purple']");
+			articleHitChartJs.append("backgroundColor:['#F8E88B','#F69069','#8482ff','#ff8293','#E4B660','#ff82ff','#66d4f5']");
 			articleHitChartJs.append("}]");
 			articleHitChartJs.append("},");
 			articleHitChartJs.append("options: {}");
