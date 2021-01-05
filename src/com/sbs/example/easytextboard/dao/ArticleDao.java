@@ -403,6 +403,29 @@ public class ArticleDao {
 		return MysqlUtil.update(sql);
 	}
 
+	// getArticlesForStaticPage
+	public List<Article> getArticlesForStaticPage(int boardId) {
+		List<Article> articles = new ArrayList<>();
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT A.* , M.name AS extra__writer , B.name AS extra__boardName , B.code AS extra__boardCode FROM article AS A");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON A.memberId = M.id");
+		sql.append("INNER JOIN `board` AS B");
+		sql.append("ON A.boardId = B.id");
+		sql.append("WHERE A.boardId = ?" , boardId);
+		sql.append("ORDER BY A.hitCount DESC");
+		sql.append("LIMIT 7");
+
+		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> articleMap : articleMapList) {
+			articles.add(new Article(articleMap));
+		}
+
+		return articles;
+	}
+
 
 
 }

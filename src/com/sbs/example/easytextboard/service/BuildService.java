@@ -20,6 +20,7 @@ public class BuildService {
 	ArticleService articleService;
 	MemberService memberService;
 	private DisqusApiService disqusApiService;
+
 	public BuildService() {
 		guestBookService = Container.guestBookService;
 		articleService = Container.articleService;
@@ -59,9 +60,9 @@ public class BuildService {
 		Util.copy(jsSource, "site/common.js");
 
 		String foot = Util.getFileContents("site_template/part/foot.html");
-		
+
 		Container.disqusApiService.loadDisqusData();
-		
+
 		Container.googleAnalyticsApiService.updatePageHits();
 
 		createMainPage("index", foot);
@@ -76,8 +77,6 @@ public class BuildService {
 
 		createGuestBook("guestbook", foot);
 	}
-
-	
 
 	// 방명록 페이지 생성 함수
 	private void createGuestBook(String pageName, String foot) {
@@ -224,55 +223,113 @@ public class BuildService {
 	private void createStatDetail(String pageName, String foot) {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		String fileName = "statindex.html";
-
+		
 		List<Member> members = memberService.getMembers();
-		List<Article> articles = articleService.getArticles();
 
 		StringBuilder statHtmlBuilder = new StringBuilder();
 		String statHtml = Util.getFileContents("site_template/stat/index.html");
+		String statJs = Util.getFileContents("site_template/resource/common.js");
 		statHtmlBuilder.append(getHeadHtml(pageName));
 
-		statHtml = statHtml.replace("${member_count}", String.valueOf(members.size()));
-		statHtml = statHtml.replace("${all_article_count}", String.valueOf(articles.size()));
+		StringBuilder articleHitChartHtml = new StringBuilder();
+		StringBuilder articleHitChartJs = new StringBuilder();
 
-		StringBuilder dif_article_count = new StringBuilder();
-		dif_article_count.append("<ul>");
 		for (Board board : boards) {
-			List<Article> articlesByBoard = articleService.getArticlesByBoardCode(board.getCode());
-			dif_article_count.append("<li>" + board.getName() + " : " + articlesByBoard.size() + "</li>");
-		}
-		dif_article_count.append("</ul>");
 
-		statHtml = statHtml.replace("${dif_article_count}", dif_article_count.toString());
+			List<Article> articles = articleService.getArticlesForStaticPage(board.getId());
 
-		int hitSum = 0;
-		for (Article article : articles) {
-			hitSum += article.getHitCount();
-		}
+			articleHitChartHtml.append("<div class=\"con\">");
+			articleHitChartHtml.append("<canvas id=\"articleHitChart" + board.getId() + "\"></canvas>");
+			articleHitChartHtml.append("</div>");
 
-		statHtml = statHtml.replace("${all_article_hit_count}", String.valueOf(hitSum));
-
-		StringBuilder dif_article_hit_count = new StringBuilder();
-
-		dif_article_hit_count.append("<ul>");
-		for (Board board : boards) {
-			List<Article> articlesByBoard = articleService.getArticlesByBoardCode(board.getCode());
-
-			int hitSumByBoard = 0;
-			for (Article article : articlesByBoard) {
-				hitSumByBoard += article.getHitCount();
+			articleHitChartJs.append("var articleHit"+board.getId()+" = document.getElementById('articleHitChart" + board.getId()
+					+ "');");
+			articleHitChartJs.append("var chart"+board.getId()+" = new Chart(articleHit"+board.getId()+", {");
+			articleHitChartJs.append("type: 'doughnut',");
+			articleHitChartJs.append("data: {");
+			articleHitChartJs.append("labels: [");
+			for (int i = 0; i < articles.size(); i++) {
+				if( i == articles.size()-1) {
+					articleHitChartJs.append("'"+articles.get(i).getTitle()+"'");
+					continue;
+				}
+				articleHitChartJs.append("'"+articles.get(i).getTitle()+"',");
 			}
-			dif_article_hit_count.append("<li>" + board.getName() + " : " + hitSumByBoard + "</li>");
+			articleHitChartJs.append("],");
+			articleHitChartJs.append("datasets: [{");
+			articleHitChartJs.append("data: [");
+			for (int i = 0; i < articles.size(); i++) {
+				if( i == articles.size()-1) {
+					articleHitChartJs.append(articles.get(i).getHitCount());
+					continue;
+				}
+				articleHitChartJs.append(articles.get(i).getHitCount()+",");
+			}
+			articleHitChartJs.append("],");
+			articleHitChartJs.append("backgroundColor:['red','orange','yellow','green','blue','navy','purple']");
+			articleHitChartJs.append("}]");
+			articleHitChartJs.append("},");
+			articleHitChartJs.append("options: {}");
+			articleHitChartJs.append("});");
 
 		}
-		dif_article_hit_count.append("</ul>");
-
-		statHtml = statHtml.replace("${dif_article_hit_count}", dif_article_hit_count.toString());
+		statHtml = statHtml.replace("{{articleHitChart}}", articleHitChartHtml.toString());
+		statJs = statJs.replace("{{articleHitChart}}", articleHitChartJs.toString());
 
 		statHtmlBuilder.append(statHtml);
 		statHtmlBuilder.append(foot);
+		
+		Util.writeFileContents("site/common.js", statJs.toString());
 		Util.writeFileContents("site/" + fileName, statHtmlBuilder.toString());
-
+		 
+		/*
+		 * ArrayList<Board> boards = articleService.getBoardsForPrint(); String fileName
+		 * = "statindex.html";
+		 * 
+		 * List<Member> members = memberService.getMembers(); List<Article> articles =
+		 * articleService.getArticles();
+		 * 
+		 * StringBuilder statHtmlBuilder = new StringBuilder(); String statHtml =
+		 * Util.getFileContents("site_template/stat/index.html");
+		 * statHtmlBuilder.append(getHeadHtml(pageName));
+		 * 
+		 * statHtml = statHtml.replace("${member_count}",
+		 * String.valueOf(members.size())); statHtml =
+		 * statHtml.replace("${all_article_count}", String.valueOf(articles.size()));
+		 * 
+		 * StringBuilder dif_article_count = new StringBuilder();
+		 * dif_article_count.append("<ul>"); for (Board board : boards) { List<Article>
+		 * articlesByBoard = articleService.getArticlesByBoardCode(board.getCode());
+		 * dif_article_count.append("<li>" + board.getName() + " : " +
+		 * articlesByBoard.size() + "</li>"); } dif_article_count.append("</ul>");
+		 * 
+		 * statHtml = statHtml.replace("${dif_article_count}",
+		 * dif_article_count.toString());
+		 * 
+		 * int hitSum = 0; for (Article article : articles) { hitSum +=
+		 * article.getHitCount(); }
+		 * 
+		 * statHtml = statHtml.replace("${all_article_hit_count}",
+		 * String.valueOf(hitSum));
+		 * 
+		 * StringBuilder dif_article_hit_count = new StringBuilder();
+		 * 
+		 * dif_article_hit_count.append("<ul>"); for (Board board : boards) {
+		 * List<Article> articlesByBoard =
+		 * articleService.getArticlesByBoardCode(board.getCode());
+		 * 
+		 * int hitSumByBoard = 0; for (Article article : articlesByBoard) {
+		 * hitSumByBoard += article.getHitCount(); } dif_article_hit_count.append("<li>"
+		 * + board.getName() + " : " + hitSumByBoard + "</li>");
+		 * 
+		 * } dif_article_hit_count.append("</ul>");
+		 * 
+		 * statHtml = statHtml.replace("${dif_article_hit_count}",
+		 * dif_article_hit_count.toString());
+		 * 
+		 * statHtmlBuilder.append(statHtml); statHtmlBuilder.append(foot);
+		 * Util.writeFileContents("site/" + fileName, statHtmlBuilder.toString());
+		 */
 	}
 
 	// 게시물 상세보기 생성 함수
@@ -380,13 +437,14 @@ public class BuildService {
 						articleDetail__articleList.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
 					}
 
-					articleDetail__articleList.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-detail-"
-							+ articles.get(j).getId() + ".html\">" + articles.get(j).getTitle() + "</td>");
+					articleDetail__articleList.append("<td class=\"cell-title\"><a href=\"" + board.getCode()
+							+ "-detail-" + articles.get(j).getId() + ".html\">" + articles.get(j).getTitle() + "</td>");
 					articleDetail__articleList
 							.append("<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>");
 					articleDetail__articleList
 							.append("<td class=\"cell-regDate\">" + articles.get(j).getRegDate() + "</td>");
-					articleDetail__articleList.append("<td class=\"cell-hit\">" + articles.get(j).getHitCount() + "</td>");
+					articleDetail__articleList
+							.append("<td class=\"cell-hit\">" + articles.get(j).getHitCount() + "</td>");
 					articleDetail__articleList.append("<td class=\"cell-recommend\">"
 							+ articleService.getArticleRecommend(articles.get(j).getId()) + "</td>");
 					articleDetail__articleList.append("</tr>");
@@ -678,8 +736,8 @@ public class BuildService {
 			article_box.append("</div>");
 			article_box.append("<div class=\"home-main__article-box__body\">" + articles.get(i).getBody() + "</div>");
 			article_box.append("<div class=\"home-main__article-box__detail\">");
-			article_box.append(
-					"<a href=\"" + articles.get(i).getExtra__boardCode() + "-detail-" + articles.get(i).getId() + ".html\">");
+			article_box.append("<a href=\"" + articles.get(i).getExtra__boardCode() + "-detail-"
+					+ articles.get(i).getId() + ".html\">");
 			article_box.append("자세히 보기");
 			article_box.append("</a>");
 			article_box.append("</div>");

@@ -49,7 +49,7 @@ public class ArticleService {
 	}
 
 	public int modify(Map<String, Object> args) {
-		return (int)articleDao.doModify(args);
+		return (int) articleDao.doModify(args);
 	}
 
 	public Article getArticleForPrintById(int articleId) {
@@ -117,9 +117,13 @@ public class ArticleService {
 	public List<Article> getArticlesByBoardId() {
 		return articleDao.getArticlesByBoardId();
 	}
-	
+
 	public void updatePageHits() {
 		articleDao.updatePageHits();
+	}
+
+	public List<Article> getArticlesForStaticPage(int boardId) {
+		return articleDao.getArticlesForStaticPage(boardId);
 	}
 
 }
