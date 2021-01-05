@@ -3,7 +3,7 @@ function home_main__Body__init() {
     
     const body = document.querySelectorAll('.home-main__article-box__body');
     for (var i = 0; i < body.length; i++) {
-        const initialValue = body[i].innerHTML.trim();
+        var initialValue = body[i].innerHTML.trim();
         initialValue = initialValue.replace(/&gt;/gi, ">");
         initialValue = initialValue.replace(/&lt;/gi, "<");
         const viewer = new toastui.Editor.factory({
@@ -26,7 +26,7 @@ function ArticleDetail__Body__init() {
     if(body == null){
         return;
     }
-    const initialValue = body.innerHTML.trim();
+    var initialValue = body.innerHTML.trim();
     initialValue = initialValue.replace(/&gt;/gi, ">");
     initialValue = initialValue.replace(/&lt;/gi, "<");
 
