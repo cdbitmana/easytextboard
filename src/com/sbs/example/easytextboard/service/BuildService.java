@@ -401,7 +401,7 @@ public class BuildService {
 				if (end < 0) {
 					end = 0;
 				}
-
+				int endPage = (int) Math.ceil((double) total_pages / itemsInAPage);
 				int buttonsInAPage = 10;
 				int pageButton = (int) Math.ceil((double) currentPage / buttonsInAPage);
 				int startPageButton = (pageButton - 1) * buttonsInAPage + 1;
@@ -468,7 +468,7 @@ public class BuildService {
 
 				StringBuilder articledetail__articlelist_prevpagelink = new StringBuilder();
 				articledetail__articlelist_prevpagelink.append("");
-				if (currentPage != 1) {
+				if (pageButton != 1 && total_pages >10) {
 					articledetail__articlelist_prevpagelink.append("<div class=\"flex flex-basis-50px\">");
 					articledetail__articlelist_prevpagelink.append("<a href=\"" + board.getCode() + "-list-"
 							+ ((pageButton - 1) * buttonsInAPage - 9) + ".html\"> 이전 </a>");
@@ -497,7 +497,7 @@ public class BuildService {
 
 				StringBuilder articledetail__articlelist_nextpagelink = new StringBuilder();
 				articledetail__articlelist_nextpagelink.append("");
-				if (currentPage < total_pages) {
+				if (pageButton < endPage && total_pages > 10) {
 					articledetail__articlelist_nextpagelink.append("<div class=\"flex flex-basis-50px\">");
 					articledetail__articlelist_nextpagelink.append("<a href=\"" + board.getCode() + "-list-"
 							+ (pageButton * buttonsInAPage + 1) + ".html\"> 다음 </a>");
@@ -649,6 +649,7 @@ public class BuildService {
 
 					StringBuilder board_list__prevpagebutton = new StringBuilder();
 					board_list__prevpagebutton.append("");
+					
 					if (pageButton != 1) {
 						board_list__prevpagebutton.append("<div class=\"flex flex-basis-50px\">");
 						board_list__prevpagebutton.append("<a href=\"" + board.getCode() + "-list-"

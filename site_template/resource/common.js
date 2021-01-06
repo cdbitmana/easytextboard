@@ -162,7 +162,11 @@ var chart = new Chart(articleHit, {
         }]
     },
     // Configuration options go here
-    options: {}
+    options: {
+        tooltips: {
+            intersect: false
+        }
+    }
 });
 */
 /* chart.js api 끝 */
