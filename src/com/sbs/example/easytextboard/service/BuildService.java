@@ -60,14 +60,12 @@ public class BuildService {
 
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
-		/*
+		
 		Container.disqusApiService.loadDisqusData();
 		 
 		Container.googleAnalyticsApiService.updatePageHits();
-		 */
-		createMainPage("index", foot);
-		
-		createSearchPage("article_search",foot);
+		 
+		createMainPage("index", foot);		
 		
 		createBoardPage("article_list", foot);			
 
@@ -85,37 +83,7 @@ public class BuildService {
 		
 	}
 
-	// 검색 페이지 생성 함수
-	private void createSearchPage(String pageName, String foot) {
-		
-		List<Board> boards = articleService.getBoardsForPrint();
-		
-		for(Board board : boards) {
-			
-			List<Article> articles = articleService.getArticlesByBoardCode(board.getCode());
-			
-			
-						
-			pageName = board.getCode();
-								
-			String jsonText = Util.getJsonText(articles);
-			
-			Util.writeFile("site/"+board.getCode()+"-list.json", jsonText);
-			
-			StringBuilder searchPageHtmlBuilder = new StringBuilder();
-			
-			searchPageHtmlBuilder.append(getHeadHtml(pageName));
-			
-			String searchPageHtml = Util.getFileContents("site_template/article/search/search.html");	
-			
-			
-			
-		}
-		
-		
-		
-		
-	}
+	
 
 	// 방명록 페이지 생성 함수
 	private void createGuestBook(String pageName, String foot) {
