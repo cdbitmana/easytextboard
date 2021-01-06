@@ -235,11 +235,15 @@ public class BuildService {
 
 		StringBuilder articleHitChartHtml = new StringBuilder();
 		StringBuilder articleHitChartJs = new StringBuilder();
-
+		
 		for (Board board : boards) {
 
 			List<Article> articles = articleService.getArticlesForStaticPage(board.getId());
-
+			if(articles.size() ==0 ) {
+				articleHitChartHtml.append("");
+				articleHitChartJs.append("");
+				break;
+			}
 			articleHitChartHtml.append("<div class=\"articleChart con\">");
 			articleHitChartHtml.append("<div>");
 			articleHitChartHtml.append("<canvas id=\"articleHitChart" + board.getId() + "\"></canvas>");
