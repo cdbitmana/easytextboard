@@ -56,18 +56,19 @@ public class BuildService {
 		 * Util.copy(jsSource, "site/article/common.js"); Util.copy(jsSource,
 		 * "site/stat/common.js");
 		 */
-	
+
+		Util.copy(cssSource, "site/app.css");
+		Util.copy(jsSource, "site/common.js");
 
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
-		
 		Container.disqusApiService.loadDisqusData();
-		 
+
 		Container.googleAnalyticsApiService.updatePageHits();
-		 
-		createMainPage("index", foot);		
-		
-		createBoardPage("article_list", foot);			
+
+		createMainPage("index", foot);
+
+		createBoardPage("article_list", foot);
 
 		createArticleDetail("article_detail", foot);
 
@@ -76,14 +77,8 @@ public class BuildService {
 		createProfile("profile", foot);
 
 		createGuestBook("guestbook", foot);
-		
-		Util.copy(cssSource, "site/app.css");
-		Util.copy(jsSource, "site/common.js");
-		
-		
-	}
 
-	
+	}
 
 	// 방명록 페이지 생성 함수
 	private void createGuestBook(String pageName, String foot) {
@@ -230,12 +225,12 @@ public class BuildService {
 	private void createStatDetail(String pageName, String foot) {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		String fileName = "statindex.html";
-		
+
 		List<Member> members = memberService.getMembers();
 
 		StringBuilder statHtmlBuilder = new StringBuilder();
 		String statHtml = Util.getFileContents("site_template/stat/index.html");
-		String statJs = Util.getFileContents("site_template/resource/common.js");
+		String statJs = Util.getFileContents("site_template/resource/stat.js");
 		statHtmlBuilder.append(getHeadHtml(pageName));
 
 		StringBuilder articleHitChartHtml = new StringBuilder();
@@ -251,31 +246,32 @@ public class BuildService {
 			articleHitChartHtml.append("</div>");
 			articleHitChartHtml.append("</div>");
 
-			articleHitChartJs.append("var articleHit"+board.getId()+" = document.getElementById('articleHitChart" + board.getId()
-					+ "');");
-			articleHitChartJs.append("var chart"+board.getId()+" = new Chart(articleHit"+board.getId()+", {");
+			articleHitChartJs.append("var articleHit" + board.getId() + " = document.getElementById('articleHitChart"
+					+ board.getId() + "');");
+			articleHitChartJs.append("var chart" + board.getId() + " = new Chart(articleHit" + board.getId() + ", {");
 			articleHitChartJs.append("type: 'doughnut',");
 			articleHitChartJs.append("data: {");
 			articleHitChartJs.append("labels: [");
 			for (int i = 0; i < articles.size(); i++) {
-				if( i == articles.size()-1) {
-					articleHitChartJs.append("'"+articles.get(i).getTitle()+"'");
+				if (i == articles.size() - 1) {
+					articleHitChartJs.append("'" + articles.get(i).getTitle() + "'");
 					continue;
 				}
-				articleHitChartJs.append("'"+articles.get(i).getTitle()+"',");
+				articleHitChartJs.append("'" + articles.get(i).getTitle() + "',");
 			}
 			articleHitChartJs.append("],");
 			articleHitChartJs.append("datasets: [{");
 			articleHitChartJs.append("data: [");
 			for (int i = 0; i < articles.size(); i++) {
-				if( i == articles.size()-1) {
+				if (i == articles.size() - 1) {
 					articleHitChartJs.append(articles.get(i).getHitCount());
 					continue;
 				}
-				articleHitChartJs.append(articles.get(i).getHitCount()+",");
+				articleHitChartJs.append(articles.get(i).getHitCount() + ",");
 			}
 			articleHitChartJs.append("],");
-			articleHitChartJs.append("backgroundColor:['#F8E88B','#F69069','#8482ff','#ff8293','#E4B660','#ff82ff','#66d4f5']");
+			articleHitChartJs
+					.append("backgroundColor:['#F8E88B','#F69069','#8482ff','#ff8293','#E4B660','#ff82ff','#66d4f5']");
 			articleHitChartJs.append("}]");
 			articleHitChartJs.append("},");
 			articleHitChartJs.append("options: {}");
@@ -287,10 +283,10 @@ public class BuildService {
 
 		statHtmlBuilder.append(statHtml);
 		statHtmlBuilder.append(foot);
-		
-		Util.writeFileContents("site_template/resource/common.js", statJs.toString());
+
+		Util.writeFileContents("site/stat.js", statJs.toString());
 		Util.writeFileContents("site/" + fileName, statHtmlBuilder.toString());
-		 
+
 		/*
 		 * ArrayList<Board> boards = articleService.getBoardsForPrint(); String fileName
 		 * = "statindex.html";
@@ -475,7 +471,7 @@ public class BuildService {
 
 				StringBuilder articledetail__articlelist_prevpagelink = new StringBuilder();
 				articledetail__articlelist_prevpagelink.append("");
-				if (pageButton != 1 && total_pages >10) {
+				if (pageButton != 1 && total_pages > 10) {
 					articledetail__articlelist_prevpagelink.append("<div class=\"flex flex-basis-50px\">");
 					articledetail__articlelist_prevpagelink.append("<a href=\"" + board.getCode() + "-list-"
 							+ ((pageButton - 1) * buttonsInAPage - 9) + ".html\"> 이전 </a>");
@@ -535,11 +531,6 @@ public class BuildService {
 		}
 	}
 
-	public String getArticleDetailFileName(Article article) {
-		return article.getExtra__boardCode() + "-detail-" + article.getId() + ".html";
-
-	}
-
 	// 게시판 페이지 생성 함수
 	private void createBoardPage(String pageName, String foot) {
 		Util.copy("site_template/resource/article_list.js", "site/article_list.js");
@@ -584,7 +575,7 @@ public class BuildService {
 				boardPageHtmlBuilder.append(foot);
 				Util.writeFileContents("site/" + fileName, boardPageHtmlBuilder.toString());
 			} else if (articles.size() != 0) {
-
+				Util.getJsonText(articles);
 				for (int i = 1; i <= pages; i++) {
 					String boardPageHtml = Util.getFileContents("site_template/article/list/list.html");
 
@@ -626,21 +617,21 @@ public class BuildService {
 					}
 
 					StringBuilder board_list = new StringBuilder();
-					
-						board_list.append("<tbody v-for=\"article in filtered\">");
-						board_list.append("<tr class =\"line-separate\">");
-						board_list.append("<td colspan=\"6\"></td>");
-						board_list.append("</tr>");
-						board_list.append("<tr>");
-						board_list.append("<td class=\"cell-id\">" + "{{article.id}}" + "</td>");
-						board_list.append("<td class=\"cell-title\"><a :href=\"'" + board.getCode() + "-detail-'+article.id+'.html'\">" + "{{article.title}}" + "</td>");
-						board_list.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
-						board_list.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
-						board_list.append("<td class=\"cell-hit\"></td>");
-						board_list.append("<td class=\"cell-recommend\"></td>");
-						board_list.append("</tr>");
-						board_list.append("</tbody>");
-					
+
+					board_list.append("<tbody v-for=\"article in filtered\">");
+					board_list.append("<tr class =\"line-separate\">");
+					board_list.append("<td colspan=\"6\"></td>");
+					board_list.append("</tr>");
+					board_list.append("<tr>");
+					board_list.append("<td class=\"cell-id\">" + "{{article.id}}" + "</td>");
+					board_list.append("<td class=\"cell-title\"><a :href=\"'" + board.getCode()
+							+ "-detail-'+article.id+'.html'\">" + "{{article.title}}" + "</td>");
+					board_list.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
+					board_list.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
+					board_list.append("<td class=\"cell-hit\"></td>");
+					board_list.append("<td class=\"cell-recommend\"></td>");
+					board_list.append("</tr>");
+					board_list.append("</tbody>");
 
 					boardPageHtml = boardPageHtml.replace("${board-list}", board_list.toString());
 
@@ -656,7 +647,7 @@ public class BuildService {
 
 					StringBuilder board_list__prevpagebutton = new StringBuilder();
 					board_list__prevpagebutton.append("");
-					
+
 					if (pageButton != 1) {
 						board_list__prevpagebutton.append("<div class=\"flex flex-basis-50px\">");
 						board_list__prevpagebutton.append("<a href=\"" + board.getCode() + "-list-"
@@ -845,4 +836,8 @@ public class BuildService {
 		return sb.toString();
 	}
 
+	public String getArticleDetailFileName(Article article) {
+		return article.getExtra__boardCode() + "-detail-" + article.getId() + ".html";
+
+	}
 }
