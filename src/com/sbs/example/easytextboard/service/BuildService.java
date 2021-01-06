@@ -633,7 +633,7 @@ public class BuildService {
 						board_list.append("</tr>");
 						board_list.append("<tr>");
 						board_list.append("<td class=\"cell-id\">" + "{{article.id}}" + "</td>");
-						board_list.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-detail-"
+						board_list.append("<td class=\"cell-title\"><a :href=\"" + board.getCode() + "-detail-"
 								+ "{{article.id}}" + ".html\">" + "{{article.title}}" + "</td>");
 						board_list.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
 						board_list.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
