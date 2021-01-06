@@ -2,10 +2,12 @@ package com.sbs.example.easytextboard.util;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -47,6 +49,18 @@ public class Util {
 	public static void writeFileContents(String filePath, int data) {
 		writeFileContents(filePath, data + "");
 	}
+	public static void writeFile(String filePath, String data) {
+		File file = new File(filePath);
+		
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			writer.write(data);
+			writer.close();
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	// 첫 문자 소문자화
 	public static String lcfirst(String str) {
@@ -220,6 +234,18 @@ public class Util {
 		}
 
 		return null;
+	}
+	
+	// 객체를 json형태로 변환시켜 가져오기
+	public static String getJsonText(Object obj) {
+		ObjectMapper mapper = new ObjectMapper();
+		String rs = "";
+		try {
+			rs = mapper.writeValueAsString(obj);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return rs;
 	}
 	
 }

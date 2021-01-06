@@ -1,21 +1,13 @@
-<!-- lodash 불러오기 -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
-
-<!-- vue 불러오기 -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <main class="con-min-width flex flex-dir-col flex-grow-1">
-
     <section class="title-bar main-con">
         <h1 class="title-bar__title-box flex flex-jc-c">${board-list__boardname}
         </h1>
     </section>
-
-    <section class="article-list-wrap main-con board-list">
+    <section class="main-con board-list">
         <div class="searchBox">
             <form>
                 <span>검색</span>
-                <input @input="searchKeywordInputed" :value="searchKeyword" type="text">
+                <input type="text">
                 <button><i class="fas fa-search"></i></button>
             </form>
         </div>
@@ -31,8 +23,7 @@
             ${board-list}
         </table>
     </section>
-
-
+    
     <div class="main-con flex-grow-1"></div>
     <section class="page-button main-con">
         <div class="flex flex-ai-c flex-jc-s-bet">

@@ -518,7 +518,12 @@
        .title-bar__title-box{
            font-size:2rem;           
        }
-       
+       .searchBox {
+           margin:15px 0;
+       }
+       .searchBox > form  {
+            text-align: right;
+       }
        .board-list {
            margin-top:40px;
            text-align: center;

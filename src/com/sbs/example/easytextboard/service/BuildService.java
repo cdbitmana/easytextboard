@@ -56,18 +56,20 @@ public class BuildService {
 		 * Util.copy(jsSource, "site/article/common.js"); Util.copy(jsSource,
 		 * "site/stat/common.js");
 		 */
-		Util.copy(cssSource, "site/app.css");
-		Util.copy(jsSource, "site/common.js");
+	
 
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
+		/*
 		Container.disqusApiService.loadDisqusData();
-
+		 
 		Container.googleAnalyticsApiService.updatePageHits();
-
+		 */
 		createMainPage("index", foot);
-
-		createBoardPage("article_list", foot);
+		
+		createSearchPage("article_search",foot);
+		
+		createBoardPage("article_list", foot);			
 
 		createArticleDetail("article_detail", foot);
 
@@ -76,6 +78,43 @@ public class BuildService {
 		createProfile("profile", foot);
 
 		createGuestBook("guestbook", foot);
+		
+		Util.copy(cssSource, "site/app.css");
+		Util.copy(jsSource, "site/common.js");
+		
+		
+	}
+
+	// 검색 페이지 생성 함수
+	private void createSearchPage(String pageName, String foot) {
+		
+		List<Board> boards = articleService.getBoardsForPrint();
+		
+		for(Board board : boards) {
+			
+			List<Article> articles = articleService.getArticlesByBoardCode(board.getCode());
+			
+			
+						
+			pageName = board.getCode();
+								
+			String jsonText = Util.getJsonText(articles);
+			
+			Util.writeFile("site/"+board.getCode()+"-list.json", jsonText);
+			
+			StringBuilder searchPageHtmlBuilder = new StringBuilder();
+			
+			searchPageHtmlBuilder.append(getHeadHtml(pageName));
+			
+			String searchPageHtml = Util.getFileContents("site_template/article/search/search.html");	
+			
+			
+			
+		}
+		
+		
+		
+		
 	}
 
 	// 방명록 페이지 생성 함수
@@ -281,7 +320,7 @@ public class BuildService {
 		statHtmlBuilder.append(statHtml);
 		statHtmlBuilder.append(foot);
 		
-		Util.writeFileContents("site/common.js", statJs.toString());
+		Util.writeFileContents("site_template/resource/common.js", statJs.toString());
 		Util.writeFileContents("site/" + fileName, statHtmlBuilder.toString());
 		 
 		/*
@@ -619,21 +658,22 @@ public class BuildService {
 					}
 
 					StringBuilder board_list = new StringBuilder();
-					for (int j = start; j >= end; j--) {
+					
+						board_list.append("<tbody v-for=\"article in filtered\">");
 						board_list.append("<tr class =\"line-separate\">");
 						board_list.append("<td colspan=\"6\"></td>");
 						board_list.append("</tr>");
 						board_list.append("<tr>");
-						board_list.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
+						board_list.append("<td class=\"cell-id\">" + "{{article.id}}" + "</td>");
 						board_list.append("<td class=\"cell-title\"><a href=\"" + board.getCode() + "-detail-"
-								+ articles.get(j).getId() + ".html\">" + articles.get(j).getTitle() + "</td>");
-						board_list.append("<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>");
-						board_list.append("<td class=\"cell-regDate\">" + articles.get(j).getRegDate() + "</td>");
-						board_list.append("<td class=\"cell-hit\">" + articles.get(j).getHitCount() + "</td>");
-						board_list.append("<td class=\"cell-recommend\">"
-								+ articleService.getArticleRecommend(articles.get(j).getId()) + "</td>");
+								+ "{{article.id}}" + ".html\">" + "{{article.title}}" + "</td>");
+						board_list.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
+						board_list.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
+						board_list.append("<td class=\"cell-hit\"></td>");
+						board_list.append("<td class=\"cell-recommend\"></td>");
 						board_list.append("</tr>");
-					}
+						board_list.append("</tbody>");
+					
 
 					boardPageHtml = boardPageHtml.replace("${board-list}", board_list.toString());
 

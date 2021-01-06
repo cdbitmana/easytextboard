@@ -78,10 +78,7 @@ public class Article {
 	public String getRegDate() {
 		return regDate;
 	}
-
-	public String getupdateDate() {
-		return updateDate;
-	}
+	
 
 	public int getId() {
 		return this.id;
