@@ -579,7 +579,8 @@ public class BuildService {
 				boardPageHtmlBuilder.append(foot);
 				Util.writeFileContents("site/" + fileName, boardPageHtmlBuilder.toString());
 			} else if (articles.size() != 0) {
-				Util.getJsonText(articles);
+				String jsonText = Util.getJsonText(articles);
+				Util.writeFile("site/"+board.getCode()+"-list.json", jsonText);
 				for (int i = 1; i <= pages; i++) {
 					String boardPageHtml = Util.getFileContents("site_template/article/list/list.html");
 
