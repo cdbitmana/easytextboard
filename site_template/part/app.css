@@ -487,7 +487,7 @@
         min-width:60px;
     }
     .home-main__article-box__body{      
-        overflow-y:scroll;
+        overflow-y:auto;
         height:160px;
         box-sizing: border-box;
         padding: 10px;

@@ -291,54 +291,6 @@ public class BuildService {
 		Util.writeFileContents("site/stat.js", statJs.toString());
 		Util.writeFileContents("site/" + fileName, statHtmlBuilder.toString());
 
-		/*
-		 * ArrayList<Board> boards = articleService.getBoardsForPrint(); String fileName
-		 * = "statindex.html";
-		 * 
-		 * List<Member> members = memberService.getMembers(); List<Article> articles =
-		 * articleService.getArticles();
-		 * 
-		 * StringBuilder statHtmlBuilder = new StringBuilder(); String statHtml =
-		 * Util.getFileContents("site_template/stat/index.html");
-		 * statHtmlBuilder.append(getHeadHtml(pageName));
-		 * 
-		 * statHtml = statHtml.replace("${member_count}",
-		 * String.valueOf(members.size())); statHtml =
-		 * statHtml.replace("${all_article_count}", String.valueOf(articles.size()));
-		 * 
-		 * StringBuilder dif_article_count = new StringBuilder();
-		 * dif_article_count.append("<ul>"); for (Board board : boards) { List<Article>
-		 * articlesByBoard = articleService.getArticlesByBoardCode(board.getCode());
-		 * dif_article_count.append("<li>" + board.getName() + " : " +
-		 * articlesByBoard.size() + "</li>"); } dif_article_count.append("</ul>");
-		 * 
-		 * statHtml = statHtml.replace("${dif_article_count}",
-		 * dif_article_count.toString());
-		 * 
-		 * int hitSum = 0; for (Article article : articles) { hitSum +=
-		 * article.getHitCount(); }
-		 * 
-		 * statHtml = statHtml.replace("${all_article_hit_count}",
-		 * String.valueOf(hitSum));
-		 * 
-		 * StringBuilder dif_article_hit_count = new StringBuilder();
-		 * 
-		 * dif_article_hit_count.append("<ul>"); for (Board board : boards) {
-		 * List<Article> articlesByBoard =
-		 * articleService.getArticlesByBoardCode(board.getCode());
-		 * 
-		 * int hitSumByBoard = 0; for (Article article : articlesByBoard) {
-		 * hitSumByBoard += article.getHitCount(); } dif_article_hit_count.append("<li>"
-		 * + board.getName() + " : " + hitSumByBoard + "</li>");
-		 * 
-		 * } dif_article_hit_count.append("</ul>");
-		 * 
-		 * statHtml = statHtml.replace("${dif_article_hit_count}",
-		 * dif_article_hit_count.toString());
-		 * 
-		 * statHtmlBuilder.append(statHtml); statHtmlBuilder.append(foot);
-		 * Util.writeFileContents("site/" + fileName, statHtmlBuilder.toString());
-		 */
 	}
 
 	// 게시물 상세보기 생성 함수
