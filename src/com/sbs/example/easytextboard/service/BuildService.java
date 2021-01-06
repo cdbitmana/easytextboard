@@ -542,7 +542,7 @@ public class BuildService {
 
 	// 게시판 페이지 생성 함수
 	private void createBoardPage(String pageName, String foot) {
-
+		Util.copy("site_template/resource/article_list.js", "site/article_list.js");
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		for (Board board : boards) {
 
