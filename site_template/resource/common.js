@@ -6,7 +6,7 @@ function home_main__Body__init() {
         var initialValue = body[i].innerHTML.trim();
         initialValue = initialValue.replace(/&gt;/gi, ">");
         initialValue = initialValue.replace(/&lt;/gi, "<");
-        const viewer = new toastui.Editor.factory({
+        const viewer = toastui.Editor.factory({
 
             el: body[i],
             initialValue: initialValue,
@@ -30,7 +30,7 @@ function ArticleDetail__Body__init() {
     initialValue = initialValue.replace(/&gt;/gi, ">");
     initialValue = initialValue.replace(/&lt;/gi, "<");
 
-    const viewer = new toastui.Editor.factory({
+    const viewer = toastui.Editor.factory({
 
         el: body,
         initialValue: initialValue,
