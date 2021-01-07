@@ -13,11 +13,10 @@
 
     <section class="article-list-wrap main-con board-list">
         <div class="searchBox">
-            <form>
-                <span>검색</span>
+            <div>
                 <input @input="searchKeywordInputed" :value="searchKeyword" type="text">
-                <button><i class="fas fa-search"></i></button>
-            </form>
+                <button @click="searchKeywordClick"><i class="fas fa-search"></i></button>
+            </div>
         </div>
         <table class="width-100p">
             <tr class="tag">

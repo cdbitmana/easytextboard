@@ -53,16 +53,20 @@ const articleListBoxVue = new Vue({
 	el: ".article-list-wrap",
 	data: {
 		articleList: articleList,
-		searchKeyword: ''
+        searchKeyword: '',
+        searchResult:''
 	},
 	methods: {
 		searchKeywordInputed: _.debounce(function(e) {
 			this.searchKeyword = e.target.value;
-		}, 500)
+        }, 500),
+        searchKeywordClick:function(){
+            this.searchResult = this.searchKeyword;
+        }
 	},
 	computed: {
 		filterKey: function() {
-			return this.searchKeyword.toLowerCase();
+			return this.searchResult.toLowerCase();
 		},
 		filtered: function() {
 			if (this.filterKey.length == 0) {

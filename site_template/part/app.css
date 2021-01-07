@@ -521,7 +521,7 @@
        .searchBox {
            margin:15px 0;
        }
-       .searchBox > form  {
+       .searchBox > div  {
             text-align: right;
        }
        .board-list {
