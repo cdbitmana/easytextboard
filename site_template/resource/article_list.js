@@ -57,9 +57,9 @@ const articleListBoxVue = new Vue({
         searchResult:''
 	},
 	methods: {
-		searchKeywordInputed: _.debounce(function(e) {
+		searchKeywordInputed: function(e) {
 			this.searchKeyword = e.target.value;
-        }, 500),
+        },
         searchKeywordClick:function(){
             this.searchResult = this.searchKeyword;
         }
