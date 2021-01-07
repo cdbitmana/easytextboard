@@ -524,6 +524,14 @@
        .searchBox > div  {
             text-align: right;
        }
+       .searchBox > div > input {
+           height:20px;
+       }
+       .searchBox > div > button {
+        height:20px;
+        box-sizing: content-box;
+    }
+      
        .board-list {
            margin-top:40px;
            text-align: center;

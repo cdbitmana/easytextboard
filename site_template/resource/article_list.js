@@ -57,11 +57,16 @@ const articleListBoxVue = new Vue({
         searchResult:''
 	},
 	methods: {
-		searchKeywordInputed: function(e) {
+		searchKeywordInputed: _.debounce(function(e) {
 			this.searchKeyword = e.target.value;
-        },
+        },500),
         searchKeywordClick:function(){
             this.searchResult = this.searchKeyword;
+        },
+        searchKeywordInputedEnter:function(){
+            if(event.keyCode==13){
+                this.searchResult = this.searchKeyword;
+            }
         }
 	},
 	computed: {
