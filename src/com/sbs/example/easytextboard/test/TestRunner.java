@@ -1,5 +1,7 @@
 package com.sbs.example.easytextboard.test;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +33,13 @@ public class TestRunner {
 	}
 
 	public void run() {
+		
 		MysqlUtil.setDBInfo(Container.config.getDbHost(), Container.config.getDbId(), Container.config.getDbPw(),
 				Container.config.getDbName());
-
-		testUpdatePageHitsByGa4Api();
+		
+		Util.copy("site/", "abc/", ".git" , "CNAME");
+		
+		MysqlUtil.closeConnection();
 
 	}
 

@@ -201,6 +201,7 @@ public class BuildService {
 			guestBookHtmlBuilder.append(foot);
 
 			Util.writeFileContents("site/" + fileName, guestBookHtmlBuilder.toString());
+
 		}
 
 	}
@@ -235,11 +236,11 @@ public class BuildService {
 
 		StringBuilder articleHitChartHtml = new StringBuilder();
 		StringBuilder articleHitChartJs = new StringBuilder();
-		
+
 		for (Board board : boards) {
 
 			List<Article> articles = articleService.getArticlesForStaticPage(board.getId());
-			if(articles.size() ==0 ) {
+			if (articles.size() == 0) {
 				articleHitChartHtml.append("");
 				articleHitChartJs.append("");
 				break;
@@ -532,7 +533,7 @@ public class BuildService {
 				Util.writeFileContents("site/" + fileName, boardPageHtmlBuilder.toString());
 			} else if (articles.size() != 0) {
 				String jsonText = Util.getJsonText(articles);
-				Util.writeFile("site/"+board.getCode()+"-list.json", jsonText);
+				Util.writeFile("site/" + board.getCode() + "-list.json", jsonText);
 				for (int i = 1; i <= pages; i++) {
 					String boardPageHtml = Util.getFileContents("site_template/article/list/list.html");
 

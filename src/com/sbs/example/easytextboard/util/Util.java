@@ -8,18 +8,21 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.Files;
 
 public class Util {
 	public static String getNowDateStr() {
@@ -27,17 +30,18 @@ public class Util {
 		Date time = new Date();
 		return format.format(time);
 	}
+
 	// 폴더 삭제
 	public static void deleteDir(String filePath) {
 		File deleteFolder = new File(filePath);
-		
-		if(deleteFolder.exists()) {
+
+		if (deleteFolder.exists()) {
 			File[] deleteFolderList = deleteFolder.listFiles();
-			
-			for(int i = 0 ; i < deleteFolderList.length; i++) {
-				if(deleteFolderList[i].isFile()) {
+
+			for (int i = 0; i < deleteFolderList.length; i++) {
+				if (deleteFolderList[i].isFile()) {
 					deleteFolderList[i].delete();
-				}else {
+				} else {
 					deleteDir(deleteFolderList[i].getPath());
 				}
 				deleteFolderList[i].delete();
@@ -45,22 +49,23 @@ public class Util {
 			deleteFolder.delete();
 		}
 	}
+
 	// 파일에 내용쓰기
 	public static void writeFileContents(String filePath, int data) {
 		writeFileContents(filePath, data + "");
 	}
+
 	public static void writeFile(String filePath, String data) {
 		File file = new File(filePath);
-		
+
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			writer.write(data);
 			writer.close();
-		}catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 
 	// 첫 문자 소문자화
 	public static String lcfirst(String str) {
@@ -121,36 +126,108 @@ public class Util {
 		}
 	}
 
-	// 파일 복사하기
-	public static void copy(String sourceFile, String copyFile) {		
-        
-        //파일객체생성
-        File source = new File(sourceFile);
-        //복사파일객체생성
-        File copy= new File(copyFile);
-        
-        try {
-            
-            FileInputStream fis = new FileInputStream(source); //읽을파일
-            FileOutputStream fos = new FileOutputStream(copy); //복사할파일
-            
-            int fileByte = 0; 
-            // fis.read()가 -1 이면 파일을 다 읽은것
-            while((fileByte = fis.read()) != -1) {
-                fos.write(fileByte);
-            }
-            //자원사용종료
-            fis.close();
-            fos.close();
-            
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+	
+	// 파일 복사하기 ( 특정 파일은 제외하고 복사 )
+	public static void copy(String sourceFile, String copyPath, String... exceptFiles) {
+
+		// 파일객체생성
+		File source = new File(sourceFile);
+
+		// 복사파일객체생성
+		File copy = new File(copyPath);
+		if (!copy.exists()) {
+			copy.mkdirs();
+		}
+
+		File[] fileList = null;
+
+		for(String exceptFile : exceptFiles) {
+			fileList = source.listFiles(new FilenameFilter() {
+
+				@Override
+				public boolean accept(File dir, String name) {
+						if(name.equals(exceptFile)) {
+							return false;
+						}						
+						return true;					
+				}
+			});
+		}
 		
+		
+		for (File file : fileList) {
+			
+			if(file.isDirectory()) {
+				System.out.println(file.getPath());				
+				copy(file.getPath(),copyPath);
+				continue;
+			}
+			
+			String fileName = file.toString();
+			
+			String[] fileNames = fileName.split("\\\\");
+			
+			fileName = fileNames[fileNames.length-1];
+
+			fileName = copyPath + fileName;
+			
+			File copyFile = new File(fileName);
+			
+			try {
+				
+				FileInputStream fis = new FileInputStream(file); // 읽을파일
+				FileOutputStream fos = new FileOutputStream(copyFile); // 복사할파일
+
+				int fileByte = 0;
+				// fis.read()가 -1 이면 파일을 다 읽은것
+				while ((fileByte = fis.read()) != -1) {
+					fos.write(fileByte);
+				}
+				// 자원사용종료
+				fis.close();
+				fos.close();
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
+	
+	public static void copy(String sourceFile, String copyFile) {
+
+		// 파일객체생성
+		File source = new File(sourceFile);
+		// 복사파일객체생성
+		File copy = new File(copyFile);
+		if (!copy.exists()) {
+			copy.mkdirs();
+		}
+
+		try {
+
+			FileInputStream fis = new FileInputStream(source); // 읽을파일
+			FileOutputStream fos = new FileOutputStream(copy); // 복사할파일
+
+			int fileByte = 0;
+			// fis.read()가 -1 이면 파일을 다 읽은것
+			while ((fileByte = fis.read()) != -1) {
+				fos.write(fileByte);
+			}
+			// 자원사용종료
+			fis.close();
+			fos.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	// 연결을 통해서 데이터 받아오기 (callApi)
 	public static String callApi(String urlStr, String... args) {
 		// URL 구성 시작
@@ -205,7 +282,7 @@ public class Util {
 
 		return content.toString();
 	}
-	
+
 	// 연결을 통해 가져온 데이터를 Map으로 리턴
 	public static Map<String, Object> callApiResponseToMap(String urlStr, String... args) {
 		String jsonString = callApi(urlStr, args);
@@ -235,7 +312,7 @@ public class Util {
 
 		return null;
 	}
-	
+
 	// 객체를 json형태로 변환시켜 가져오기
 	public static String getJsonText(Object obj) {
 		ObjectMapper mapper = new ObjectMapper();
@@ -247,5 +324,5 @@ public class Util {
 		}
 		return rs;
 	}
-	
+
 }
