@@ -33,11 +33,13 @@ public class TestRunner {
 	}
 
 	public void run() {
-		
+
 		MysqlUtil.setDBInfo(Container.config.getDbHost(), Container.config.getDbId(), Container.config.getDbPw(),
 				Container.config.getDbName());
+
+		 Util.copy("site/", "abc/", ".git" , "CNAME");
+
 		
-		Util.copy("site/", "abc/", ".git" , "CNAME");
 		
 		MysqlUtil.closeConnection();
 

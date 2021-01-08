@@ -17,7 +17,9 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -126,57 +128,93 @@ public class Util {
 		}
 	}
 
-	
 	// 파일 복사하기 ( 특정 파일은 제외하고 복사 )
-	public static void copy(String sourceFile, String copyPath, String... exceptFiles) {
+	public static void copy(String sourceFile, String copyFile, String... exceptFiles) {
 
 		// 파일객체생성
 		File source = new File(sourceFile);
-
 		// 복사파일객체생성
-		File copy = new File(copyPath);
+		File copy = new File(copyFile);
 		if (!copy.exists()) {
-			copy.mkdirs();
+			if (!source.isDirectory()) {
+				String path = copy.toString();
+				String[] fileName = path.split("\\\\");
+				path = path.replace(fileName[fileName.length - 1], "");
+				File copyPath = new File(path);
+				copyPath.mkdirs();
+			} else {
+				copy.mkdirs();
+			}
+
 		}
 
-		File[] fileList = null;
+		if (source.isDirectory()) {
 
-		for(String exceptFile : exceptFiles) {
-			fileList = source.listFiles(new FilenameFilter() {
+			File[] files = source.listFiles();
+			
+			List<File> filed = new ArrayList<>();
+			
+			for(int i = 0 ; i < files.length; i++) {
+				boolean check = false;
+				for(int j = 0 ; j < exceptFiles.length; j++) {
+					if(files[i].getName().equals(exceptFiles[j])) {
+						check = true;
+					} 					
+				}
+				if(!check) {
+					filed.add(files[i]);
+				}
+			}
+			
+			/*
+			files = source.listFiles(new FilenameFilter() {
 
 				@Override
 				public boolean accept(File dir, String name) {
-						if(name.equals(exceptFile)) {
-							return false;
-						}						
-						return true;					
+
+					return name.equals("");
 				}
 			});
-		}
-		
-		
-		for (File file : fileList) {
-			
-			if(file.isDirectory()) {
-				System.out.println(file.getPath());				
-				copy(file.getPath(),copyPath);
-				continue;
-			}
-			
-			String fileName = file.toString();
-			
-			String[] fileNames = fileName.split("\\\\");
-			
-			fileName = fileNames[fileNames.length-1];
+			*/
+			for (File file : filed) {
 
-			fileName = copyPath + fileName;
-			
-			File copyFile = new File(fileName);
-			
+				File temp = new File(copy + file.separator + file.getName());
+
+				String test = temp.toString();
+				if (file.isDirectory()) {
+
+					copy(file.getPath(), temp.toString());
+
+				} else {
+
+					try {
+
+						FileInputStream fis = new FileInputStream(file); // 읽을파일
+						FileOutputStream fos = new FileOutputStream(temp); // 복사할파일
+
+						int fileByte = 0;
+						// fis.read()가 -1 이면 파일을 다 읽은것
+						while ((fileByte = fis.read()) != -1) {
+							fos.write(fileByte);
+						}
+						// 자원사용종료
+						fis.close();
+						fos.close();
+
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+
+			}
+
+		} else {
 			try {
-				
-				FileInputStream fis = new FileInputStream(file); // 읽을파일
-				FileOutputStream fos = new FileOutputStream(copyFile); // 복사할파일
+
+				FileInputStream fis = new FileInputStream(source); // 읽을파일
+				FileOutputStream fos = new FileOutputStream(copy); // 복사할파일
 
 				int fileByte = 0;
 				// fis.read()가 -1 이면 파일을 다 읽은것
@@ -192,10 +230,11 @@ public class Util {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+
 		}
+
 	}
-	
-	
+
 	public static void copy(String sourceFile, String copyFile) {
 
 		// 파일객체생성
@@ -203,27 +242,77 @@ public class Util {
 		// 복사파일객체생성
 		File copy = new File(copyFile);
 		if (!copy.exists()) {
-			copy.mkdirs();
+			if (!source.isDirectory()) {
+				String path = copy.toString();
+				String[] fileName = path.split("\\\\");
+				path = path.replace(fileName[fileName.length - 1], "");
+				File copyPath = new File(path);
+				copyPath.mkdirs();
+			} else {
+				copy.mkdirs();
+			}
+
 		}
 
-		try {
+		if (source.isDirectory()) {
 
-			FileInputStream fis = new FileInputStream(source); // 읽을파일
-			FileOutputStream fos = new FileOutputStream(copy); // 복사할파일
+			File[] files = source.listFiles();
 
-			int fileByte = 0;
-			// fis.read()가 -1 이면 파일을 다 읽은것
-			while ((fileByte = fis.read()) != -1) {
-				fos.write(fileByte);
+			for (File file : files) {
+
+				File temp = new File(copy + file.separator + file.getName());
+
+				String test = temp.toString();
+				if (file.isDirectory()) {
+
+					copy(file.getPath(), temp.toString());
+
+				} else {
+
+					try {
+
+						FileInputStream fis = new FileInputStream(file); // 읽을파일
+						FileOutputStream fos = new FileOutputStream(temp); // 복사할파일
+
+						int fileByte = 0;
+						// fis.read()가 -1 이면 파일을 다 읽은것
+						while ((fileByte = fis.read()) != -1) {
+							fos.write(fileByte);
+						}
+						// 자원사용종료
+						fis.close();
+						fos.close();
+
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+
 			}
-			// 자원사용종료
-			fis.close();
-			fos.close();
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} else {
+			try {
+
+				FileInputStream fis = new FileInputStream(source); // 읽을파일
+				FileOutputStream fos = new FileOutputStream(copy); // 복사할파일
+
+				int fileByte = 0;
+				// fis.read()가 -1 이면 파일을 다 읽은것
+				while ((fileByte = fis.read()) != -1) {
+					fos.write(fileByte);
+				}
+				// 자원사용종료
+				fis.close();
+				fos.close();
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 	}
