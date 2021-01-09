@@ -126,4 +126,8 @@ public class ArticleService {
 		return articleDao.getArticlesForStaticPage(boardId);
 	}
 
+	public List<Article> getArticleByBoardCodeDesc(String code) {
+		return articleDao.getArticleByBoardCodeDesc(code);
+	}
+
 }

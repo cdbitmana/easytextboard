@@ -144,6 +144,117 @@ $(window).on('scroll',function(){
     
     moveleft();
     /* 홈 화면 상단 이미지 슬라이드 끝 */
+
+
+    /* 게시물 검색 기능 시작 */
+const articleList = [];
+let listName = ''
+let getPageListName = function(){
+    let pageName = ""; 
+    let tempPageName = window.location.href;
+    let strPageName = tempPageName.split("/");
+    pageName = strPageName[strPageName.length-1].split("?")[0];    
+    
+    pageName = pageName.split("-")[0];    
+    listName = pageName;
+    return pageName;
+}
+getPageListName();
+
+let boardCode = listName +'-list.json';
+
+$.get(    
+	boardCode,
+	{},
+	function(data) {
+		data.forEach((row, index) => {
+			const article = {
+				id: row.id,
+				regDate: row.regDate,
+				writer: row.extra__writer,
+				title: row.title,
+				body: row.body,
+				hitCount : row.hitCount,
+				likesCount : row.likesCount
+			};
+            
+            articleList.push(article);
+            
+        });
+        
+	},
+	'json'
+);
+
+const articleListBoxVue = new Vue({
+	el: ".article-list-wrap",
+	data: {
+		articleList: articleList,
+        searchKeyword: '',
+        searchResult:''
+	},
+	methods: {
+		searchKeywordInputed: _.debounce(function(e) {
+			this.searchKeyword = e.target.value;
+        },500),
+        searchKeywordClick:function(){
+            this.searchResult = this.searchKeyword;
+        },
+        searchKeywordInputedEnter:function(){
+            if(event.keyCode==13){
+                this.searchResult = this.searchKeyword;
+            }
+        }
+	},
+	computed: {
+		filterKey: function() {
+			return this.searchResult.toLowerCase();
+		},
+		filtered: function() {            
+			if (this.filterKey.length == 0) {
+				return this.articleList;
+			}
+            
+			return this.articleList.filter((row) => {
+				const keys = ['title', 'writer', 'body', 'regDate'];
+
+				const match = keys.some((key) => {
+					return row[key].toLowerCase().indexOf(this.filterKey) > -1;
+				});
+                
+				return match;
+            });
+            
+		},
+		articles: function(){          
+            
+			if(this.filtered.length > 10){
+				const ar = [];
+				for (var i = 0 ; i < 10 ; i++){
+					
+					ar[i] = this.filtered[i];
+					
+				} 
+				return ar;
+			}else {
+                return this.filtered;
+            }
+        },
+        pages:function(){
+            let pages = [];
+            let pagesCount = this.filtered.length / 10;
+            pagesCount =  Math.ceil(pagesCount);
+            for(let i = 1; i <= pagesCount ; i++){
+                pages.push({index:i});
+            }
+           return pages;
+        }
+        
+	}
+});
+
+
+/* 게시물 검색 기능 끝 */
     
     
     

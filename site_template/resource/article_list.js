@@ -14,9 +14,9 @@ if($(window).scrollTop() >= 25){
 const articleList = [];
 let listName = ''
 let getPageListName = function(){
-    var pageName = ""; 
-    var tempPageName = window.location.href;
-    var strPageName = tempPageName.split("/");
+    let pageName = ""; 
+    let tempPageName = window.location.href;
+    let strPageName = tempPageName.split("/");
     pageName = strPageName[strPageName.length-1].split("?")[0];    
     
     pageName = pageName.split("-")[0];    
@@ -24,22 +24,22 @@ let getPageListName = function(){
     return pageName;
 }
 getPageListName();
-console.log(listName);
-let boardCode = listName +'-list.json';
+
+let jsonName = listName +'-list.json';
 
 $.get(    
-	boardCode,
+	jsonName,
 	{},
 	function(data) {
 		data.forEach((row, index) => {
-			
-
 			const article = {
 				id: row.id,
 				regDate: row.regDate,
 				writer: row.extra__writer,
 				title: row.title,
-				body: row.body
+				body: row.body,
+				hitCount : row.hitCount,
+				likesCount : row.likesCount
 			};
             
             articleList.push(article);
@@ -82,18 +82,49 @@ const articleListBoxVue = new Vue({
 				const keys = ['title', 'writer', 'body', 'regDate'];
 
 				const match = keys.some((key) => {
-					if (row[key].toLowerCase().indexOf(this.filterKey) > -1) {
-						return true;
-					}
+					return row[key].toLowerCase().indexOf(this.filterKey) > -1;
 				});
                 
 				return match;
 			});
-        }
+		},
+		articles: function(){
+			if(this.filtered.length > 10){
+				const ar = [];
+				for (var i = 0 ; i < 10 ; i++){
+					
+					ar[i] = this.filtered[i];
+					
+				}
+				
+				return ar;
+			}
+		}
         
 	}
 });
 
+
+const pageButtonVue = new Vue({
+	el: ".page_button_wrap",
+	data: {
+		pages: articleListBoxVue.filtered / 10
+	},
+	methods: {
+		
+	},
+	computed: {
+		pages: function(){
+			if(true){
+				pages = articleListBoxVue.filtered.length / 10;
+			}
+			console.log(this.pages);
+			
+		}
+        
+	}
+});
+console.log(pageButtonVue.pages);
 /* 게시물 검색 기능 끝 */
 
 

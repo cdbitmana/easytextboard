@@ -372,45 +372,53 @@ public class BuildService {
 
 				StringBuilder articleDetail__articlelist_boardName = new StringBuilder();
 
-				switch (board.getCode()) {
-				case "notice":
-					articleDetail__articlelist_boardName.append("<span>" + board.getName() + " 게시판</span>");
-					break;
-				case "free":
-					articleDetail__articlelist_boardName.append("<span>" + board.getName() + " 게시판</span>");
-					break;
-				default:
-					articleDetail__articlelist_boardName.append("<span>" + board.getName() + " 게시판</span>");
-					break;
-				}
+				articleDetail__articlelist_boardName.append("<a href=\"" + board.getCode() + "-list-1.html"
+						+ "\"><span>" + board.getName() + " 게시판</span></a>");
 
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__articlelist-boardname}",
 						articleDetail__articlelist_boardName.toString());
 
 				StringBuilder articleDetail__articleList = new StringBuilder();
-				for (int j = start; j >= end; j--) {
-					articleDetail__articleList.append("<tr class =\"line-separate\">");
-					articleDetail__articleList.append("<td colspan=\"6\"></td>");
-					articleDetail__articleList.append("</tr>");
-					articleDetail__articleList.append("<tr>");
-					if (articles.get(i).getId() == articles.get(j).getId()) {
-						articleDetail__articleList.append("<td class=\"cell-id\"> &gt; </td>");
-					} else {
-						articleDetail__articleList.append("<td class=\"cell-id\">" + articles.get(j).getId() + "</td>");
-					}
 
-					articleDetail__articleList.append("<td class=\"cell-title\"><a href=\"" + board.getCode()
-							+ "-detail-" + articles.get(j).getId() + ".html\">" + articles.get(j).getTitle() + "</td>");
-					articleDetail__articleList
-							.append("<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() + "</td>");
-					articleDetail__articleList
-							.append("<td class=\"cell-regDate\">" + articles.get(j).getRegDate() + "</td>");
-					articleDetail__articleList
-							.append("<td class=\"cell-hit\">" + articles.get(j).getHitCount() + "</td>");
-					articleDetail__articleList.append("<td class=\"cell-recommend\">"
-							+ articleService.getArticleRecommend(articles.get(j).getId()) + "</td>");
-					articleDetail__articleList.append("</tr>");
-				}
+				/*
+				 * 기존 버전 for (int j = start; j >= end; j--) {
+				 * articleDetail__articleList.append("<tr class =\"line-separate\">");
+				 * articleDetail__articleList.append("<td colspan=\"6\"></td>");
+				 * articleDetail__articleList.append("</tr>");
+				 * articleDetail__articleList.append("<tr>"); if (articles.get(i).getId() ==
+				 * articles.get(j).getId()) {
+				 * articleDetail__articleList.append("<td class=\"cell-id\"> &gt; </td>"); }
+				 * else { articleDetail__articleList.append("<td class=\"cell-id\">" +
+				 * articles.get(j).getId() + "</td>"); }
+				 * 
+				 * articleDetail__articleList.append("<td class=\"cell-title\"><a href=\"" +
+				 * board.getCode() + "-detail-" + articles.get(j).getId() + ".html\">" +
+				 * articles.get(j).getTitle() + "</td>"); articleDetail__articleList
+				 * .append("<td class=\"cell-writer\">" + articles.get(j).getExtraWriter() +
+				 * "</td>"); articleDetail__articleList .append("<td class=\"cell-regDate\">" +
+				 * articles.get(j).getRegDate() + "</td>"); articleDetail__articleList
+				 * .append("<td class=\"cell-hit\">" + articles.get(j).getHitCount() + "</td>");
+				 * articleDetail__articleList.append("<td class=\"cell-recommend\">" +
+				 * articleService.getArticleRecommend(articles.get(j).getId()) + "</td>");
+				 * articleDetail__articleList.append("</tr>"); }
+				 */
+
+				/* Vue 적용 버전 */
+				articleDetail__articleList.append("<tbody v-for=\"article in articles\">");
+				articleDetail__articleList.append("<tr class =\"line-separate\">");
+				articleDetail__articleList.append("<td colspan=\"6\"></td>");
+				articleDetail__articleList.append("</tr>");
+				articleDetail__articleList.append("<tr>");
+				articleDetail__articleList.append("<td class=\"cell-id\">" + "{{article.id}}" + "</td>");
+				articleDetail__articleList.append("<td class=\"cell-title\"><a :href=\"'" + board.getCode()
+						+ "-detail-'+article.id+'.html'\">" + "{{article.title}}" + "</td>");
+				articleDetail__articleList.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
+				articleDetail__articleList.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
+				articleDetail__articleList.append("<td class=\"cell-hit\">" + "{{article.hitCount}}" + "</td>");
+				articleDetail__articleList.append("<td class=\"cell-recommend\">" + "{{article.likesCount}}" + "</td>");
+				articleDetail__articleList.append("</tr>");
+				articleDetail__articleList.append("</tbody>");
+				/* Vue 적용 버전 */
 
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__articlelist}",
 						articleDetail__articleList.toString());
@@ -494,7 +502,7 @@ public class BuildService {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		for (Board board : boards) {
 
-			List<Article> articles = articleService.getArticlesByBoardCode(board.getCode());
+			List<Article> articles = articleService.getArticleByBoardCodeDesc(board.getCode());
 
 			int itemsInAPage = 10;
 			int pages = articles.size() / itemsInAPage;
@@ -515,7 +523,8 @@ public class BuildService {
 				boardPageHtmlBuilder.append(getHeadHtml(pageName));
 
 				StringBuilder board_list__boardname = new StringBuilder();
-				board_list__boardname.append(board.getName() + " 게시판");
+				board_list__boardname.append("<a href=\"" + board.getCode() + "-list-1.html" + "\"><span>"
+						+ board.getName() + " 게시판</span></a>");
 				boardPageHtml = boardPageHtml.replace("${board-list__boardname}", board_list__boardname.toString());
 
 				boardPageHtml = boardPageHtml.replace("${board-list}",
@@ -554,17 +563,8 @@ public class BuildService {
 
 					StringBuilder board_list__boardname = new StringBuilder();
 
-					switch (board.getCode()) {
-					case "notice":
-						board_list__boardname.append("<span>" + board.getName() + " 게시판</span>");
-						break;
-					case "free":
-						board_list__boardname.append("<span>" + board.getName() + " 게시판</span>");
-						break;
-					default:
-						board_list__boardname.append("<span>" + board.getName() + " 게시판</span>");
-						break;
-					}
+					board_list__boardname.append("<a href=\"" + board.getCode() + "-list-1.html" + "\"><span>"
+							+ board.getName() + " 게시판</span></a>");
 
 					boardPageHtml = boardPageHtml.replace("${board-list__boardname}", board_list__boardname.toString());
 
@@ -576,7 +576,7 @@ public class BuildService {
 
 					StringBuilder board_list = new StringBuilder();
 
-					board_list.append("<tbody v-for=\"article in filtered\">");
+					board_list.append("<tbody v-for=\"article in articles\">");
 					board_list.append("<tr class =\"line-separate\">");
 					board_list.append("<td colspan=\"6\"></td>");
 					board_list.append("</tr>");
@@ -586,8 +586,8 @@ public class BuildService {
 							+ "-detail-'+article.id+'.html'\">" + "{{article.title}}" + "</td>");
 					board_list.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
 					board_list.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
-					board_list.append("<td class=\"cell-hit\"></td>");
-					board_list.append("<td class=\"cell-recommend\"></td>");
+					board_list.append("<td class=\"cell-hit\">" + "{{article.hitCount}}" + "</td>");
+					board_list.append("<td class=\"cell-recommend\">" + "{{article.likesCount}}" + "</td>");
 					board_list.append("</tr>");
 					board_list.append("</tbody>");
 
@@ -617,18 +617,11 @@ public class BuildService {
 
 					StringBuilder board_list__pagebuttons = new StringBuilder();
 
-					for (int k = startPageButton; k <= endPageButton; k++) {
-						String page = board.getCode() + "-list-" + k + ".html";
-						if (k == i) {
-							board_list__pagebuttons.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
-							board_list__pagebuttons.append("<span>" + k + "</span>");
-							board_list__pagebuttons.append("</li>");
-						} else {
-							board_list__pagebuttons.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
-							board_list__pagebuttons.append("<a href=\"" + page + "\"> " + k + "</a>");
-							board_list__pagebuttons.append("</li>");
-						}
-					}
+					board_list__pagebuttons
+							.append("<li v-for=\"page in pages\" class=\"flex flex-jc-c flex-basis-50px\">");
+					board_list__pagebuttons.append("<span :class=\"{currentPage: mode}\">{{page.index}}</span>");
+					board_list__pagebuttons.append("</li>");
+
 					boardPageHtml = boardPageHtml.replace("${board-list__pagebuttons}",
 							board_list__pagebuttons.toString());
 

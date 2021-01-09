@@ -166,7 +166,7 @@ public class Util {
 				}
 			}
 			
-			/*
+			/* FilenameFilter 인터페이스 ( 리턴하기 때문에 걸러내기 어렵다. )
 			files = source.listFiles(new FilenameFilter() {
 
 				@Override

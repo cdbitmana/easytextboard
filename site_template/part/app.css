@@ -632,10 +632,13 @@
        .page-button  a:hover {
            text-decoration: underline;
        }
-       .page-button > div > ul > li > span {
+       .page-button > ul > li > .currentPage {
            font-weight: bold;
            font-size:1.4rem;
        }
+       .page-button > ul > li > .currentPage:hover {
+        cursor: pointer;
+    }
        .lastmovebutton {
         justify-content: flex-start;
            text-align:left;

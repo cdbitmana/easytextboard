@@ -3,7 +3,8 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
 <!-- vue 불러오기 -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 <main class="con-min-width flex flex-dir-col flex-grow-1">
 
     <section class="title-bar main-con">
@@ -29,12 +30,8 @@
             </tr>            
             ${board-list}
         </table>
-    </section>
 
-
-    <div class="main-con flex-grow-1"></div>
-    <section class="page-button main-con">
-        <div class="flex flex-ai-c flex-jc-s-bet">
+        <div class="page-button flex flex-ai-c flex-jc-s-bet">
             <div class="lastmovebutton flex flex-basis-100px">
                 ${board-list__firstpagebutton}
                 ${board-list__prevpagebutton}
@@ -50,4 +47,4 @@
     </section>
 </main>
 
-<script src="article_list.js"></script>
+<script src="common.js"></script>

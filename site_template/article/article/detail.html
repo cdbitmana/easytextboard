@@ -15,6 +15,14 @@ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.cs
     src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.js"></script>
 <!-- 디스커스 댓글 기능 추가 -->
 <script id="dsq-count-scr" src="//blogssg.disqus.com/count.js" async></script>
+<!-- lodash 불러오기 -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+
+<!-- vue 불러오기 -->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+
 <main class="flex flex-grow-1 flex-dir-col con-min-width">
 
 
@@ -57,10 +65,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.cs
         </div>
     </section>
 
-    <section class="main-con article-list">
-        <section class="title-bar">
-            <h1 class="title-bar__title-box flex flex-jc-c">${articledetail__articlelist-boardname}</h1>
-        </section>
+    <section class="title-bar">
+        <h1 class="title-bar__title-box flex flex-jc-c">${articledetail__articlelist-boardname}</h1>
+    </section>
+    <section class="article-list-wrap main-con article-list">        
+        <div class="searchBox">
+            <div>
+                <input @input="searchKeywordInputed" :value="searchKeyword" type="text" @keyup="searchKeywordInputedEnter(this)">
+                <button @click="searchKeywordClick"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
         <section class="board-list">
             <table class="width-100p">
                 <tr class="tag">
