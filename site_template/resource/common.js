@@ -191,7 +191,8 @@ const articleListBoxVue = new Vue({
 	data: {
 		articleList: articleList,
         searchKeyword: '',
-        searchResult:''
+        searchResult:'',
+        currentPage:1
 	},
 	methods: {
 		searchKeywordInputed: _.debounce(function(e) {
@@ -227,27 +228,45 @@ const articleListBoxVue = new Vue({
             
 		},
 		articles: function(){          
-            
+            let itemsInAPage = 10;
+            let start = (this.currentPage - 1) * itemsInAPage;
+            let end = start + itemsInAPage;
+            if(end > this.filtered.length){
+                end = this.filtered.length;
+            }
 			if(this.filtered.length > 10){
-				const ar = [];
-				for (var i = 0 ; i < 10 ; i++){
+                const ar = [];                
+
+                let index = 0;
+				for (var j = start ; j < end ; j++){
 					
-					ar[i] = this.filtered[i];
-					
-				} 
-				return ar;
+					ar[index] = this.filtered[j];
+                    index++;
+				}             
+                 return ar;
 			}else {
                 return this.filtered;
             }
         },
         pages:function(){
-            let pages = [];
             let pagesCount = this.filtered.length / 10;
             pagesCount =  Math.ceil(pagesCount);
-            for(let i = 1; i <= pagesCount ; i++){
+            let itemsInAPage = 10;
+            let start = this.currentPage / 10;
+            start = Math.ceil(start);
+            let end = start + itemsInAPage; 
+            if(end > pagesCount){
+                end = pagesCount; 
+            }
+            let pages = [];            
+            
+            for(let i = start; i <= end ; i++){
                 pages.push({index:i});
             }
            return pages;
+        },
+        mode:function(){
+            return true;
         }
         
 	}
