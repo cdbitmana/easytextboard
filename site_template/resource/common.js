@@ -200,11 +200,16 @@ const articleListBoxVue = new Vue({
         },500),
         searchKeywordClick:function(){
             this.searchResult = this.searchKeyword;
+            this.currentPage = 1;
         },
         searchKeywordInputedEnter:function(){
             if(event.keyCode==13){
                 this.searchResult = this.searchKeyword;
+                this.currentPage = 1;
             }
+        },
+        movePage:function(page){
+            this.currentPage = page.index;
         }
 	},
 	computed: {
@@ -214,8 +219,10 @@ const articleListBoxVue = new Vue({
 		filtered: function() {            
 			if (this.filterKey.length == 0) {
 				return this.articleList;
-			}
+            }
             
+            
+
 			return this.articleList.filter((row) => {
 				const keys = ['title', 'writer', 'body', 'regDate'];
 
@@ -263,15 +270,21 @@ const articleListBoxVue = new Vue({
             for(let i = start; i <= end ; i++){
                 pages.push({index:i});
             }
+
+            const cur = this.currentPage;
+            const qr = $('span.currentPageCheck:contains('+ cur +')');
+            if(qr){
+                qr.addClass("currentPage");
+            }
+            if($('span.currentPageCheck:not(:contains('+ cur +'))')){
+                $('span.currentPageCheck:not(:contains('+ cur +'))').removeClass("currentPage");
+            }
            return pages;
-        },
-        mode:function(){
-            return true;
+
         }
         
 	}
 });
-
 
 /* 게시물 검색 기능 끝 */
     

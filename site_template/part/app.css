@@ -636,7 +636,7 @@
            font-weight: bold;
            font-size:1.4rem;
        }
-       .page-button > ul > li > .currentPage:hover {
+       .page-button > ul > li > :not(.currentPage):hover {
         cursor: pointer;
     }
        .lastmovebutton {
