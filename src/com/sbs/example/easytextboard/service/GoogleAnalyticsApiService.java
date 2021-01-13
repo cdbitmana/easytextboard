@@ -37,6 +37,7 @@ public class GoogleAnalyticsApiService {
 			for (Row row : response.getRowsList()) {
 
 				String pagePath = row.getDimensionValues(0).getValue();
+				pagePath = pagePath.replaceAll("/", "");
 				int hit = Integer.parseInt(row.getMetricValues(0).getValue());
 				System.out.printf("%s , %d\n", pagePath, hit);
 

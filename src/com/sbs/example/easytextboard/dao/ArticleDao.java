@@ -393,7 +393,7 @@ public class ArticleDao {
 		sql.append("        ) AS pagePathWoQueryStr,");
 		sql.append("        SUM(GA4_PP.hit) AS hit");
 		sql.append("        FROM ga4DataPagePath AS GA4_PP");
-		sql.append("        WHERE GA4_PP.pagePath LIKE '/%-detail-%.html%'");
+		sql.append("        WHERE GA4_PP.pagePath LIKE '%-detail-%.html%'");
 		sql.append("        GROUP BY pagePathWoQueryStr");
 		sql.append("    ) AS GA4_PP");
 		sql.append(") AS GA4_PP");

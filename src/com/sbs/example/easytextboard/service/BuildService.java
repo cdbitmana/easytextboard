@@ -249,7 +249,7 @@ public class BuildService {
 			}
 			articleHitChartHtml.append("<div class=\"articleChart con flex flex-dir-col\">");
 			articleHitChartHtml.append("<span>"+board.getName()+" 게시판</span>");
-			articleHitChartHtml.append("<div>");
+			articleHitChartHtml.append("<div class=\"chartBox\">");
 			articleHitChartHtml.append("<canvas id=\"articleHitChart" + board.getId() + "\"></canvas>");
 			articleHitChartHtml.append("</div>");
 			articleHitChartHtml.append("</div>");
