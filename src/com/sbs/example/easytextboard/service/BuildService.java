@@ -236,6 +236,8 @@ public class BuildService {
 
 		StringBuilder articleHitChartHtml = new StringBuilder();
 		StringBuilder articleHitChartJs = new StringBuilder();
+		
+		articleHitChartHtml.append("<div class=\"whole\">게시판 별 조회수</div>");
 
 		for (Board board : boards) {
 
@@ -245,7 +247,8 @@ public class BuildService {
 				articleHitChartJs.append("");
 				break;
 			}
-			articleHitChartHtml.append("<div class=\"articleChart con\">");
+			articleHitChartHtml.append("<div class=\"articleChart con flex flex-dir-col\">");
+			articleHitChartHtml.append("<span>"+board.getName()+" 게시판</span>");
 			articleHitChartHtml.append("<div>");
 			articleHitChartHtml.append("<canvas id=\"articleHitChart" + board.getId() + "\"></canvas>");
 			articleHitChartHtml.append("</div>");
@@ -446,19 +449,11 @@ public class BuildService {
 						articledetail__articlelist_prevpagelink.toString());
 
 				StringBuilder articledetail__articlelist_pages = new StringBuilder();
-				articledetail__articlelist_pages.append("");
-				for (int k = startPageButton; k <= endPageButton; k++) {
-					String page = board.getCode() + "-list-" + k + ".html";
-					if (k == currentPage) {
-						articledetail__articlelist_pages.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
-						articledetail__articlelist_pages.append("<span>" + k + "</span>");
-						articledetail__articlelist_pages.append("</li>");
-					} else {
-						articledetail__articlelist_pages.append("<li class=\"flex flex-jc-c flex-basis-50px\">");
-						articledetail__articlelist_pages.append("<a href=\"" + page + "\"> " + k + "</a>");
-						articledetail__articlelist_pages.append("</li>");
-					}
-				}
+				
+				articledetail__articlelist_pages
+				.append("<li v-for=\"page in pages\" class=\"flex flex-jc-c flex-basis-50px\">");
+		articledetail__articlelist_pages.append("<span @click=\"movePage(page)\" class=\"currentPageCheck\">{{page}}</span>");					
+		articledetail__articlelist_pages.append("</li>");
 
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__articlelist-pages}",
 						articledetail__articlelist_pages.toString());
@@ -619,8 +614,7 @@ public class BuildService {
 
 					board_list__pagebuttons
 							.append("<li v-for=\"page in pages\" class=\"flex flex-jc-c flex-basis-50px\">");
-					board_list__pagebuttons.append("<span @click=\"movePage(page)\" class=\"currentPageCheck\">{{page}}</span>");
-					
+					board_list__pagebuttons.append("<span @click=\"movePage(page)\" class=\"currentPageCheck\">{{page}}</span>");					
 					board_list__pagebuttons.append("</li>");
 
 					boardPageHtml = boardPageHtml.replace("${board-list__pagebuttons}",

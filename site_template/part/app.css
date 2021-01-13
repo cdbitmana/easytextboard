@@ -732,9 +732,6 @@
        .article-move-button > div > a:hover{
            text-decoration: underline;
        }
-
-
-      
        .reply__section{
            padding:15px 0;
        }
@@ -755,20 +752,52 @@
        .reply-list > .reply_regDate {
            padding-right:15px;
        }
-        .page-button > div > ul > li > span {
+        .page-button > div > ul > li > .currentPage {
            font-weight: bold;
            font-size:1.4rem;
        }
+       .page-button > div > ul > li > :not(.currentPage) {
+        cursor:pointer;
+    }
 
        /* 게시물 상세보기 끝 */
 
        /* 통계 상세보기 시작 */
+       .stat-box{
+        position:relative;
+        margin:100px auto;        
+        border:6px solid #e7bba4;
+        border-radius:50px;
+    }
        .articleChart{
-           margin:50px 0px;
+           margin:80px 0px;
        }
        .articleChart > div {
            padding:20px;
        }
+       .whole { 
+        position:absolute;
+        top:-40px;
+        left:50%;
+        transform: translateX(-50%);
+        padding:15px;
+        border-radius:10px; 
+        background-color: #e7bba4;
+        text-align: center;
+        font-size:3rem;
+    }
+       .articleChart > span {  
+           padding:10px;
+           border-radius:8px;         
+           font-size:2rem;
+           margin-left:auto;
+           margin-right:auto;
+           text-align: center;
+           font-weight:bold;
+           color:white;
+           background-color:#e7bba4;
+       }
+      
         /* 통계 상세보기 끝 */  
         
         /* 프로필 페이지 시작 */

@@ -289,7 +289,7 @@ const articleListBoxVue = new Vue({
 });
 window.onload = function(){
     console.log("실행");
-    let asd =  $('span.currentPageCheck:contains('+currentPage+')');
+    let asd =  $('span.currentPageCheck:contains(1)');
     console.log(asd);
       asd.addClass("currentPage");
 }

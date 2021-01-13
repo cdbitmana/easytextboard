@@ -37,12 +37,35 @@ public class TestRunner {
 		MysqlUtil.setDBInfo(Container.config.getDbHost(), Container.config.getDbId(), Container.config.getDbPw(),
 				Container.config.getDbName());
 
-		 Util.copy("site/", "abc/", ".git" , "CNAME");
-
+		 
+		testPagehitForOneDay();
+			
 		
 		
 		MysqlUtil.closeConnection();
 
+	}
+
+	private void testPagehitForOneDay() {
+		String ga4PropertyId = Container.config.getGa4PropertyId();
+
+		try (AlphaAnalyticsDataClient analyticsData = AlphaAnalyticsDataClient.create()) {
+			RunReportRequest request = RunReportRequest.newBuilder()
+					.setEntity(Entity.newBuilder().setPropertyId(ga4PropertyId))
+					.addDimensions(Dimension.newBuilder().setName("pagePath"))
+					.addMetrics(Metric.newBuilder().setName("activeUsers"))
+					.addDateRanges(DateRange.newBuilder().setStartDate("yesterday").setEndDate("today")).build();
+
+			// Make the request
+			RunReportResponse response = analyticsData.runReport(request);
+
+			System.out.println("Report result:");
+			for (Row row : response.getRowsList()) {
+				System.out.printf("%s, %s%n", row.getDimensionValues(0).getValue(), row.getMetricValues(0).getValue());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void testUpdatePageHitsByGa4Api() {

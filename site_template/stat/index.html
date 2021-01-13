@@ -1,9 +1,10 @@
-<main class="flex flex-jc-c flex-grow-1">
+<main class="flex flex-dir-col flex-grow-1">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-    <section class="stat-box con-min-width">
+    <section class="stat-box con-min-width flex flex-dir-col">
 
         {{articleHitChart}}
+        <!-- Chart.js 불러오는 방법 -->
         <!--
         <div class="con">
             <canvas id="articleHitChart"></canvas>
@@ -11,6 +12,7 @@
         -->
 
     </section>
+
 </main>
 
 <script src="stat.js"></script>
