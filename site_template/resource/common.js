@@ -186,13 +186,14 @@ $.get(
 	'json'
 );
 
+
 const articleListBoxVue = new Vue({
 	el: ".article-list-wrap",
 	data: {
 		articleList: articleList,
         searchKeyword: '',
         searchResult:'',
-        currentPage:1
+        currentPage : 1
 	},
 	methods: {
 		searchKeywordInputed: _.debounce(function(e) {
@@ -209,9 +210,9 @@ const articleListBoxVue = new Vue({
             }
         },
         movePage:function(page){
-            this.currentPage = page.index;
+            this.currentPage = page;
         }
-	},
+    },   
 	computed: {
 		filterKey: function() {
 			return this.searchResult.toLowerCase();
@@ -220,8 +221,7 @@ const articleListBoxVue = new Vue({
 			if (this.filterKey.length == 0) {
 				return this.articleList;
             }
-            
-            
+                        
 
 			return this.articleList.filter((row) => {
 				const keys = ['title', 'writer', 'body', 'regDate'];
@@ -241,6 +241,7 @@ const articleListBoxVue = new Vue({
             if(end > this.filtered.length){
                 end = this.filtered.length;
             }
+            
 			if(this.filtered.length > 10){
                 const ar = [];                
 
@@ -268,24 +269,30 @@ const articleListBoxVue = new Vue({
             let pages = [];            
             
             for(let i = start; i <= end ; i++){
-                pages.push({index:i});
+                pages.push(i);
             }
-
-            const cur = this.currentPage;
-            const qr = $('span.currentPageCheck:contains('+ cur +')');
+            
+            let cur = this.currentPage;
+            let qr = $('span.currentPageCheck:contains('+ cur +')');
             if(qr){
-                qr.addClass("currentPage");
-            }
+                qr.addClass("currentPage");                
+            }            
             if($('span.currentPageCheck:not(:contains('+ cur +'))')){
-                $('span.currentPageCheck:not(:contains('+ cur +'))').removeClass("currentPage");
+                $('span.currentPageCheck:not(:contains('+ cur +'))').removeClass("currentPage");                
             }
+            
            return pages;
 
         }
         
 	}
 });
-
+window.onload = function(){
+    console.log("실행");
+    let asd =  $('span.currentPageCheck:contains('+currentPage+')');
+    console.log(asd);
+      asd.addClass("currentPage");
+}
 /* 게시물 검색 기능 끝 */
     
     

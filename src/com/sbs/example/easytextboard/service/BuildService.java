@@ -619,7 +619,7 @@ public class BuildService {
 
 					board_list__pagebuttons
 							.append("<li v-for=\"page in pages\" class=\"flex flex-jc-c flex-basis-50px\">");
-					board_list__pagebuttons.append("<span @click=\"movePage(page)\" class=\"currentPageCheck\">{{page.index}}</span>");
+					board_list__pagebuttons.append("<span @click=\"movePage(page)\" class=\"currentPageCheck\">{{page}}</span>");
 					
 					board_list__pagebuttons.append("</li>");
 
