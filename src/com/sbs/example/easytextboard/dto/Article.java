@@ -16,7 +16,7 @@ public class Article {
 	private String extra__writer;
 	private String extra__boardName;
 	private String extra__boardCode;
-	
+
 	public Article(Map<String, Object> articleMap) {
 		this.id = (int) articleMap.get("id");
 		this.regDate = (String) articleMap.get("regDate");
@@ -32,6 +32,7 @@ public class Article {
 		this.extra__boardName = (String) articleMap.get("extra__boardName");
 		this.extra__boardCode = (String) articleMap.get("extra__boardCode");
 	}
+
 	public int getLikesCount() {
 		return likesCount;
 	}
@@ -47,6 +48,7 @@ public class Article {
 	public void setCommentsCount(int commentsCount) {
 		this.commentsCount = commentsCount;
 	}
+
 	public String getExtra__boardCode() {
 		return extra__boardCode;
 	}
@@ -78,7 +80,6 @@ public class Article {
 	public String getRegDate() {
 		return regDate;
 	}
-	
 
 	public int getId() {
 		return this.id;

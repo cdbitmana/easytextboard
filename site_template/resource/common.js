@@ -175,7 +175,8 @@ $.get(
 				title: row.title,
 				body: row.body,
 				hitCount : row.hitCount,
-				likesCount : row.likesCount
+                likesCount : row.likesCount,
+                commentsCount : row.commentsCount
 			};
             
             articleList.push(article);
@@ -193,7 +194,8 @@ const articleListBoxVue = new Vue({
 		articleList: articleList,
         searchKeyword: '',
         searchResult:'',
-        currentPage : 1
+        currentPage : 1,
+        lastPage : 1
 	},
 	methods: {
 		searchKeywordInputed: _.debounce(function(e) {
@@ -210,7 +212,25 @@ const articleListBoxVue = new Vue({
             }
         },
         movePage:function(page){
-            this.currentPage = page;
+            this.currentPage = page;           
+            
+        },
+        movePageNext:function(){
+            this.currentPage = this.currentPage + 10;
+            this.currentPage = Math.ceil(this.currentPage / 10 );
+            this.currentPage = (this.currentPage - 1) * 10 + 1;
+        },
+        movePagePrev:function(){
+            this.currentPage = this.currentPage - 10;
+            this.currentPage = Math.ceil(this.currentPage / 10 );
+            this.currentPage = (this.currentPage - 1) * 10 + 1;
+        },
+        movePageFirst:function(){
+            this.currentPage = 1;
+        },
+        movePageLast:function(){
+            this.currentPage = this.lastPage;
+            console.log(this.lastPage);
         }
     },   
 	computed: {
@@ -234,14 +254,19 @@ const articleListBoxVue = new Vue({
             });
             
 		},
-		articles: function(){          
+		articles: function(){  
+           
+           
+
             let itemsInAPage = 10;
             let start = (this.currentPage - 1) * itemsInAPage;
             let end = start + itemsInAPage;
             if(end > this.filtered.length){
                 end = this.filtered.length;
             }
-            
+
+         
+
 			if(this.filtered.length > 10){
                 const ar = [];                
 
@@ -257,12 +282,18 @@ const articleListBoxVue = new Vue({
             }
         },
         pages:function(){
+                
+            let itemsInAPage = 10;
             let pagesCount = this.filtered.length / 10;
             pagesCount =  Math.ceil(pagesCount);
-            let itemsInAPage = 10;
+            this.lastPage = pagesCount;
+            let lastPages = pagesCount / 10;
+            lastPages = Math.ceil(lastPages);
+            lastPages = (lastPages-1) * itemsInAPage + 1;       
             let start = this.currentPage / 10;
             start = Math.ceil(start);
-            let end = start + itemsInAPage; 
+            start = (start - 1) * itemsInAPage + 1;
+            let end = start + itemsInAPage - 1; 
             if(end > pagesCount){
                 end = pagesCount; 
             }
@@ -271,28 +302,28 @@ const articleListBoxVue = new Vue({
             for(let i = start; i <= end ; i++){
                 pages.push(i);
             }
-            
-            let cur = this.currentPage;
-            let qr = $('span.currentPageCheck:contains('+ cur +')');
-            if(qr){
-                qr.addClass("currentPage");                
-            }            
-            if($('span.currentPageCheck:not(:contains('+ cur +'))')){
-                $('span.currentPageCheck:not(:contains('+ cur +'))').removeClass("currentPage");                
+           
+            if(this.currentPage <= 10){
+                $('span.movePagePrev').css('display', 'none');
             }
-            
+            if(this.currentPage > 10){
+                $('span.movePagePrev').css('display', 'inline-block');
+            }
+            if(this.currentPage >= lastPages){
+                $('span.movePageNext').css('display', 'none');
+            }
+            if(this.currentPage < lastPages){
+                $('span.movePageNext').css('display', 'inline-block');
+            }
+
            return pages;
 
         }
         
 	}
 });
-window.onload = function(){
-    console.log("실행");
-    let asd =  $('span.currentPageCheck:contains(1)');
-    console.log(asd);
-      asd.addClass("currentPage");
-}
+
+
 /* 게시물 검색 기능 끝 */
     
     
