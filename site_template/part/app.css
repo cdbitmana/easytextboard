@@ -802,10 +802,14 @@
            font-weight:bold;
            color:white;
        }
-       .chartbox {
-           margin-top:30px;
-           position:relative;
-       }
+       .chartBox {
+        margin-top:30px;           
+        position:relative;
+    }
+    .chartBox:last-child{
+        margin-bottom:100px;
+    }
+   
       
         /* 통계 상세보기 끝 */  
         
