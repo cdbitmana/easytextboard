@@ -546,10 +546,9 @@
        .board-list > table > tbody > tr:not(.line-separate){
            height:41px;
        }
-       .board-list > table > tbody > tr:not(.tag):not(.article-not-exists):hover {
-           background-color:#afafaf49;
-        
-       }
+       table > tbody.articles_notExists{
+        display:none;
+    }
        
        .board-list > table > tbody > tr > td {
            padding-top:10px;

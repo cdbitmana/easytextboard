@@ -496,7 +496,7 @@ public class ArticleDao {
 
 		sql.append("SELECT * FROM `tag`");
 		sql.append("WHERE  `body`= ?", tagBody);
-
+		sql.append("ORDER BY relId DESC");
 		List<Map<String, Object>> tagsMapList = MysqlUtil.selectRows(sql);
 
 		if (!tagsMapList.isEmpty()) {
@@ -519,9 +519,11 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT A.* , M.name AS extra__writer FROM article AS A");
+		sql.append("SELECT A.* , M.name AS extra__writer , B.code AS extra__boardCode FROM article AS A");
 		sql.append("INNER JOIN `member` AS M");
 		sql.append("ON A.memberId = M.id");
+		sql.append("INNER JOIN `board` AS B");
+		sql.append("ON A.boardId = B.id");
 		sql.append("WHERE A.id = ? ", relId);
 
 		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);

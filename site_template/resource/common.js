@@ -1,3 +1,13 @@
+/* 사이트 주소 쿼리스트링 가져오기 시작 */
+function getUrlParams() {
+    var params = {};
+    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+    return params;
+}
+
+/* 사이트 주소 쿼리스트링 가져오기 끝 */
+
+
 /* 홈 화면 게시물 내용 토스트UI 적용 시작 */
 
 const homePageToastUI = function home_main__Body__init() {
@@ -159,9 +169,9 @@ let getPageListName = function(){
     listName = pageName;
     return pageName;
 }
-getPageListName();
+let param = getUrlParams();
 
-let boardCode = listName +'-list.json';
+let boardCode = param.board +'-list.json';
 
 $.get(    
 	boardCode,
@@ -256,8 +266,16 @@ const articleListBoxVue = new Vue({
 		},
 		articles: function(){  
            
-           
-
+            if(this.filtered.length == 0){
+                $('table > tbody.articles_notExists').css('display' ,'table-row-group');
+                $('table > tbody.articles_exists').css('display' ,'none');
+                
+            }
+            if(this.filtered.length > 0){
+                $('table > tbody.articles_notExists').css('display' ,'none');
+                $('table > tbody.articles_exists').css('display' ,'table-row-group');
+               
+            }
             let itemsInAPage = 10;
             let start = (this.currentPage - 1) * itemsInAPage;
             let end = start + itemsInAPage;
@@ -302,7 +320,15 @@ const articleListBoxVue = new Vue({
             for(let i = start; i <= end ; i++){
                 pages.push(i);
             }
-           
+            if(pages.length < 2){
+                $('div.movePageFirst').css('display' , 'none');
+                $('div.movePageLast').css('display' , 'none');
+            }
+            else if(pages.length >= 2){
+                $('div.movePageFirst').css('display' , 'block');
+                $('div.movePageLast').css('display' , 'block');
+            }
+
             if(this.currentPage <= 10){
                 $('span.movePagePrev').css('display', 'none');
             }
@@ -326,14 +352,7 @@ const articleListBoxVue = new Vue({
 
 /* 게시물 검색 기능 끝 */
 
-/* 사이트 주소 쿼리스트링 가져오기 시작 */
-function getUrlParams() {
-    var params = {};
-    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
-    return params;
-}
 
-/* 사이트 주소 쿼리스트링 가져오기 끝 */
 
 
 /* 게시물 태그 리스트 검색 기능 시작 */
@@ -356,7 +375,8 @@ $.get(
 				body: data[tag][i].body,
 				hitCount : data[tag][i].hitCount,
                 likesCount : data[tag][i].likesCount,
-                commentsCount : data[tag][i].commentsCount
+                commentsCount : data[tag][i].commentsCount,
+                extra__boardCode : data[tag][i].extra__boardCode
 			};
             
             articleTagList.push(article);
