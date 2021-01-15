@@ -12,6 +12,7 @@ import com.sbs.example.easytextboard.dto.ArticleReply;
 import com.sbs.example.easytextboard.dto.Board;
 import com.sbs.example.easytextboard.dto.GuestBook;
 import com.sbs.example.easytextboard.dto.Member;
+import com.sbs.example.easytextboard.dto.Tag;
 import com.sbs.example.easytextboard.util.Util;
 
 public class BuildService {
@@ -68,6 +69,8 @@ public class BuildService {
 
 		createMainPage("index", foot);
 
+		createTagListPage("article_tag", foot);
+
 		createBoardPage("article_list", foot);
 
 		createArticleDetail("article_detail", foot);
@@ -77,6 +80,108 @@ public class BuildService {
 		createProfile("profile", foot);
 
 		createGuestBook("guestbook", foot);
+
+	}
+
+	// 태그리스트 페이지 생성 함수
+	private void createTagListPage(String pageName, String foot) {
+		StringBuilder tagListHtml = new StringBuilder();
+		tagListHtml.append(getHeadHtml(pageName));
+		String fileName = "article_tag.html";
+		String tagList = Util.getFileContents("site_template/article/tagList/article_tag.html");
+
+		Map<String, List<Article>> articleTag = new HashMap<>();
+		List<Article> articles = new ArrayList<Article>();
+
+		List<Tag> tags = articleService.getTagBodys();
+
+		for (Tag tag : tags) {
+
+			articles = articleService.getArticlesByTagBody(tag.getBody());
+
+			articleTag.put(tag.getBody(), articles);
+		}
+
+		String jsonText = Util.getJsonText(articleTag);
+		Util.writeFile("site/article_tag.json", jsonText);
+
+		StringBuilder board_list = new StringBuilder();
+		
+		
+		board_list.append("<tbody v-for=\"article in articles\">");
+		board_list.append("<tr class =\"line-separate\">");
+		board_list.append("<td colspan=\"6\"></td>");
+		board_list.append("</tr>");
+		board_list.append("<tr>");
+		board_list.append("<td class=\"cell-id\">" + "{{article.id}}" + "</td>");
+		board_list.append("<td class=\"cell-title\"><a :href=\"'article-detail-'+article.id+'.html'\">"
+				+ "{{article.title}}</a>" + "</td>");
+		board_list.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
+		board_list.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
+		board_list.append("<td class=\"cell-hit\">" + "{{article.hitCount}}" + "</td>");
+		board_list.append("<td class=\"cell-recommend\">" + "{{article.likesCount}}" + "</td>");
+		board_list.append("</tr>");
+		board_list.append("</tbody>");
+
+		tagList = tagList.replace("${board-list}", board_list.toString());
+		
+		
+		StringBuilder board_list__firstpagebutton = new StringBuilder();
+		board_list__firstpagebutton.append("");
+
+		board_list__firstpagebutton.append("<div class=\"flex flex-basis-50px\">");
+		board_list__firstpagebutton.append("<span @click=\"movePageFirst\"><<</span>");
+		board_list__firstpagebutton.append("</div>");
+
+		tagList = tagList.replace("${board-list__firstpagebutton}",
+				board_list__firstpagebutton.toString());
+
+		StringBuilder board_list__prevpagebutton = new StringBuilder();
+		board_list__prevpagebutton.append("");
+
+		board_list__prevpagebutton.append("<div class=\"flex flex-basis-50px\">");
+		board_list__prevpagebutton.append("<span class=\"movePagePrev\" @click=\"movePagePrev\">이전</span>");
+		board_list__prevpagebutton.append("</div>");
+
+		tagList = tagList.replace("${board-list__prevpagebutton}",
+				board_list__prevpagebutton.toString());
+
+		StringBuilder board_list__pagebuttons = new StringBuilder();
+
+		board_list__pagebuttons
+				.append("<li v-for=\"page in pages\" class=\"flex flex-jc-c flex-basis-50px\">");
+		board_list__pagebuttons
+				.append("<span @click=\"movePage(page)\" class=\"currentPageCheck\">{{page}}</span>");
+		board_list__pagebuttons.append("</li>");
+
+		tagList = tagList.replace("${board-list__pagebuttons}",
+				board_list__pagebuttons.toString());
+
+		StringBuilder board_list__nextpagebutton = new StringBuilder();
+		board_list__nextpagebutton.append("");
+
+		board_list__nextpagebutton.append("<div class=\"flex flex-basis-50px\">");
+		board_list__nextpagebutton.append("<span class=\"movePageNext\" @click=\"movePageNext\">다음</span>");
+		board_list__nextpagebutton.append("</div>");
+
+		tagList = tagList.replace("${board-list__nextpagebutton}",
+				board_list__nextpagebutton.toString());
+
+		StringBuilder board_list__lastpagebutton = new StringBuilder();
+
+		board_list__lastpagebutton.append("<div class=\"flex flex-basis-50px\">");
+		board_list__lastpagebutton.append("<span @click=\"movePageLast\">>></span>");
+		board_list__lastpagebutton.append("</div>");
+
+		tagList = tagList.replace("${board-list__lastpagebutton}",
+				board_list__lastpagebutton.toString());
+
+		
+
+		tagListHtml.append(tagList);
+		tagListHtml.append(foot);
+
+		Util.writeFileContents("site/" + fileName, tagListHtml.toString());
 
 	}
 
@@ -309,7 +414,7 @@ public class BuildService {
 			for (int i = 0; i < articles.size(); i++) {
 				String articleDetailHtml = Util.getFileContents("site_template/article/article/detail.html");
 				String writer = memberService.getMemberById(articles.get(i).getMemberId()).getName();
-				String fileName = board.getCode() + "-detail-" + articles.get(i).getId() + ".html";
+				String fileName = "article-detail-" + articles.get(i).getId() + ".html";
 				StringBuilder articleDetailHtmlBuilder = new StringBuilder();
 				Article article = articles.get(i);
 				articleDetailHtmlBuilder.append(getHeadHtml(pageName, article));
@@ -330,16 +435,27 @@ public class BuildService {
 				articleDetailHtml = articleDetailHtml.replace("${articledetail__article-body}",
 						articles.get(i).getBody());
 
+				List<Tag> tags = articleService.getTagById(articles.get(i).getId());
+				StringBuilder articleDetail__tags = new StringBuilder();
+				if (tags != null) {
+
+					for (Tag tag : tags) {
+						articleDetail__tags.append("<a href=\"article_tag.html?tag="+tag.getBody()+"\">#" + tag.getBody() + " </a>");
+					}
+
+				}
+				articleDetailHtml = articleDetailHtml.replace("${articledetail__tags}", articleDetail__tags.toString());
+
 				StringBuilder articleDetail__ArticleMoveButton = new StringBuilder();
 				articleDetail__ArticleMoveButton.append("");
 				if (i != articles.size() - 1) {
-					articleDetail__ArticleMoveButton.append("<div class=\"con next-article\"><a href=\""
-							+ board.getCode() + "-detail-" + articles.get(i + 1).getId() + ".html\">다음글</a></div>");
+					articleDetail__ArticleMoveButton.append("<div class=\"con next-article\"><a href=\"article-detail-"
+							+ articles.get(i + 1).getId() + ".html\">다음글</a></div>");
 				}
 
 				if (i != 0) {
-					articleDetail__ArticleMoveButton.append("<div class=\"con next-article\"><a href=\""
-							+ board.getCode() + "-detail-" + articles.get(i - 1).getId() + ".html\">이전글</a></div>");
+					articleDetail__ArticleMoveButton.append("<div class=\"con next-article\"><a href=\"article-detail-"
+							+ articles.get(i - 1).getId() + ".html\">이전글</a></div>");
 				}
 
 				articleDetailHtml = articleDetailHtml.replace("${articledetail_articlemovebutton}",
@@ -413,8 +529,9 @@ public class BuildService {
 				articleDetail__articleList.append("</tr>");
 				articleDetail__articleList.append("<tr>");
 				articleDetail__articleList.append("<td class=\"cell-id\">" + "{{article.id}}" + "</td>");
-				articleDetail__articleList.append("<td class=\"cell-title\"><a :href=\"'" + board.getCode()
-						+ "-detail-'+article.id+'.html'\">" + "{{article.title}}" + "</td>");
+				articleDetail__articleList
+						.append("<td class=\"cell-title\"><a :href=\"'article-detail-'+article.id+'.html'\">"
+								+ "{{article.title}}" + "</td>");
 				articleDetail__articleList.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
 				articleDetail__articleList.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
 				articleDetail__articleList.append("<td class=\"cell-hit\">" + "{{article.hitCount}}" + "</td>");
@@ -490,7 +607,7 @@ public class BuildService {
 
 	// 게시판 페이지 생성 함수
 	private void createBoardPage(String pageName, String foot) {
-		Util.copy("site_template/resource/article_list.js", "site/article_list.js");
+
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		for (Board board : boards) {
 
@@ -574,8 +691,8 @@ public class BuildService {
 					board_list.append("</tr>");
 					board_list.append("<tr>");
 					board_list.append("<td class=\"cell-id\">" + "{{article.id}}" + "</td>");
-					board_list.append("<td class=\"cell-title\"><a :href=\"'" + board.getCode()
-							+ "-detail-'+article.id+'.html'\">" + "{{article.title}}</a>" + "</td>");
+					board_list.append("<td class=\"cell-title\"><a :href=\"'article-detail-'+article.id+'.html'\">"
+							+ "{{article.title}}</a>" + "</td>");
 					board_list.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
 					board_list.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
 					board_list.append("<td class=\"cell-hit\">" + "{{article.hitCount}}" + "</td>");
@@ -677,8 +794,7 @@ public class BuildService {
 			article_box.append("</div>");
 			article_box.append("<div class=\"home-main__article-box__body\">" + articles.get(i).getBody() + "</div>");
 			article_box.append("<div class=\"home-main__article-box__detail\">");
-			article_box.append("<a href=\"" + articles.get(i).getExtra__boardCode() + "-detail-"
-					+ articles.get(i).getId() + ".html\">");
+			article_box.append("<a href=\"article-detail-" + articles.get(i).getId() + ".html\">");
 			article_box.append("자세히 보기");
 			article_box.append("</a>");
 			article_box.append("</div>");

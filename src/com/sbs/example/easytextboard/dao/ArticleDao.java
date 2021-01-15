@@ -450,4 +450,89 @@ public class ArticleDao {
 		return articles;
 	}
 
+	public List<Tag> getTagById(int id) {
+		List<Tag> tags = null;
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT * FROM `tag`");
+		sql.append("WHERE relTypeCode = 'article'");
+		sql.append("AND relId = ?", id);
+		
+		List<Map<String,Object>> tagMapList = MysqlUtil.selectRows(sql);
+		
+		if(!tagMapList.isEmpty()) {
+			tags = new ArrayList<Tag>();
+			for(Map<String,Object> tagMap : tagMapList) {
+				tags.add(new Tag(tagMap));
+			}
+		}
+		
+		return tags;
+	}
+
+	public List<Tag> getTagBodys() {
+		List<Tag> tags = null;
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT * FROM `tag`");
+		sql.append("GROUP BY `body`");
+		
+		List<Map<String,Object>> tagsMapList = MysqlUtil.selectRows(sql);
+		
+		if(!tagsMapList.isEmpty()) {
+			tags = new ArrayList<Tag>();
+			for(Map<String,Object> tagsMap : tagsMapList) {
+				tags.add(new Tag(tagsMap));
+			}
+		}
+		
+		return tags;
+	}
+
+	public List<Article> getArticlesByTagBody(String tagBody) {
+		List<Article> articles = new ArrayList<>();
+		List<Tag> tags = null;
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT * FROM `tag`");
+		sql.append("WHERE  `body`= ?", tagBody);
+		
+		List<Map<String,Object>> tagsMapList = MysqlUtil.selectRows(sql);
+		
+		if(!tagsMapList.isEmpty()) {
+			tags = new ArrayList<>();
+			for(Map<String,Object> tagsMap : tagsMapList) {
+				tags.add(new Tag(tagsMap));
+			}
+		}
+		
+		for(Tag tag : tags) {
+			Article article = getArticleByTag(tag.getRelId());
+			articles.add(article);
+		}
+		
+		
+		
+		return articles;
+	}
+
+	private Article getArticleByTag(int relId) {
+		Article article = null;
+		
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT * FROM article");
+		sql.append("WHERE id = ? ", relId);
+		
+		Map<String,Object> articleMap = MysqlUtil.selectRow(sql);
+		
+		if(!articleMap.isEmpty()) {
+			article = new Article(articleMap);
+		}
+		
+		return article;
+	}
+
+	
+
 }

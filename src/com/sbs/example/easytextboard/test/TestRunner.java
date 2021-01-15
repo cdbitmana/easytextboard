@@ -3,6 +3,7 @@ package com.sbs.example.easytextboard.test;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,10 +38,6 @@ public class TestRunner {
 		MysqlUtil.setDBInfo(Container.config.getDbHost(), Container.config.getDbId(), Container.config.getDbPw(),
 				Container.config.getDbName());
 
-		 
-		testPagehitForOneDay();
-			
-		
 		
 		MysqlUtil.closeConnection();
 

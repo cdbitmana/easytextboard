@@ -130,4 +130,17 @@ public class ArticleService {
 		return articleDao.getArticleByBoardCodeDesc(code);
 	}
 
+	public List<Tag> getTagById(int id) {
+		return articleDao.getTagById(id);
+	}
+
+	public List<Tag> getTagBodys() {
+		return articleDao.getTagBodys();
+	}
+
+	public List<Article> getArticlesByTagBody(String tagBody) {
+		return articleDao.getArticlesByTagBody(tagBody);
+	}
+
+	
 }

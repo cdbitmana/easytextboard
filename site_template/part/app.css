@@ -715,6 +715,13 @@
         font-family: 'LotteMartDream', sans-serif;
         font-size:16px;
     }
+
+    .article_tags{
+        margin:20px 0 ;
+        font-size:1.3rem;
+    }
+
+
        #disqus_thread{
         border-top:2px solid black;
           

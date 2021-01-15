@@ -1,0 +1,50 @@
+<!-- lodash 불러오기 -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+
+<!-- vue 불러오기 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<main class="con-min-width flex flex-dir-col flex-grow-1">
+
+    <section class="title-bar main-con">
+        <h1 class="tagList__title flex flex-jc-c">${board-list__boardname}
+        </h1>
+    </section>
+
+    <section class="article-taglist-wrap main-con board-list">
+        <div class="searchBox">
+            <div>
+                <input @input="searchKeywordInputed" :value="searchKeyword" type="text" @keyup="searchKeywordInputedEnter(this)">
+                <button @click="searchKeywordClick"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        <table class="width-100p">
+            <tr class="tag">
+                <td class="font-bold cell-id">번호</td>
+                <td class="font-bold cell-title">제목</td>
+                <td class="font-bold cell-writer">작성자</td>
+                <td class="font-bold cell-regDate">작성일</td>
+                <td class="font-bold cell-hit">조회 수</td>
+                <td class="font-bold cell-recommend">추천 수</td>
+            </tr>            
+            ${board-list}
+        </table>
+
+        <div class="page-button flex flex-ai-c flex-jc-s-bet">
+            <div class="lastmovebutton flex flex-basis-100px">
+                ${board-list__firstpagebutton}
+                ${board-list__prevpagebutton}
+            </div>
+            <ul class="flex flex-jc-c flex-ai-e flex-grow-1">
+                ${board-list__pagebuttons}
+            </ul>
+            <div class="firstmovebutton flex flex-basis-100px">
+                ${board-list__nextpagebutton}
+                ${board-list__lastpagebutton}
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="common.js"></script>

@@ -325,6 +325,183 @@ const articleListBoxVue = new Vue({
 
 
 /* 게시물 검색 기능 끝 */
+
+/* 사이트 주소 쿼리스트링 가져오기 시작 */
+function getUrlParams() {
+    var params = {};
+    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+    return params;
+}
+
+/* 사이트 주소 쿼리스트링 가져오기 끝 */
+
+
+/* 게시물 태그 리스트 검색 기능 시작 */
+const articleTagList = [];
+
+$.get(    
+	'article_tag.json',
+	{},
+	function(data) {
+
+        let queryStr = getUrlParams();
+        let tag = queryStr.tag;
+        $('.tagList__title').text(tag +'태그를 가진 게시글');
+        for(var i = 0 ; i < data[tag].length ; i++){
+            const article = {
+				id: data[tag][i].id,
+				regDate: data[tag][i].regDate,
+				writer: data[tag][i].extra__writer,
+				title: data[tag][i].title,
+				body: data[tag][i].body,
+				hitCount : data[tag][i].hitCount,
+                likesCount : data[tag][i].likesCount,
+                commentsCount : data[tag][i].commentsCount
+			};
+            
+            articleTagList.push(article);
+            
+        }
+		
+	},
+	'json'
+);
+
+const articleTagListBoxVue = new Vue({
+	el: ".article-taglist-wrap",
+	data: {
+		articleList: articleTagList,
+        searchKeyword: '',
+        searchResult:'',
+        currentPage : 1,
+        lastPage : 1
+	},
+	methods: {
+		searchKeywordInputed: _.debounce(function(e) {
+			this.searchKeyword = e.target.value;
+        },500),
+        searchKeywordClick:function(){
+            this.searchResult = this.searchKeyword;
+            this.currentPage = 1;
+        },
+        searchKeywordInputedEnter:function(){
+            if(event.keyCode==13){
+                this.searchResult = this.searchKeyword;
+                this.currentPage = 1;
+            }
+        },
+        movePage:function(page){
+            this.currentPage = page;           
+            
+        },
+        movePageNext:function(){
+            this.currentPage = this.currentPage + 10;
+            this.currentPage = Math.ceil(this.currentPage / 10 );
+            this.currentPage = (this.currentPage - 1) * 10 + 1;
+        },
+        movePagePrev:function(){
+            this.currentPage = this.currentPage - 10;
+            this.currentPage = Math.ceil(this.currentPage / 10 );
+            this.currentPage = (this.currentPage - 1) * 10 + 1;
+        },
+        movePageFirst:function(){
+            this.currentPage = 1;
+        },
+        movePageLast:function(){
+            this.currentPage = this.lastPage;
+            console.log(this.lastPage);
+        }
+    },   
+	computed: {
+		filterKey: function() {
+			return this.searchResult.toLowerCase();
+		},
+		filtered: function() {            
+			if (this.filterKey.length == 0) {
+				return this.articleList;
+            }
+                        
+
+			return this.articleList.filter((row) => {
+				const keys = ['title', 'writer', 'body', 'regDate'];
+
+				const match = keys.some((key) => {
+					return row[key].toLowerCase().indexOf(this.filterKey) > -1;
+				});
+                
+				return match;
+            });
+            
+		},
+		articles: function(){  
+           
+           
+
+            let itemsInAPage = 10;
+            let start = (this.currentPage - 1) * itemsInAPage;
+            let end = start + itemsInAPage;
+            if(end > this.filtered.length){
+                end = this.filtered.length;
+            }
+
+         
+
+			if(this.filtered.length > 10){
+                const ar = [];                
+
+                let index = 0;
+				for (var j = start ; j < end ; j++){
+					
+					ar[index] = this.filtered[j];
+                    index++;
+				}             
+                 return ar;
+			}else {
+                return this.filtered;
+            }
+        },
+        pages:function(){
+                
+            let itemsInAPage = 10;
+            let pagesCount = this.filtered.length / 10;
+            pagesCount =  Math.ceil(pagesCount);
+            this.lastPage = pagesCount;
+            let lastPages = pagesCount / 10;
+            lastPages = Math.ceil(lastPages);
+            lastPages = (lastPages-1) * itemsInAPage + 1;       
+            let start = this.currentPage / 10;
+            start = Math.ceil(start);
+            start = (start - 1) * itemsInAPage + 1;
+            let end = start + itemsInAPage - 1; 
+            if(end > pagesCount){
+                end = pagesCount; 
+            }
+            let pages = [];            
+            
+            for(let i = start; i <= end ; i++){
+                pages.push(i);
+            }
+           
+            if(this.currentPage <= 10){
+                $('span.movePagePrev').css('display', 'none');
+            }
+            if(this.currentPage > 10){
+                $('span.movePagePrev').css('display', 'inline-block');
+            }
+            if(this.currentPage >= lastPages){
+                $('span.movePageNext').css('display', 'none');
+            }
+            if(this.currentPage < lastPages){
+                $('span.movePageNext').css('display', 'inline-block');
+            }
+
+           return pages;
+
+        }
+        
+	}
+});
+/* 게시물 태그 리스트 검색 기능 끝 */
     
     
     
