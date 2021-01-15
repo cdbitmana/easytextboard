@@ -717,8 +717,15 @@
     }
 
     .article_tags{
-        margin:20px 0 ;
+        margin:20px 0;
         font-size:1.3rem;
+        
+    }
+    .article_tags > a {
+        margin:0 5px;
+        background-color:rgb(206, 206, 206);
+        border-radius:10px;
+        padding:10px;
     }
 
 
