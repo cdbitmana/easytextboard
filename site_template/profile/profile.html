@@ -1,23 +1,55 @@
-<main class="con-min-width">
-    <div class="flex flex-dir-col">
+<main class="con-min-width container flex flex-dir-col">
 
-    <div class="content-1 flex flex-jc-c">   
+    <!-- 프로필 페이지 1번 화면 -->
+    <section class="profile_1">
+        <!-- 상단 메뉴 -->
+        <div class="top-bar flex">
+            <div class="logo_box"><a class="flex flex-ai-c" href="index.html">DLOG</a></div>
+            <div class="flex-grow-1"></div>
+            <div class="menu_bar">
+                <ul class="flex">
+                    <li><a href="profile.html">프로필</a></li>
+                    <li><a href="">게시판</a>
+                        <div class="flex flex-ai-c menu_box_2">
+                            <div class="flex-grow-1"></div>
+                          
 
-        <div class="content-1__wrapper">
-        <div class="profile_text">
-            <p>2020</p>            
-            <div class="flex profile_short">
-                <span>PROFILE</span>
-            <span class="flex flex-dir-col profile_arrow profile_arrow_extend"><i class="fas fa-arrow-right"></i>
-                <span class="extend">펼치기</span></span>
-                <span class="flex flex-dir-col profile_arrow profile_arrow_shorten"><i class="fas fa-arrow-left"></i>
-                    <span class="extend">접기</span></span>
+                            <ul class="menu_box_2__board">
+                                ${topbar__menubox__boardList}
+                                  <!--  
+                                <li><a href="notice-list.html">공지사항 게시판</a></li>
+                                <li><a href="">IT 게시판</a></li>
+                                <li><a href="">테스트 게시판</a></li>
+                                -->
+                            </ul>
+
+                        </div>
+                    </li>
+                    <li><a href="statindex.html">통계</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="textbox" class="textbox">
+            <div class="text_short">
+                <div>안녕하세요.</div>
+                <span class="name">이명학</span>입니다.
+                <div class="showdetail">
+                    <button class="button">Click!</button>
                 </div>
-            <p>안녕하세요. 반갑습니다!</p>
-            <p>이명학입니다.</p>
 
-            <div class="profile_detail">
-                <div class="profile_detail__text1 flex">
+            </div>
+
+        </div>
+
+
+        <section id="profile_detail">
+            <div class="hidedetail">
+                <button class="button"><i class="fas fa-angle-double-up"></i></button>
+            </div>
+            <div class="profile_box">
+            <div class="profile_detail_box con-min-width">
+                <div class="flex profile_detail_box__text1">
+                    <div class="bgimg"></div>
                     <ul>
                         <li>이름</li>
                         <li>생년월일</li>
@@ -36,38 +68,75 @@
                         <li>사진 찍기, 영화 보기</li>
                         <li>AB형</li>
                     </ul>
-                    <ul>
-                        <li class="text-center">주요 사항</li>
-                        <li>서일고등학교 졸업</li>
-                        <li>SBS아카데미컴퓨터아트학원 풀스택 개발자 과정 수료</li>
-                        <li>컴퓨터활용능력 1급</li>
-                        
-                    </ul>
                 </div>
             </div>
         </div>
-    </div>
-       
-    <div class="content-1__bg-text">
-        <div class="bg-text"><img src="profileimage/bg.jpg" alt=""></div>
-    </div>
+        </section>
+    </section>
 
-    </div>
     
-    <div class="content-2 flex flex-jc-c">    
+
+    <!--
+        <div class="content-1 flex">
+                <div class="profile_text">
+                    <p>2020</p>
+                    <div class="flex profile_short">
+                        <span>PROFILE</span>
+                        <span class="flex flex-dir-col profile_arrow profile_arrow_extend"><i
+                                class="fas fa-arrow-right"></i>
+                            <span class="extend">펼치기</span></span>
+                        <span class="flex flex-dir-col profile_arrow profile_arrow_shorten"><i
+                                class="fas fa-arrow-left"></i>
+                            <span class="extend">접기</span></span>
+                    </div>
+                    <p>안녕하세요. 반갑습니다!</p>
+                    <p>이명학입니다.</p>
+
+                    <div class="profile_detail">
+                        <div class="profile_detail__text1 flex">
+                            <ul>
+                                <li>이름</li>
+                                <li>생년월일</li>
+                                <li>전화번호</li>
+                                <li>이메일</li>
+                                <li>주소</li>
+                                <li>취미</li>
+                                <li>혈액형</li>
+                            </ul>
+                            <ul>
+                                <li>이명학</li>
+                                <li>1993.02.18 (만 28세)</li>
+                                <li>010-6710-8114</li>
+                                <li>cdbitmana@gmail.com</li>
+                                <li>대전광역시 서구</li>
+                                <li>사진 찍기, 영화 보기</li>
+                                <li>AB형</li>
+                            </ul>
+                            <ul>
+                                <li class="text-center">주요 사항</li>
+                                <li>서일고등학교 졸업</li>
+                                <li>SBS아카데미컴퓨터아트학원 풀스택 개발자 과정 수료</li>
+                                <li>컴퓨터활용능력 1급</li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+        </div>
+            -->
+    <div id="content-2" class="content-2 flex flex-jc-c">
         <div class="outline">
-              <div class="circle1">HTML</div>
-              <div class="circleline"></div>
-              <div class="circle2">CSS</div>
-              <div class="circle3">JAVASCRIPT</div>
-              <div class="circle4">JAVA</div>
+            <div class="circle1">HTML</div>
+            <div class="circleline"></div>
+            <div class="circle2">CSS</div>
+            <div class="circle3">JAVASCRIPT</div>
+            <div class="circle4">JAVA</div>
         </div>
         <div class="content-2__bg-text-box">
-        <div class="content-2__bg-text">특기</div>
-       
+            <div class="content-2__bg-text">특기</div>
+
+        </div>
     </div>
-    </div> 
-</div>
 </main>
 
 <script src="common.js"></script>

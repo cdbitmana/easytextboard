@@ -15,31 +15,46 @@ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.cs
     src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.js"></script>
 <!-- 디스커스 댓글 기능 추가 -->
 <script id="dsq-count-scr" src="//blogssg.disqus.com/count.js" async></script>
-<main class="flex flex-grow-1 flex-dir-col flex-jc-s con-min-width">
-    <div class="img-container">
-    <div id="slide" class="img-box height-100p" val="1" max="3">
-        <div class="img-cell">
-        <div class="img"></div>
-    </div>
-    <div class="img-cell">
-        <div class="img"></div>
-    </div>
-    <div class="img-cell">
-        <div class="img"></div>
-    </div>
-    <div class="img-cell">
-        <div class="img"></div>
-    </div>
+
+<!-- 메인 -->
+<main class="home_page con-min-width">
+    <!-- 상단 메뉴 -->
+    <div class="top-bar flex">
+    <div class="logo_box"><a class="flex flex-ai-c" href="index.html">DLOG</a></div>
+        <div class="flex-grow-1"></div>
+    <div class="menu_bar">
+        <ul class="flex">
+            <li><a href="profile.html">프로필</a></li>
+            <li><a href="">게시판</a> 
+                <div class="flex flex-ai-c menu_box_2">     
+                    <div class="flex-grow-1"></div>    
+                    <ul class="menu_box_2__board">
+                         ${topbar__menubox__boardList} 
+                         <!--
+                        <li><a href="">공지사항 게시판</a></li>
+                        <li><a href="">IT 게시판</a></li>
+                        <li><a href="">테스트 게시판</a></li>
+                        -->
+                    </ul>
+                    
+                </div>
+            </li>
+            <li><a href="statindex.html">통계</a></li>
+        </ul>
     </div>
 </div>
-<h1 class="home-recent">최근 작성된 글</h1>
-<div class="flex flex-wrap flex-jc-s-bet home-main main-con">
-    
-    ${home-main__article-box}
 
-    
-
-</div>
+<!-- 홈 화면 텍스트 -->
+    <div class="home_page_textbox">
+        <div class="home_page_textbox__text1">
+            Welcome to <span>DLOG!</span>
+        </div>
+        <br>
+        <div class="home_page_textbox__text2">
+            <div>이명학의 개인블로그입니다.</div>
+            <div>저에 대한 소개와 IT개발 관련 지식, 블로그 사이트에 대한 통계를 확인할 수 있습니다.</div>
+        </div>
+    </div>
 
 </main>
 
