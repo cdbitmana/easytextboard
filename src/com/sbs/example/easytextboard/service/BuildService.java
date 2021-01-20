@@ -133,7 +133,6 @@ public class BuildService {
 		taggedArticles_list.append("</tbody>");
 
 		tagList = tagList.replace("${board-list}", taggedArticles_list.toString());
-
 		StringBuilder articles_list__firstpagebutton = new StringBuilder();
 		articles_list__firstpagebutton.append("");
 

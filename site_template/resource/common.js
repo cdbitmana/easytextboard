@@ -1,7 +1,8 @@
 /* 사이트 주소 쿼리스트링 가져오기 시작 */
 function getUrlParams() {
     var params = {};
-    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+    var param = decodeURI(window.location.search);
+    param.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });    
     return params;
 }
 
@@ -83,7 +84,7 @@ function EditorViewer2__init() {
       el: body,
       initialValue: initial.trim(),
       viewer:true,
-      plugins: [toastui.Editor.plugin.codeSyntaxHighlight]
+      plugins: [toastui.Editor.plugin.codeSyntaxHighlight,youtubePlugin]
     });
   }
   EditorViewer2__init();
@@ -312,7 +313,8 @@ $.get(
 
         let queryStr = getUrlParams();
         let tag = queryStr.tag;
-        $('.tagList__title').text(tag +'태그를 가진 게시글');
+        decodeURI(tag);
+        $('.tagList__title').text(tag +' 태그를 가진 게시글');
         for(var i = 0 ; i < data[tag].length ; i++){
             const article = {
 				id: data[tag][i].id,
@@ -477,5 +479,22 @@ const articleTagListBoxVue = new Vue({
 });
 /* 게시물 태그 리스트 검색 기능 끝 */
     
-    
-    
+/* 토스트 UI 유튜브 플러그인 시작 */
+function youtubePlugin() {
+    toastui.Editor.codeBlockManager.setReplacer('youtube', youtubeId => {
+      // Indentify multiple code blocks
+      const wrapperId = `yt${Math.random().toString(36).substr(2, 10)}`;
+  
+      // Avoid sanitizing iframe tag
+      setTimeout(renderYoutube.bind(null, wrapperId, youtubeId), 0);
+  
+      return `<div id="${wrapperId}"></div>`;
+    });
+  }
+  
+  function renderYoutube(wrapperId, youtubeId) {
+    const el = document.querySelector(`#${wrapperId}`);
+  
+    el.innerHTML = `<div class="toast-ui-youtube-plugin-wrap"><iframe src="https://www.youtube.com/embed/${youtubeId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+  }
+/* 토스트 UI 유튜브 플러그인 끝 */
