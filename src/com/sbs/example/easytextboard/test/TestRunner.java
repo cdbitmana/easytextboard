@@ -37,7 +37,8 @@ public class TestRunner {
 
 		MysqlUtil.setDBInfo(Container.config.getDbHost(), Container.config.getDbId(), Container.config.getDbPw(),
 				Container.config.getDbName());
-
+		Container.googleAnalyticsApiService.getTodayVisit();
+		Container.googleAnalyticsApiService.getTotalVisit();
 		
 		MysqlUtil.closeConnection();
 

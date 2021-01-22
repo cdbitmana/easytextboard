@@ -535,4 +535,23 @@ public class ArticleDao {
 		return article;
 	}
 
+	public int getBoardTotalHitByBoardId(int id) {
+		
+		int totalHit = 0;
+		
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT SUM(hitCount) AS totalHit FROM article");
+		sql.append("WHERE boardId = ?",id);
+		sql.append("GROUP BY boardId");
+		
+		Map<String,Object> totalHitMap = MysqlUtil.selectRow(sql);
+		
+		if(!totalHitMap.isEmpty()) {
+			totalHit = Integer.parseInt(String.valueOf(totalHitMap.get("totalHit")));
+		}
+		
+		return totalHit;
+	}
+
 }

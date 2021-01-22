@@ -142,5 +142,9 @@ public class ArticleService {
 		return articleDao.getArticlesByTagBody(tagBody);
 	}
 
+	public int getBoardTotalHitByBoardId(int id) {
+		return articleDao.getBoardTotalHitByBoardId(id);
+	}
+
 	
 }

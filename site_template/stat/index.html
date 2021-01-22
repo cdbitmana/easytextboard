@@ -1,4 +1,5 @@
 <main class="flex flex-dir-col flex-grow-1">
+    <!-- chart.js 불러오기 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
  <!-- 상단 메뉴 -->
  <div class="top-bar flex">
@@ -27,9 +28,30 @@
         </ul>
     </div>
 </div>
-    <section class="stat-box con-min-width flex flex-dir-col">
 
-        {{articleHitChart}}
+<div class="con flex visit-container">
+    <div class="flex flex-jc-s-ar height-100p">
+    <div class="visit-box__bgimg"></div>
+    <div class="flex flex-dir-col flex-ai-c visit-box">
+    <div class="total-visit">
+         전체 방문자    
+    <div class="visitCount">${totalvisit}</div>
+    </div>
+    <div class="today-visit">
+        오늘의 방문자        
+        <div class="visitCount">${todayvisit}</div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="con-min-width articleHitContainer">
+
+        ${{articleHitChart}}
+
+    </div>
         <!-- Chart.js 불러오는 방법 -->
         <!--
         <div class="con">
@@ -37,7 +59,7 @@
         </div>
         -->
 
-    </section>
+
 
 </main>
 
