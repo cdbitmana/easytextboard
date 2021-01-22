@@ -110,7 +110,7 @@ public class BuildService {
 		for (Board board2 : boards2) {
 			topbar__menubox__boardList.append("<li>");
 			topbar__menubox__boardList
-					.append("<a href=\"" + board2.getCode() + "-list.html?board=" + board2.getCode() + "\">");
+					.append("<a href=\"" + board2.getCode() + "-list.html?board=" + board2.getCode() + "&page=1\">");
 			topbar__menubox__boardList.append("<span>");
 			topbar__menubox__boardList.append(board2.getName() + "게시판");
 			topbar__menubox__boardList.append("</span>");
@@ -125,7 +125,7 @@ public class BuildService {
 		taggedArticles_list.append("<tr>");
 		taggedArticles_list.append("<td class=\"cell-id\">" + "{{article.id}}" + "</td>");
 		taggedArticles_list.append(
-				"<td class=\"cell-title\"><a :href=\"'article-detail-'+article.id+'.html?board='+article.extra__boardCode+'&id='+article.id\">"
+				"<td class=\"cell-title\"><a :href=\"'article-detail-'+article.id+'.html?board='+article.extra__boardCode+'&id='+article.id+'&page='+currentPage\">"
 						+ "{{article.title}}</a>" + "</td>");
 		taggedArticles_list.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
 		taggedArticles_list.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
@@ -201,7 +201,7 @@ public class BuildService {
 		for (Board board : boards) {
 			top__menubox__boardList.append("<li>");
 			top__menubox__boardList
-					.append("<a href=\"" + board.getCode() + "-list.html?board=" + board.getCode() + "\">");
+					.append("<a href=\"" + board.getCode() + "-list.html?board=" + board.getCode() + "&page=1\">");
 			top__menubox__boardList.append("<span>");
 			top__menubox__boardList.append(board.getName() + "게시판");
 			top__menubox__boardList.append("</span>");
@@ -224,7 +224,6 @@ public class BuildService {
 		ArrayList<Board> boards = articleService.getBoardsForPrint();
 		String fileName = "statindex.html";
 
-		List<Member> members = memberService.getMembers();
 
 		StringBuilder statHtmlBuilder = new StringBuilder();
 		String statHtml = Util.getFileContents("site_template/stat/index.html");
@@ -236,7 +235,7 @@ public class BuildService {
 		for (Board board2 : boards2) {
 			topbar__menubox__boardList.append("<li>");
 			topbar__menubox__boardList
-					.append("<a href=\"" + board2.getCode() + "-list.html?board=" + board2.getCode() + "\">");
+					.append("<a href=\"" + board2.getCode() + "-list.html?board=" + board2.getCode() + "&page=1\">");
 			topbar__menubox__boardList.append("<span>");
 			topbar__menubox__boardList.append(board2.getName() + "게시판");
 			topbar__menubox__boardList.append("</span>");
@@ -356,7 +355,7 @@ public class BuildService {
 				for (Board board2 : boards2) {
 					topbar__menubox__boardList.append("<li>");
 					topbar__menubox__boardList
-							.append("<a href=\"" + board2.getCode() + "-list.html?board=" + board2.getCode() + "\">");
+							.append("<a href=\"" + board2.getCode() + "-list.html?board=" + board2.getCode() + "&page=1\">");
 					topbar__menubox__boardList.append("<span>");
 					topbar__menubox__boardList.append(board2.getName() + "게시판");
 					topbar__menubox__boardList.append("</span>");
@@ -387,7 +386,7 @@ public class BuildService {
 
 					for (Tag tag : tags) {
 						articleDetail__tags.append(
-								"<a href=\"article_tag.html?tag=" + tag.getBody() + "\">#" + tag.getBody() + " </a>");
+								"<a href=\"article_tag.html?tag=" + tag.getBody() + "&page=1\">#" + tag.getBody() + " </a>");
 					}
 
 				}
@@ -396,13 +395,13 @@ public class BuildService {
 				StringBuilder articleDetail__ArticleMoveButton = new StringBuilder();
 				articleDetail__ArticleMoveButton.append("");
 				if (i != articles.size() - 1) {
-					articleDetail__ArticleMoveButton.append("<div class=\"con next-article\"><a href=\"article-detail-"
-							+ articles.get(i + 1).getId() + ".html?board=" + board.getCode() + "\">다음글</a></div>");
+					articleDetail__ArticleMoveButton.append("<div class=\"con next-article\"><a :href=\"'article-detail-"
+							+ articles.get(i + 1).getId() + ".html?board=" + board.getCode() + "&page='+currentPage\">다음글</a></div>");
 				}
 
 				if (i != 0) {
-					articleDetail__ArticleMoveButton.append("<div class=\"con next-article\"><a href=\"article-detail-"
-							+ articles.get(i - 1).getId() + ".html?board=" + board.getCode() + "\">이전글</a></div>");
+					articleDetail__ArticleMoveButton.append("<div class=\"con next-article\"><a :href=\"'article-detail-"
+							+ articles.get(i - 1).getId() + ".html?board=" + board.getCode() + "&page='+currentPage\">이전글</a></div>");
 				}
 
 				articleDetailHtml = articleDetailHtml.replace("${articledetail_articlemovebutton}",
@@ -456,7 +455,7 @@ public class BuildService {
 				articleDetail__articleList.append("<td class=\"cell-id\">" + "{{article.id}}" + "</td>");
 				articleDetail__articleList
 						.append("<td class=\"cell-title\"><a :href=\"'article-detail-'+article.id+'.html?board="
-								+ board.getCode() + "&id='+article.id\">" + "{{article.title}}</a>" + "</td>");
+								+ board.getCode() + "&id='+article.id+'&page='+currentPage\">" + "{{article.title}}</a>" + "</td>");
 				articleDetail__articleList.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
 				articleDetail__articleList.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
 				articleDetail__articleList.append("<td class=\"cell-hit\">" + "{{article.hitCount}}" + "</td>");
@@ -552,7 +551,7 @@ public class BuildService {
 			for (Board board2 : boards2) {
 				topbar__menubox__boardList.append("<li>");
 				topbar__menubox__boardList
-						.append("<a href=\"" + board2.getCode() + "-list.html?board=" + board2.getCode() + "\">");
+						.append("<a href=\"" + board2.getCode() + "-list.html?board=" + board2.getCode() + "&page=1\">");
 				topbar__menubox__boardList.append("<span>");
 				topbar__menubox__boardList.append(board2.getName() + "게시판");
 				topbar__menubox__boardList.append("</span>");
@@ -588,7 +587,7 @@ public class BuildService {
 			board_list.append("<tr>");
 			board_list.append("<td class=\"cell-id\">" + "{{article.id}}" + "</td>");
 			board_list.append("<td class=\"cell-title\"><a :href=\"'article-detail-'+article.id+'.html?board="
-					+ board.getCode() + "&id='+article.id\">" + "{{article.title}}</a>" + "</td>");
+					+ board.getCode() + "&id='+article.id+'&page='+currentPage\">" + "{{article.title}}</a>" + "</td>");
 			board_list.append("<td class=\"cell-writer\">" + "{{article.writer}}" + "</td>");
 			board_list.append("<td class=\"cell-regDate\">" + "{{article.regDate}}" + "</td>");
 			board_list.append("<td class=\"cell-hit\">" + "{{article.hitCount}}" + "</td>");
@@ -671,7 +670,7 @@ public class BuildService {
 
 		for (Board board : boards) {
 			homeHtmlTemplate.append("<li>");
-			homeHtmlTemplate.append("<a href=\"" + board.getCode() + "-list.html?board=" + board.getCode() + "\">");
+			homeHtmlTemplate.append("<a href=\"" + board.getCode() + "-list.html?board=" + board.getCode() + "&page=1\">");
 			homeHtmlTemplate.append("<span>");
 			homeHtmlTemplate.append(board.getName() + "게시판");
 			homeHtmlTemplate.append("</span>");

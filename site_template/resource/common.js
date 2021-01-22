@@ -120,6 +120,8 @@ let getPageListName = function(){
 let param = getUrlParams();
 
 let boardCode = param.board +'-list.json';
+if(param.tag == undefined){
+
 
 $.get(    
 	boardCode,
@@ -152,7 +154,7 @@ const articleListBoxVue = new Vue({
 		articleList: articleList,
         searchKeyword: '',
         searchResult:'',
-        currentPage : 1,
+        currentPage : param.page,
         lastPage : 1
 	},
 	methods: {
@@ -298,6 +300,18 @@ const articleListBoxVue = new Vue({
 });
 
 
+const articleMoveBoxVue = new Vue({
+	el: ".article-move-vue",
+	data: {
+		
+        currentPage : param.page
+	}
+	
+});
+
+
+
+}
 /* 게시물 검색 기능 끝 */
 
 
@@ -305,6 +319,8 @@ const articleListBoxVue = new Vue({
 
 /* 게시물 태그 리스트 검색 기능 시작 */
 const articleTagList = [];
+if(param.tag != undefined){
+
 
 $.get(    
 	'article_tag.json',
@@ -342,7 +358,7 @@ const articleTagListBoxVue = new Vue({
 		articleList: articleTagList,
         searchKeyword: '',
         searchResult:'',
-        currentPage : 1,
+        currentPage : param.page,
         lastPage : 1
 	},
 	methods: {
@@ -477,6 +493,7 @@ const articleTagListBoxVue = new Vue({
         
 	}
 });
+}
 /* 게시물 태그 리스트 검색 기능 끝 */
     
 /* 토스트 UI 유튜브 플러그인 시작 */
