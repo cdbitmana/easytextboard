@@ -78,7 +78,7 @@ public class GoogleAnalyticsApiService {
 
 			RunReportResponse response = analyticsData.runReport(request);
 
-			System.out.println("Report result:");
+			
 			for (Row row : response.getRowsList()) {
 
 				String pagePath = row.getDimensionValues(0).getValue();
@@ -113,7 +113,7 @@ public class GoogleAnalyticsApiService {
 
 			RunReportResponse response = analyticsData.runReport(request);
 
-			System.out.println("Report result:");
+			
 			
 			for (Row row : response.getRowsList()) {
 
@@ -125,7 +125,6 @@ public class GoogleAnalyticsApiService {
 				}
 				if(pagePath.contains("/index.html") || pagePath.equals("/")) {
 					hit = hit + Integer.parseInt(row.getMetricValues(0).getValue());
-					System.out.println(hit);
 					
 				}
 			
